@@ -9,8 +9,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        "Hello World",
-        textDirection: TextDirection.ltr,
+        "Hello World hey hello hey5",
+        textDirection: TextDirection.rtl,
       ),
     );
   }
