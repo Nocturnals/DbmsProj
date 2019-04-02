@@ -60,10 +60,10 @@ class User {
   }
 
   // function to convert user to map object
-  Map<String, dynamic> toMap(User) {
+  Map<String, dynamic> toMap() {
     Map<String, dynamic> user_map = Map<String, dynamic>();
 
-    if(user_id != null)
+    if(this._user_id != null)
       user_map['user_id'] = this._user_id;
     user_map['first_name'] = this._first_name;
     user_map['last_name'] = this._last_login;
