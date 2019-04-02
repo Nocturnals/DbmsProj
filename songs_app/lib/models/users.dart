@@ -60,7 +60,7 @@ class User {
   }
 
   // function to convert user to map object
-  Map<String, dynamic> toMap(User) {
+  Map<String, dynamic> toMap() {
     Map<String, dynamic> user_map = Map<String, dynamic>();
 
     if(user_id != null)
