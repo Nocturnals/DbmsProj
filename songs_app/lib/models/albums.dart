@@ -18,9 +18,6 @@ class Album {
   int get image_id => this._image_id;
 
   // setter functions for variables
-  set album_id(int id) {
-    this._album_id = id;
-  }
   set album_name(String name) {
     this._album_name = name;
   }

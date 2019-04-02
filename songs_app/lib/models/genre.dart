@@ -8,9 +8,6 @@ class Genre {
   String get name => this._name;
 
   // set functions for varaibles
-  set genre_id(int id) {
-    this._genre_id = id;
-  }
   set name(String genre_name) {
     this._name = genre_name;
   }

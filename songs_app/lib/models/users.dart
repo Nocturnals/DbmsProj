@@ -37,9 +37,6 @@ class User {
   }
 
   // setter functions for variables
-  set user_id(int id) {
-    this._user_id = id;
-  }
   set first_name(String fname) {
     this._first_name = fname;
   }
