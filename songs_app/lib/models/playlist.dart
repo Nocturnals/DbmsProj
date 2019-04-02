@@ -1,25 +1,25 @@
 class Playlist {
   //playlist attributes
-  int _playlist_id;
-  int _user_id;
+  int _playlistId;
+  int _userId;
   String _name;
 
 //constructor functions
-  Playlist(this._user_id, this._name);
-  Playlist.wihtID(this._playlist_id, this._user_id, this._name);
+  Playlist(this._userId, this._name);
+  Playlist.wihtID(this._playlistId, this._userId, this._name);
 
 // get functions
 
-  int get playlist_id {
-    return _playlist_id;
+  int get playlistId {
+    return _playlistId;
   }
 
   String get name {
     return this._name;
   }
 
-  int get user_id {
-    return this._user_id;
+  int get userId {
+    return this._userId;
   }
 
   //set functions
@@ -27,23 +27,23 @@ class Playlist {
     this._name = name;
   }
 
-  set user_id(int id) {
-    this._user_id = id;
+  set userId(int id) {
+    this._userId = id;
   }
 
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> playlist_map = Map<String, dynamic>();
-    playlist_map['playlist_id'] = this._playlist_id;
-    playlist_map['user_id'] = this._user_id;
-    playlist_map['name'] = this._name;
+    Map<String, dynamic> playlistMap = Map<String, dynamic>();
+    playlistMap['playlistId'] = this._playlistId;
+    playlistMap['userId'] = this._userId;
+    playlistMap['name'] = this._name;
 
-    return playlist_map;
+    return playlistMap;
   }
 //function to convert map to playlist
 
   Playlist.fromMaptoPlaylist(Map<String, dynamic> map) {
-    this._playlist_id = map['playlist_id'];
-    this._user_id = map['user_id'];
+    this._playlistId = map['playlistId'];
+    this._userId = map['userId'];
     this._name = map['name'];
   }
 }

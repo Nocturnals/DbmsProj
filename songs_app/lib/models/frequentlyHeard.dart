@@ -1,31 +1,31 @@
 class FrequentlyHeard {
 
   // FrequentlyHeard attributes 
-  int _user_id;
-  int _song_id;
-  int _album_id;
+  int _userId;
+  int _songId;
+  int _albumId;
   int _count;
   int _weekNo;
 
   // constructor functions
-  FrequentlyHeard(this._user_id,this._song_id,this._album_id,this._count,this._weekNo);
+  FrequentlyHeard(this._userId,this._songId,this._albumId,this._count,this._weekNo);
 
   // get functions for variables
-  int get user_id => _user_id;
-  int get song_id => _song_id;
-  int get album_id => _album_id;
+  int get userId => _userId;
+  int get songId => _songId;
+  int get albumId => _albumId;
   int get count => _count;
   int get weekNo => _weekNo;
 
   // setter functions for variables
-  set user_id(int id) {
-    this._user_id = id;
+  set userId(int id) {
+    this._userId = id;
   }
-  set song_id(int newsongid) {
-    this._song_id = newsongid;
+  set songId(int newsongid) {
+    this._songId = newsongid;
   }
-  set album_id(int id) {
-    this._album_id = id;
+  set albumId(int id) {
+    this._albumId = id;
   }
   set count(int newcount) {
     this._count = newcount;
@@ -38,9 +38,9 @@ class FrequentlyHeard {
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = Map<String, dynamic>();
 
-    map['user_id'] = this._user_id;
-    map['song_id'] = this._song_id;
-    map['album_id'] = this._album_id;
+    map['userId'] = this._userId;
+    map['songId'] = this._songId;
+    map['albumId'] = this._albumId;
     map['count'] = this._count;
     map['weekNo'] = this._weekNo;
 
@@ -49,9 +49,9 @@ class FrequentlyHeard {
 
   // function to convert map object to frequntlyHeard object
   FrequentlyHeard.fromMaptoFrequentlyHeard(Map<String, dynamic> map) {
-    this._user_id = map['user_id'];
-    this._song_id = map['song_id'];
-    this._album_id = map['album_id'];
+    this._userId = map['userId'];
+    this._songId = map['songId'];
+    this._albumId = map['albumId'];
     this._count = map['count'];
     this._weekNo = map['weekNo'];
   }

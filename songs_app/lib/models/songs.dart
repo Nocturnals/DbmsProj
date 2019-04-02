@@ -1,21 +1,21 @@
 class Song {
 // Song attributes
-  int _song_id;
+  int _songId;
   String _title;
   double _length;
-  int _album_id;
-  int _genre_id;
-  int _image_id;
+  int _albumId;
+  int _genreId;
+  int _imageId;
 
 //Constructor functions
-  Song(this._title, this._length, this._album_id, this._genre_id,
-      this._image_id);
-  Song.withId(this._song_id, this._title, this._length, this._album_id,
-      this._genre_id, this._image_id);
+  Song(this._title, this._length, this._albumId, this._genreId,
+      this._imageId);
+  Song.withId(this._songId, this._title, this._length, this._albumId,
+      this._genreId, this._imageId);
 
 // get functions for variables
-  int get song_id {
-    return _song_id;
+  int get songId {
+    return _songId;
   }
 
   String get title {
@@ -26,16 +26,16 @@ class Song {
     return _length;
   }
 
-  int get album_id {
-    return _album_id;
+  int get albumId {
+    return _albumId;
   }
 
-  int get genre_id {
-    return _genre_id;
+  int get genreId {
+    return _genreId;
   }
 
-  int get image_id {
-    return _image_id;
+  int get imageId {
+    return _imageId;
   }
 
 //setter functions for variables
@@ -47,35 +47,41 @@ class Song {
     this._length = length;
   }
 
-  set album_id(int album_id) {
-    this._album_id = album_id;
+  set albumId(int albumId) {
+    this._albumId = albumId;
   }
 
-  set genre_id(int genre_id) {
-    this._genre_id = genre_id;
+  set genreId(int genreId) {
+    this._genreId = genreId;
+  }
+
+  set imageId(int imageId) {
+    this._imageId = imageId;
   }
 
 // function to convert song to map object
 
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> song_map = Map<String, dynamic>();
+    Map<String, dynamic> songMap = Map<String, dynamic>();
 
-    if (this._song_id != null) 
-      song_map["song_id"] = this._song_id;
-    song_map["title"] = this._title;
-    song_map["length"] = this._length;
-    song_map["album_id"] = this._album_id;
-    song_map["genre_id"] = this._genre_id;
+    if (this._songId != null) 
+      songMap["songId"] = this._songId;
+    songMap["title"] = this._title;
+    songMap["length"] = this._length;
+    songMap["albumId"] = this._albumId;
+    songMap["genreId"] = this._genreId;
+    songMap['imageId'] = this._imageId;
 
-    return song_map;
+    return songMap;
   }
 
 //function to convert map object to song object
   Song.fromMaptoSong(Map<String, dynamic> map) {
-    this._song_id = map["song_id"];
+    this._songId = map["songId"];
     this._title = map["title"];
     this._length = map["length"];
-    this._album_id = map["album_id"];
-    this._genre_id = map["genre_id"];
+    this._albumId = map["albumId"];
+    this._genreId = map["genreId"];
+    this._imageId = map['imageId'];
   }
 }

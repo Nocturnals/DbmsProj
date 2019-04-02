@@ -1,27 +1,27 @@
 class User {
   
   // User attributes
-  int _user_id;
-  String _first_name;
-  String _last_name;
+  int _userId;
+  String _firstName;
+  String _lastName;
   String _email;
   String _gender;
-  DateTime _date_of_birth;
-  DateTime _last_login;
+  DateTime _dateOfBirth;
+  DateTime _lastLogin;
 
   // Constructor functions
-  User(this._first_name,this._last_name,this._email,this._gender,this._date_of_birth,this._last_login);
-  User.withId(this._user_id,this._first_name,this._last_name,this._email,this._gender,this._date_of_birth,this._last_login);
+  User(this._firstName,this._lastName,this._email,this._gender,this._dateOfBirth,this._lastLogin);
+  User.withId(this._userId,this._firstName,this._lastName,this._email,this._gender,this._dateOfBirth,this._lastLogin);
 
   // get functions for variables
-  int get user_id {
-    return _user_id;
+  int get userId {
+    return _userId;
   }
-  String get first_name {
-    return _first_name;
+  String get firstName {
+    return _firstName;
   }
-  String get last_name {
-    return _last_name;
+  String get lastName {
+    return _lastName;
   }
   String get email {
     return _email;
@@ -29,19 +29,19 @@ class User {
   String get gender {
     return _gender;
   }
-  DateTime get date_of_birth {
-    return _date_of_birth;
+  DateTime get dateOfBirth {
+    return _dateOfBirth;
   }
-  DateTime get last_login {
-    return _last_login;
+  DateTime get lastLogin {
+    return _lastLogin;
   }
 
   // setter functions for variables
-  set first_name(String fname) {
-    this._first_name = fname;
+  set firstName(String fname) {
+    this._firstName = fname;
   }
-  set last_name(String lname) {
-    this._last_name = lname;
+  set lastName(String lname) {
+    this._lastName = lname;
   }
   set email(String newEmail) {
     this._email = newEmail;
@@ -49,37 +49,37 @@ class User {
   set gender(String newGender) {
     this._gender = newGender;
   }
-  set date_of_birth(DateTime newdatetime) {
-    this._date_of_birth = newdatetime;
+  set dateOfBirth(DateTime newdatetime) {
+    this._dateOfBirth = newdatetime;
   }
-  set last_login(DateTime newlastlogin) {
-    this._last_login = newlastlogin;
+  set lastLogin(DateTime newlastlogin) {
+    this._lastLogin = newlastlogin;
   }
 
   // function to convert user to map object
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> user_map = Map<String, dynamic>();
+    Map<String, dynamic> userMap = Map<String, dynamic>();
 
-    if(this._user_id != null)
-      user_map['user_id'] = this._user_id;
-    user_map['first_name'] = this._first_name;
-    user_map['last_name'] = this._last_login;
-    user_map['email'] = this._email;
-    user_map['gender'] = this._gender;
-    user_map['date_of_birth'] = this._date_of_birth;
-    user_map['last_login'] = this._last_login;
+    if(this._userId != null)
+      userMap['userId'] = this._userId;
+    userMap['firstName'] = this._firstName;
+    userMap['lastName'] = this._lastName;
+    userMap['email'] = this._email;
+    userMap['gender'] = this._gender;
+    userMap['dateOfBirth'] = this._dateOfBirth;
+    userMap['lastLogin'] = this._lastLogin;
 
-    return user_map;
+    return userMap;
   }
 
   // function to convert map object to user object
   User.fromMaptoUser(Map<String,dynamic> map) {
-    this._user_id = map['user_id'];
-    this._first_name = map['first_name'];
-    this._last_name = map['last_name'];
+    this._userId = map['userId'];
+    this._firstName = map['firstName'];
+    this._lastName = map['lastName'];
     this._email = map['email'];
     this._gender = map['gender'];
-    this._date_of_birth = map['date_of_birth'];
-    this._last_login = map['last_login'];
+    this._dateOfBirth = map['dateOfBirth'];
+    this._lastLogin = map['lastLogin'];
   }
 }

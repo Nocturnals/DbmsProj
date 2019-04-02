@@ -1,21 +1,21 @@
 class Artist {
   // artist attributes
-  int _artist_id;
+  int _artistId;
   String _name;
   int _totalSongs;
   int _totalAlbums;
-  int _image_id;
+  int _imageId;
 
 //constructer functions for variables
 
-  Artist(this._name, this._totalSongs, this._totalAlbums, this._image_id);
-  Artist.withId(this._artist_id, this._name, this._totalSongs,
-      this._totalAlbums, this._image_id);
+  Artist(this._name, this._totalSongs, this._totalAlbums, this._imageId);
+  Artist.withId(this._artistId, this._name, this._totalSongs,
+      this._totalAlbums, this._imageId);
 
 //get function variables
 
-  int get artist_id {
-    return _artist_id;
+  int get artistId {
+    return _artistId;
   }
 
   int get totalSongs {
@@ -30,8 +30,8 @@ class Artist {
     return _totalAlbums;
   }
 
-  int get image_id {
-    return _image_id;
+  int get imageId {
+    return _imageId;
   }
 
 //setter functions for variables
@@ -48,30 +48,31 @@ class Artist {
     this._totalAlbums = totalAlbums;
   }
 
-  set image_id(int image_id) {
-    this._image_id = image_id;
+  set imageId(int imageId) {
+    this._imageId = imageId;
   }
 
 //function to convert artist to map object
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> artist_map = Map<String, dynamic>();
+    Map<String, dynamic> artistMap = Map<String, dynamic>();
 
-    if (this._artist_id != null) artist_map['artist_id'] = this._artist_id;
-    artist_map['name'] = this._name;
-    artist_map['totalSongs'] = this._totalSongs;
-    artist_map['totalAlbums'] = this._totalAlbums;
-    artist_map['image_id'] = this._image_id;
+    if (this._artistId != null) 
+      artistMap['artistId'] = this._artistId;
+    artistMap['name'] = this._name;
+    artistMap['totalSongs'] = this._totalSongs;
+    artistMap['totalAlbums'] = this._totalAlbums;
+    artistMap['imageId'] = this._imageId;
 
-    return artist_map;
+    return artistMap;
   }
 
 //function to convert map object to artist object
 
   Artist.fromMaptoArtist(Map<String, dynamic> map) {
-    this._artist_id = map['artist_id'];
+    this._artistId = map['artistId'];
     this._name = map['name'];
     this._totalSongs = map['totalSongs'];
     this._totalAlbums = map['totalAlbums'];
-    this._image_id = map['image_id'];
+    this._imageId = map['imageId'];
   }
 }

@@ -1,52 +1,52 @@
 class Includes {
 // includes attributes
 
-  int _includes_id;
-  int _song_id;
-  int _album_id;
+  int _includesId;
+  int _songId;
+  int _albumId;
 
 //constructor functions
 
-  Includes(this._song_id, this._album_id);
-  Includes.withId(this._includes_id, this._song_id, this._album_id);
+  Includes(this._songId, this._albumId);
+  Includes.withId(this._includesId, this._songId, this._albumId);
 
 //getter functions
 
-  int get includes_id {
-    return _includes_id;
+  int get includesId {
+    return _includesId;
   }
 
-  int get song_id {
-    return _song_id;
+  int get songId {
+    return _songId;
   }
 
-  int get album_id {
-    return _album_id;
+  int get albumId {
+    return _albumId;
   }
 
 //setter functions
 
-  set song_id(int id) {
-    this._song_id = id;
+  set songId(int id) {
+    this._songId = id;
   }
 
-  set album_id(int id) {
-    this._album_id = id;
+  set albumId(int id) {
+    this._albumId = id;
   }
 
   Map<String, dynamic> toMap() {
-    Map<String, dynamic> includes_map = Map<String, dynamic>();
-    includes_map['includes_id'] = this._includes_id;
-    includes_map['song_id'] = this._song_id;
-    includes_map['album_id'] = this._album_id;
+    Map<String, dynamic> includesMap = Map<String, dynamic>();
+    includesMap['includesId'] = this._includesId;
+    includesMap['songId'] = this._songId;
+    includesMap['albumId'] = this._albumId;
 
-    return includes_map;
+    return includesMap;
   }
 
 //functions to convert map object to includes objedct
   Includes.fromMaptoIncludes(Map<String, dynamic> map) {
-    this._includes_id = map['includes_id'];
-    this._song_id = map['song_id'];
-    this._album_id = map['album_id'];
+    this._includesId = map['includesId'];
+    this._songId = map['songId'];
+    this._albumId = map['albumId'];
   }
 }
