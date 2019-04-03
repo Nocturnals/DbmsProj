@@ -8,16 +8,17 @@ import 'package:songs_app/utils/database_helper.dart';
 
 class IncludesCRUD {
   DatabaseHelper databaseHelper = DatabaseHelper();
-  
+
   // fetch all playlist
-  Future<List<Map<String,dynamic>>> getIncludesMapList() async {
+  Future<List<Map<String, dynamic>>> getIncludesMapList() async {
     Database db = await databaseHelper.database;
 
-    List<Map<String,dynamic>> result = await db.rawQuery('SELECT * FROM ${IncludesTable.tableName}');
+    List<Map<String, dynamic>> result =
+        await db.rawQuery('SELECT * FROM ${IncludesTable.tableName}');
     return result;
   }
 
-  // insert 
+  // insert
   Future<int> insertIncludes(Includes includes) async {
     Database db = await databaseHelper.database;
 
@@ -29,7 +30,9 @@ class IncludesCRUD {
   Future<int> updateIncludes(Includes includes) async {
     Database db = await databaseHelper.database;
 
-    int result = await db.update(IncludesTable.tableName,includes.toMap(), where: '${IncludesTable.colIncludesId} : ?', whereArgs: [includes.includesId]);
+    int result = await db.update(IncludesTable.tableName, includes.toMap(),
+        where: '${IncludesTable.colIncludesId} : ?',
+        whereArgs: [includes.includesId]);
     // int result = await db.rawUpdate('UPDATE ${playlistsTable.tableName} SET {}')
     return result;
   }
@@ -38,35 +41,38 @@ class IncludesCRUD {
   Future<int> deleteIncludes(int songid) async {
     Database db = await databaseHelper.database;
 
-    int result = await db.rawDelete('DELETE FROM ${IncludesTable.tableName} WHERE ${IncludesTable.colSongId} = \'$songid\'');
+    int result = await db.rawDelete(
+        'DELETE FROM ${IncludesTable.tableName} WHERE ${IncludesTable.colSongId} = \'$songid\'');
     return result;
-  }  
+  }
 
   // get number of records
   Future<int> getTotalIncludesCount() async {
     Database db = await databaseHelper.database;
 
-    List<Map<String,dynamic>> countMap = await db.rawQuery('SELECT COUNT (*) FROM ${IncludesTable.tableName}');
+    List<Map<String, dynamic>> countMap =
+        await db.rawQuery('SELECT COUNT (*) FROM ${IncludesTable.tableName}');
     int result = Sqflite.firstIntValue(countMap);
     return result;
   }
 
   Future<List<Includes>> getPlaylistList() async {
-    List<Map<String,dynamic>> mapList = await getIncludesMapList();
+    List<Map<String, dynamic>> mapList = await getIncludesMapList();
     int count = mapList.length;
 
     List<Includes> includesList = List<Includes>();
-    for(int i=0;i<count;i++) {
+    for (int i = 0; i < count; i++) {
       includesList.add(Includes.fromMaptoIncludes(mapList[i]));
     }
     return includesList;
   }
 
   // fetch playlist by id
-  Future<List<Map<String,dynamic>>> getIncludesMapById(int songid) async {
+  Future<List<Map<String, dynamic>>> getIncludesMapById(int songid) async {
     Database db = await databaseHelper.database;
 
-    List<Map<String,dynamic>> result = await db.rawQuery('SELECT * FROM ${IncludesTable.tableName} WHERE ${IncludesTable.colSongId} = $songid');
+    List<Map<String, dynamic>> result = await db.rawQuery(
+        'SELECT * FROM ${IncludesTable.tableName} WHERE ${IncludesTable.colSongId} = $songid');
     return result;
   }
 }

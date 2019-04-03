@@ -8,16 +8,17 @@ import 'package:songs_app/utils/database_helper.dart';
 
 class PlaylistCRUD {
   DatabaseHelper databaseHelper = DatabaseHelper();
-  
+
   // fetch all playlist
-  Future<List<Map<String,dynamic>>> getPlaylistMapList() async {
+  Future<List<Map<String, dynamic>>> getPlaylistMapList() async {
     Database db = await databaseHelper.database;
 
-    List<Map<String,dynamic>> result = await db.rawQuery('SELECT * FROM ${PlaylistTable.tableName}');
+    List<Map<String, dynamic>> result =
+        await db.rawQuery('SELECT * FROM ${PlaylistTable.tableName}');
     return result;
   }
 
-  // insert 
+  // insert
   Future<int> insertPlaylist(Playlist playlist) async {
     Database db = await databaseHelper.database;
 
@@ -29,7 +30,9 @@ class PlaylistCRUD {
   Future<int> updatePlaylist(Playlist playlist) async {
     Database db = await databaseHelper.database;
 
-    int result = await db.update(PlaylistTable.tableName, playlist.toMap(), where: '${PlaylistTable.colPlaylistId} : ?', whereArgs: [playlist.playlistId]);
+    int result = await db.update(PlaylistTable.tableName, playlist.toMap(),
+        where: '${PlaylistTable.colPlaylistId} : ?',
+        whereArgs: [playlist.playlistId]);
     // int result = await db.rawUpdate('UPDATE ${playlistsTable.tableName} SET {}')
     return result;
   }
@@ -38,35 +41,38 @@ class PlaylistCRUD {
   Future<int> deletePlaylist(String name) async {
     Database db = await databaseHelper.database;
 
-    int result = await db.rawDelete('DELETE FROM ${PlaylistTable.tableName} WHERE ${PlaylistTable.colName} = \'$name\'');
+    int result = await db.rawDelete(
+        'DELETE FROM ${PlaylistTable.tableName} WHERE ${PlaylistTable.colName} = \'$name\'');
     return result;
-  }  
+  }
 
   // get number of records
   Future<int> getTotalPlaylistCount() async {
     Database db = await databaseHelper.database;
 
-    List<Map<String,dynamic>> countMap = await db.rawQuery('SELECT COUNT (*) FROM ${PlaylistTable.tableName}');
+    List<Map<String, dynamic>> countMap =
+        await db.rawQuery('SELECT COUNT (*) FROM ${PlaylistTable.tableName}');
     int result = Sqflite.firstIntValue(countMap);
     return result;
   }
 
   Future<List<Playlist>> getPlaylistList() async {
-    List<Map<String,dynamic>> mapList = await getPlaylistMapList();
+    List<Map<String, dynamic>> mapList = await getPlaylistMapList();
     int count = mapList.length;
 
     List<Playlist> playlistList = List<Playlist>();
-    for(int i=0;i<count;i++) {
+    for (int i = 0; i < count; i++) {
       playlistList.add(Playlist.fromMaptoPlaylist(mapList[i]));
     }
     return playlistList;
   }
 
   // fetch playlist by id
-  Future<List<Map<String,dynamic>>> getPlaylistMapById(String name) async {
+  Future<List<Map<String, dynamic>>> getPlaylistMapById(String name) async {
     Database db = await databaseHelper.database;
 
-    List<Map<String,dynamic>> result = await db.rawQuery('SELECT * FROM ${PlaylistTable.tableName} WHERE ${PlaylistTable.colName} = $name');
+    List<Map<String, dynamic>> result = await db.rawQuery(
+        'SELECT * FROM ${PlaylistTable.tableName} WHERE ${PlaylistTable.colName} = $name');
     return result;
   }
 }

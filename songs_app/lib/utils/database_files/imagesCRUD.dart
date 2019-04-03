@@ -8,16 +8,17 @@ import 'package:songs_app/utils/database_helper.dart';
 
 class ImagesCRUD {
   DatabaseHelper databaseHelper = DatabaseHelper();
-  
+
   // fetch all users
-  Future<List<Map<String,dynamic>>> getImageMapList() async {
+  Future<List<Map<String, dynamic>>> getImageMapList() async {
     Database db = await databaseHelper.database;
 
-    List<Map<String,dynamic>> result = await db.rawQuery('SELECT * FROM ${Imagestable.tableName}');
+    List<Map<String, dynamic>> result =
+        await db.rawQuery('SELECT * FROM ${Imagestable.tableName}');
     return result;
   }
 
-  // insert 
+  // insert
   Future<int> insertImage(Image image) async {
     Database db = await databaseHelper.database;
 
@@ -29,7 +30,8 @@ class ImagesCRUD {
   Future<int> updateImage(Image image) async {
     Database db = await databaseHelper.database;
 
-    int result = await db.update(Imagestable.tableName, image.toMap(), where: '${Imagestable.colImageId} : ?', whereArgs: [image.imageId]);
+    int result = await db.update(Imagestable.tableName, image.toMap(),
+        where: '${Imagestable.colImageId} : ?', whereArgs: [image.imageId]);
     // int result = await db.rawUpdate('UPDATE ${UsersTable.tableName} SET {}')
     return result;
   }
@@ -38,35 +40,38 @@ class ImagesCRUD {
   Future<int> deleteImage(String name) async {
     Database db = await databaseHelper.database;
 
-    int result = await db.rawDelete('DELETE FROM ${Imagestable.tableName} WHERE ${Imagestable.colName} = \'$name\'');
+    int result = await db.rawDelete(
+        'DELETE FROM ${Imagestable.tableName} WHERE ${Imagestable.colName} = \'$name\'');
     return result;
-  }  
+  }
 
   // get number of records
   Future<int> getTotalImageCount() async {
     Database db = await databaseHelper.database;
 
-    List<Map<String,dynamic>> countMap = await db.rawQuery('SELECT COUNT (*) FROM ${Imagestable.tableName}');
+    List<Map<String, dynamic>> countMap =
+        await db.rawQuery('SELECT COUNT (*) FROM ${Imagestable.tableName}');
     int result = Sqflite.firstIntValue(countMap);
     return result;
   }
 
   Future<List<Image>> getImageList() async {
-    List<Map<String,dynamic>> mapList = await getImageMapList();
+    List<Map<String, dynamic>> mapList = await getImageMapList();
     int count = mapList.length;
 
     List<Image> imageList = List<Image>();
-    for(int i=0;i<count;i++) {
+    for (int i = 0; i < count; i++) {
       imageList.add(Image.fromMaptoImage(mapList[i]));
     }
     return imageList;
   }
 
   // fetch image by id
-  Future<List<Map<String,dynamic>>> getImageMapById(String name) async {
+  Future<List<Map<String, dynamic>>> getImageMapById(String name) async {
     Database db = await databaseHelper.database;
 
-    List<Map<String,dynamic>> result = await db.rawQuery('SELECT * FROM ${Imagestable.tableName} WHERE ${Imagestable.colName} = $name');
+    List<Map<String, dynamic>> result = await db.rawQuery(
+        'SELECT * FROM ${Imagestable.tableName} WHERE ${Imagestable.colName} = $name');
     return result;
   }
 }

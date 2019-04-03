@@ -8,16 +8,17 @@ import 'package:songs_app/utils/database_helper.dart';
 
 class UsersCRUD {
   DatabaseHelper databaseHelper = DatabaseHelper();
-  
+
   // fetch all users
-  Future<List<Map<String,dynamic>>> getUserMapList() async {
+  Future<List<Map<String, dynamic>>> getUserMapList() async {
     Database db = await databaseHelper.database;
 
-    List<Map<String,dynamic>> result = await db.rawQuery('SELECT * FROM ${UsersTable.tableName}');
+    List<Map<String, dynamic>> result =
+        await db.rawQuery('SELECT * FROM ${UsersTable.tableName}');
     return result;
   }
 
-  // insert 
+  // insert
   Future<int> insertUser(User user) async {
     Database db = await databaseHelper.database;
 
@@ -29,7 +30,8 @@ class UsersCRUD {
   Future<int> updateUser(User user) async {
     Database db = await databaseHelper.database;
 
-    int result = await db.update(UsersTable.tableName, user.toMap(), where: '${UsersTable.colUserId} : ?', whereArgs: [user.userId]);
+    int result = await db.update(UsersTable.tableName, user.toMap(),
+        where: '${UsersTable.colUserId} : ?', whereArgs: [user.userId]);
     // int result = await db.rawUpdate('UPDATE ${UsersTable.tableName} SET {}')
     return result;
   }
@@ -38,35 +40,38 @@ class UsersCRUD {
   Future<int> deleteUser(String emailid) async {
     Database db = await databaseHelper.database;
 
-    int result = await db.rawDelete('DELETE FROM ${UsersTable.tableName} WHERE ${UsersTable.colEmail} = \'$emailid\'');
+    int result = await db.rawDelete(
+        'DELETE FROM ${UsersTable.tableName} WHERE ${UsersTable.colEmail} = \'$emailid\'');
     return result;
-  }  
+  }
 
   // get number of records
   Future<int> getTotalUserCount() async {
     Database db = await databaseHelper.database;
 
-    List<Map<String,dynamic>> countMap = await db.rawQuery('SELECT COUNT (*) FROM ${UsersTable.tableName}');
+    List<Map<String, dynamic>> countMap =
+        await db.rawQuery('SELECT COUNT (*) FROM ${UsersTable.tableName}');
     int result = Sqflite.firstIntValue(countMap);
     return result;
   }
 
   Future<List<User>> getUserList() async {
-    List<Map<String,dynamic>> mapList = await getUserMapList();
+    List<Map<String, dynamic>> mapList = await getUserMapList();
     int count = mapList.length;
 
     List<User> userList = List<User>();
-    for(int i=0;i<count;i++) {
+    for (int i = 0; i < count; i++) {
       userList.add(User.fromMaptoUser(mapList[i]));
     }
     return userList;
   }
 
   // fetch user by id
-  Future<List<Map<String,dynamic>>> getUserMapById(String emailid) async {
+  Future<List<Map<String, dynamic>>> getUserMapById(String emailid) async {
     Database db = await databaseHelper.database;
 
-    List<Map<String,dynamic>> result = await db.rawQuery('SELECT * FROM ${UsersTable.tableName} WHERE ${UsersTable.colEmail} = $emailid');
+    List<Map<String, dynamic>> result = await db.rawQuery(
+        'SELECT * FROM ${UsersTable.tableName} WHERE ${UsersTable.colEmail} = $emailid');
     return result;
   }
 }
