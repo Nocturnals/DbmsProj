@@ -40,6 +40,12 @@ class DatabaseHelper {
   }
 
   void _createDB(Database db, int version) async {
+    _createTables(db);
+    _createIndexes(db);
+  }
+
+  // function to create tables on first time opening of database
+  void _createTables(Database db) async {
     await db.execute(UsersTable.createTable);
     await db.execute(GenreTable.createTable);
     await db.execute(PlaylistTable.createTable);
@@ -50,5 +56,18 @@ class DatabaseHelper {
     await db.execute(SongByTable.createTable);
     await db.execute(FrequentlyHeardTable.createTable);
     await db.execute(IncludesTable.createTable);
+  }
+
+  // function to create all indexed for all tables
+  void _createIndexes(Database db) async {
+    await db.execute(UsersTable.indexSQL);
+    await db.execute(GenreTable.indexSQL);
+    await db.execute(PlaylistTable.indexSQL);
+    await db.execute(AlbumsTable.indexSQL);
+    await db.execute(ArtistTable.indexSQL);
+    await db.execute(SongsTable.indexSQL);
+    await db.execute(SongByTable.indexSQL);
+    await db.execute(FrequentlyHeardTable.indexSQL);
+    await db.execute(IncludesTable.indexSQL);
   }
 }
