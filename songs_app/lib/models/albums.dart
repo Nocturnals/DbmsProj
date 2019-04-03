@@ -44,7 +44,7 @@ class Album {
     if(this._albumId != null)
       map['albumId'] = this._albumId;
     map['albumName'] = this._albumName;
-    map['releaseDate'] = this._releaseDate;
+    map['releaseDate'] = this._releaseDate.toIso8601String();
     map['albumLength'] = this._albumLength;
     map['totalTracks'] = this._totalTracks;
     map['genreId'] = this._genreId;
@@ -56,7 +56,7 @@ class Album {
   Album.fromMaptoAlbum(Map<String,dynamic> map) {
     this._albumId = map['albumId'];
     this._albumName = map['albumName'];
-    this._releaseDate = map['releaseDate'];
+    this._releaseDate = DateTime.parse( map['releaseDate']);
     this._albumLength = map['albumLength'];
     this._totalTracks = map['totalTracks'];
     this._genreId = map['genreId'];
