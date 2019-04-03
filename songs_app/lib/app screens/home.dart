@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './favourites.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -62,17 +63,32 @@ class HomeState extends State<Home> {
           items: [
 
             BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
+              icon: new IconButton(
+                icon: Icon(Icons.favorite),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Favourites()));
+                },
+              ),
               title: Text('Favourites'),
             ),
 
             BottomNavigationBarItem(
-              icon: Icon(Icons.play_arrow),
+              icon: new IconButton(
+                icon: Icon(Icons.favorite),
+                onPressed: () {
+                  debugPrint('Not yet done!');
+                },
+              ),
               title: Text('Play Song')
             ),
 
             BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
+              icon: new IconButton(
+                icon: Icon(Icons.favorite),
+                onPressed: () {
+                  debugPrint('Not yet done!');
+                },
+              ),
               title: Text('Profile')
             )
 
@@ -80,6 +96,10 @@ class HomeState extends State<Home> {
         ),
 
       ),
+
+      onWillPop: () {
+        debugPrint('Warning!!!!!!!!!!!!!!!!!!!!!!!!');
+      },
     );
   }
 
