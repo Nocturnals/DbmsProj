@@ -8,10 +8,11 @@ class User {
   String _gender;
   DateTime _dateOfBirth;
   DateTime _lastLogin;
+  bool _activeStatus;
 
   // Constructor functions
-  User(this._firstName,this._lastName,this._email,this._gender,this._dateOfBirth,this._lastLogin);
-  User.withId(this._userId,this._firstName,this._lastName,this._email,this._gender,this._dateOfBirth,this._lastLogin);
+  User(this._firstName,this._lastName,this._email,this._gender,this._dateOfBirth,this._lastLogin,this._activeStatus);
+  User.withId(this._userId,this._firstName,this._lastName,this._email,this._gender,this._dateOfBirth,this._lastLogin,this._activeStatus);
 
   // get functions for variables
   int get userId {
@@ -35,6 +36,9 @@ class User {
   DateTime get lastLogin {
     return _lastLogin;
   }
+  bool get activeStatuc {
+    return _activeStatus;
+  }
 
   // setter functions for variables
   set firstName(String fname) {
@@ -55,6 +59,9 @@ class User {
   set lastLogin(DateTime newlastlogin) {
     this._lastLogin = newlastlogin;
   }
+  set activeStatus(bool status) {
+    this._activeStatus = status;
+  }
 
   // function to convert user to map object
   Map<String, dynamic> toMap() {
@@ -68,6 +75,7 @@ class User {
     userMap['gender'] = this._gender;
     userMap['dateOfBirth'] = this._dateOfBirth;
     userMap['lastLogin'] = this._lastLogin;
+    userMap['activeStatus'] = this._activeStatus;
 
     return userMap;
   }
@@ -81,5 +89,6 @@ class User {
     this._gender = map['gender'];
     this._dateOfBirth = map['dateOfBirth'];
     this._lastLogin = map['lastLogin'];
+    this._activeStatus = map['activeStatus'];
   }
 }
