@@ -13,10 +13,10 @@ class UsersTable {
   static String colActiveStatus = 'activeStatus';
   
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colUserId INTEGER AUTOINCREMENT,' +
+  static String createTable = 'CREATE TABLE $tableName($colUserId INTEGER PRIMARY KEY AUTOINCREMENT,' +
                       ' $colFirstName TEXT NOT NULL, $colLastName TEXT NOT NULL, ' + 
                       ' $colEmail TEXT NOT NULL, $colGender TEXT NOT NULL, $colDOB TEXT NOT NULL, ' + 
-                      '$colLastLogin TEXT NULL, $colActiveStatus TEXT NULL, CONSTRAINT PK_$tableName PRIMARY KEY ($colUserId))';
+                      '$colLastLogin TEXT NULL, $colActiveStatus TEXT NULL)';
 
 }
 
@@ -29,8 +29,8 @@ class GenreTable {
   static String colName = 'name';
 
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colGenreId INTEGER NOT NULL AUTOINCREMENT, ' + 
-                              '$colName TEXT NOT NULL, CONSTRAINT PK_$tableName PRIMARY KEY ($colGenreId))';
+  static String createTable = 'CREATE TABLE $tableName($colGenreId INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
+                              '$colName TEXT NOT NULL)';
 
 }
 
@@ -44,11 +44,10 @@ class PlaylistTable {
   static String colName = 'name';
 
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colPlaylistId INTEGER NOT NULL AUTOINCREMENT, ' + 
-                              '$colUserId INT NOT NULL, $colName VARCHAR(30), ' + 
-                              'CONSTRAINT PK_$tableName PRIMARY KEY ($colPlaylistId), ' + 
+  static String createTable = 'CREATE TABLE $tableName($colPlaylistId INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
+                              '$colUserId INT NOT NULL, $colName VARCHAR(30), ' +  
                               'CONSTRAINT FK_${UsersTable.tableName} FOREIGN KEY ($colUserId) '+
-                              'REFERENCES ${UsersTable.tableName}(${UsersTable.colUserId})';
+                              'REFERENCES ${UsersTable.tableName}(${UsersTable.colUserId}))';
 
 }
 
@@ -62,9 +61,9 @@ class Imagestable {
   static String colName = 'name';
 
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colImageId INTEGER NOT NULL AUTOINCREMENT, '+
-                              '$colImgLocation VARCHAR(300) NOT NULL, $colName VARCHAR(150) NOT NULL, '+
-                              'CONSTRAINT PK_$tableName PRIMARY KEY ($colImageId))';
+  static String createTable = 'CREATE TABLE $tableName($colImageId INTEGER PRIMARY KEY AUTOINCREMENT, '+
+                              '$colImgLocation VARCHAR(300) NOT NULL, $colName VARCHAR(150) NOT NULL '+
+                              ')';
 
 }
 
@@ -82,14 +81,13 @@ class AlbumsTable {
   static String colImageId = 'imageId';
 
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colAlbumId INTEGER NOT NULL AUTOINCREMENT, '+
+  static String createTable = 'CREATE TABLE $tableName($colAlbumId INTEGER PRIMARY KEY AUTOINCREMENT, '+
                               '$colAlbumName VARCHAR(200) NOT NULL, '+
                               '$colReleaseDate TEXT NOT NULL,'+
                               '$colAlbumLength REAL DEFAULT 0 NOT NULL,'+
                               '$colTotalTracks INT DEFAULT 0 NOT NULL, '+
                               '$colGenreId INT NOT NULL,'+
                               '$colImageId INT NOT NULL,'+
-                              'CONSTRAINT PK_$tableName PRIMARY KEY ($colAlbumId), '+
                               'CONSTRAINT FK_${GenreTable.tableName} FOREIGN KEY ($colGenreId) '+
                               'REFERENCES ${GenreTable.tableName}(${GenreTable.colGenreId}))'; 
 
@@ -107,12 +105,11 @@ class ArtistTable {
   static String colImageId = 'imageId';
 
   //create table command
-  static String createTable = 'CREATE TABLE $tableName($colArtistId INTEGER NOT NULL AUTOINCREMENT, '+
+  static String createTable = 'CREATE TABLE $tableName($colArtistId INTEGER PRIMARY KEY AUTOINCREMENT, '+
                               '$colName VARCHAR(100) NOT NULL, '+
                               '$colTotalSongs INT DEFAULT 0 NOT NULL, '+
                               '$colTotalAlbums INT DEFAULT 0 NOT NULL, '+
                               '$colImageId INT NOT NULL, '+
-                              'CONSTRAINT PK_$tableName PRIMARY KEY ($colArtistId), '+
                               'CONSTRAINT FK_${Imagestable.tableName} FOREIGN KEY ($colImageId) '+
                               'REFERENCES ${Imagestable.tableName}(${Imagestable.colImageId}))';
 
@@ -131,13 +128,12 @@ class SongsTable {
   static String colImageId = 'imageId';
 
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colSongId INTEGER NOT NULL AUTOINCREMENT, '+
+  static String createTable = 'CREATE TABLE $tableName($colSongId INTEGER PRIMARY KEY AUTOINCREMENT, '+
                               '$colTitle VARCHAR(300) NOT NULL, '+
                               '$colLength REAL DEFAULT 0 NOT NULL, '+
                               '$colAlbumId INT NOT NULL, '+
                               '$colGenreId INT NOT NULL, '+
                               '$colImageId INT NOT NULL, '+
-                              'CONSTRAINT PK_$tableName PRIMARY KEY ($colSongId), '+
                               'CONSTRAINT FK_${AlbumsTable.tableName} FOREIGN KEY ($colAlbumId) '+
                               'REFERENCES ${AlbumsTable.tableName}(${AlbumsTable.colAlbumId}), '+
                               'CONSTRAINT FK_${GenreTable.tableName} FOREIGN KEY ($colGenreId) '+
@@ -157,10 +153,9 @@ class SongByTable {
   static String colArtistId = 'artistId';
 
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colSongId INTEGER NOT NULL, '+
+  static String createTable = 'CREATE TABLE $tableName($colSongId INTEGER PRIMARY KEY NOT NULL, '+
                               '$colAlbumId INT NOT NULL, '+
                               '$colArtistId INT NOT NULL, '+
-                              'CONSTRAINT PK_$tableName PRIMARY KEY ($colSongId), '+
                               'CONSTRAINT FK_${SongsTable.tableName} FOREIGN KEY ($colSongId) '+
                               'REFERENCES ${SongsTable.tableName}(${SongsTable.colSongId}), '+
                               'CONSTRAINT FK_${AlbumsTable.tableName} FOREIGN KEY ($colAlbumId) '+
@@ -193,7 +188,7 @@ class FrequentlyHeardTable {
                               'CONSTRAINT FK_${SongsTable.tableName} FOREIGN KEY ($colSongId) '+
                               'REFERENCES ${SongsTable.tableName}(${SongsTable.colSongId}), '+
                               'CONSTRAINT FK_${AlbumsTable.tableName} FOREIGN KEY ($colAlbumId) '+
-                              'REFERENCES ${AlbumsTable.tableName}(${AlbumsTable.colAlbumId}), )';
+                              'REFERENCES ${AlbumsTable.tableName}(${AlbumsTable.colAlbumId}))';
 
 }
 
@@ -207,10 +202,9 @@ class IncludesTable {
   static String colAlbumId = 'albumId';
 
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colIncludesId INTEGER NOT NULL AUTOINCREMENT, '+
+  static String createTable = 'CREATE TABLE $tableName($colIncludesId INTEGER PRIMARY KEY AUTOINCREMENT, '+
                               '$colSongId INT NOT NULL, '+
                               '$colAlbumId INT NOT NULL, '+
-                              'CONSTRAINT PK_$tableName PRIMARY KEY ($colIncludesId), '+
                               'CONSTRAINT FK_${SongsTable.tableName} FOREIGN KEY ($colSongId) '+
                               'REFERENCES ${SongsTable.tableName}(${SongsTable.colSongId}), '+
                               'CONSTRAINT FK_${AlbumsTable.tableName} FOREIGN KEY ($colAlbumId) '+
