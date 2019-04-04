@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:songs_app/utils/database_files/tables.dart';
+import 'package:songs_app/utils/database_files/triggers.dart';
 
 class DatabaseHelper {
   // Making the instances of the class singleton
@@ -42,6 +44,7 @@ class DatabaseHelper {
   void _createDB(Database db, int version) async {
     _createTables(db);
     _createIndexes(db);
+    _createTriggers(db);
   }
 
   // function to create tables on first time opening of database
@@ -69,5 +72,11 @@ class DatabaseHelper {
     await db.execute(SongByTable.indexSQL);
     await db.execute(FrequentlyHeardTable.indexSQL);
     await db.execute(IncludesTable.indexSQL);
+  }
+
+  // function to create all triggers for the database
+  void _createTriggers(Database db) async {
+    await db.execute(Triggers.triggerinsertSongOnArtist);
+    await db.execute(Triggers.triggerinsertSongOnAlbum);
   }
 }
