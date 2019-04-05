@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:songs_app/app screens/home.dart';
+import 'package:songs_app/app screens/login_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: Home(),
+      debugShowCheckedModeBanner: true,
+      home: LoginSignUpPage(), 
     );
   }
 }
