@@ -19,7 +19,7 @@ class UsersTable {
                       '$colLastLogin TEXT NULL, $colActiveStatus TEXT NULL)';
 
   // indexing for this table
-  static String indexSQL = 'CREATE INDEX ${colEmail}_$tableName ON $tableName ($colEmail)';
+  static String indexSQL = 'CREATE UNIQUE INDEX ${colEmail}_$tableName ON $tableName ($colEmail)';
 
 }
 

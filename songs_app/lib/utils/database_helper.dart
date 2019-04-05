@@ -37,6 +37,7 @@ class DatabaseHelper {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + 'songs_app.db';
 
+    deleteDatabase(path);
     Future<Database> userDatabase = openDatabase(path,version: 1,onCreate: _createDB);
     return userDatabase;
   }

@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
-import './favourites.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class Home extends StatefulWidget {
+import './favourites.dart';
+import 'package:songs_app/services/authentication.dart';
+
+class HomePage extends StatefulWidget {
+
+  BaseAuth auth = BaseAuth();
+
   @override
-  State<StatefulWidget> createState(){
-    return HomeState();
+  State<StatefulWidget> createState() {
+    return _HomePageState();
   }
 }
 
-class HomeState extends State<Home> {
+class _HomePageState extends State<HomePage> {
+
+  String apptitle = 'appbar';
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +26,7 @@ class HomeState extends State<Home> {
         // App Bar...
         appBar: new AppBar(
 
-          title: new Text('Online Music Store'),
+          title: new Text(apptitle),
 
           actions: <Widget>[
             new IconButton(
@@ -87,6 +95,7 @@ class HomeState extends State<Home> {
                 icon: Icon(Icons.favorite),
                 onPressed: () {
                   debugPrint('Not yet done!');
+                  _getUser();
                 },
               ),
               title: Text('Profile')
@@ -101,6 +110,14 @@ class HomeState extends State<Home> {
         debugPrint('Warning!!!!!!!!!!!!!!!!!!!!!!!!');
       },
     );
+  }
+  
+
+  void _getUser() async {
+    FirebaseUser user = await widget.auth.getCurrentUser();
+    setState(() {
+      apptitle = user.email;  
+    });
   }
 
 }
