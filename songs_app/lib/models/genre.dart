@@ -3,6 +3,10 @@ class Genre {
   int _genreId;
   String _name;
 
+  //constructors
+  Genre(this._name);
+  Genre.withId(this._genreId,this._name);
+
   // get functions for variables
   int get genreId => this._genreId;
   String get name => this._name;

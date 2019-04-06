@@ -17,7 +17,7 @@ class UsersCRUD {
         await db.rawQuery('SELECT * FROM ${UsersTable.tableName}');
     return result;
   }
-
+ 
   // insert
   Future<int> insertUser(User user) async {
     Database db = await databaseHelper.database;
@@ -31,7 +31,7 @@ class UsersCRUD {
     Database db = await databaseHelper.database;
 
     int result = await db.update(UsersTable.tableName, user.toMap(),
-        where: '${UsersTable.colUserId} : ?', whereArgs: [user.userId]);
+        where: '${UsersTable.colUserId} = ?', whereArgs: [user.userId]);
     // int result = await db.rawUpdate('UPDATE ${UsersTable.tableName} SET {}')
     return result;
   }

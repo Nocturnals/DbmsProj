@@ -6,7 +6,7 @@ import 'package:songs_app/services/authentication.dart';
 
 class HomePage extends StatefulWidget {
 
-  BaseAuth auth = BaseAuth();
+  final BaseAuth auth = BaseAuth();
 
   @override
   State<StatefulWidget> createState() {

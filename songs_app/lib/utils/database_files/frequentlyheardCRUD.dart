@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:sqflite/sqflite.dart';
 
-import 'package:songs_app/models/frequentlyheard.dart';
+import 'package:songs_app/models/frequentlyHeard.dart';
 import 'package:songs_app/utils/database_files/tables.dart';
 import 'package:songs_app/utils/database_helper.dart';
 
@@ -33,7 +33,7 @@ class FrequentlyHeardCRUD {
 
     int result = await db.update(
         FrequentlyHeardTable.tableName, frequentlyheard.toMap(),
-        where: '${FrequentlyHeardTable.colSongId} : ?',
+        where: '${FrequentlyHeardTable.colSongId} = ?',
         whereArgs: [frequentlyheard.songId]);
     // int result = await db.rawUpdate('UPDATE ${playlistsTable.tableName} SET {}')
     return result;

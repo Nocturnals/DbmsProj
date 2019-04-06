@@ -17,6 +17,10 @@ class Album {
   int get genreId => this._genreId;
   int get imageId => this._imageId;
 
+  //constructors
+  Album(this._albumName,this._releaseDate,this._albumLength,this._totalTracks,this._genreId,this._imageId);
+  Album.withId(this._albumId,this._albumName,this._releaseDate,this._albumLength,this._totalTracks,this._genreId,this._imageId);
+
   // setter functions for variables
   set albumName(String name) {
     this._albumName = name;

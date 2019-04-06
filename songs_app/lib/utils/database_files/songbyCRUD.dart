@@ -31,7 +31,7 @@ class SongByCRUD {
     Database db = await databaseHelper.database;
 
     int result = await db.update(SongByTable.tableName, songby.toMap(),
-        where: '${SongByTable.colSongId} : ?', whereArgs: [songby.songId]);
+        where: '${SongByTable.colSongId} = ?', whereArgs: [songby.songId]);
     // int result = await db.rawUpdate('UPDATE ${playlistsTable.tableName} SET {}')
     return result;
   }

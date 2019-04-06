@@ -1,8 +1,13 @@
-class Image {
+class Images {
   // Image attributes
   int _imageId;
   String _imgLocation;
   String _name;
+
+//constructors
+
+Images(this._imgLocation,this._name);
+Images.withId(this._imageId,this._imgLocation,this._name);
 
   // get functions 
   int get imageId => this._imageId;
@@ -31,9 +36,9 @@ class Image {
   }
 
   // function to convert map to class object
-  Image.fromMaptoImage(Map<String,dynamic> map) {
+  Images.fromMaptoImage(Map<String,dynamic> map) {
     this._imageId = map['imageId'];
     this._imgLocation = map['imgLocation'];
     this._name = map['name'];
   }
-}
+  }

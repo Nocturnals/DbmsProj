@@ -8,7 +8,7 @@ class FrequentlyHeard {
   int _weekNo;
 
   // constructor functions
-  FrequentlyHeard(this._userId,this._songId,this._albumId,this._count,this._weekNo);
+  FrequentlyHeard.withId(this._userId,this._songId,this._albumId,this._count,this._weekNo);
 
   // get functions for variables
   int get userId => _userId;

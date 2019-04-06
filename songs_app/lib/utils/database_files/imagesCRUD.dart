@@ -19,7 +19,7 @@ class ImagesCRUD {
   }
 
   // insert
-  Future<int> insertImage(Image image) async {
+  Future<int> insertImage(Images image) async {
     Database db = await databaseHelper.database;
 
     int result = await db.insert(Imagestable.tableName, image.toMap());
@@ -27,11 +27,11 @@ class ImagesCRUD {
   }
 
   // update
-  Future<int> updateImage(Image image) async {
+  Future<int> updateImage(Images image) async {
     Database db = await databaseHelper.database;
 
     int result = await db.update(Imagestable.tableName, image.toMap(),
-        where: '${Imagestable.colImageId} : ?', whereArgs: [image.imageId]);
+        where: '${Imagestable.colImageId} = ?', whereArgs: [image.imageId]);
     // int result = await db.rawUpdate('UPDATE ${UsersTable.tableName} SET {}')
     return result;
   }
@@ -55,13 +55,13 @@ class ImagesCRUD {
     return result;
   }
 
-  Future<List<Image>> getImageList() async {
+  Future<List<Images>> getImageList() async {
     List<Map<String, dynamic>> mapList = await getImageMapList();
     int count = mapList.length;
 
-    List<Image> imageList = List<Image>();
+    List<Images> imageList = List<Images>();
     for (int i = 0; i < count; i++) {
-      imageList.add(Image.fromMaptoImage(mapList[i]));
+      imageList.add(Images.fromMaptoImage(mapList[i]));
     }
     return imageList;
   }

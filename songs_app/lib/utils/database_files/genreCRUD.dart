@@ -31,7 +31,7 @@ class GenreCRUD {
     Database db = await databaseHelper.database;
 
     int result = await db.update(GenreTable.tableName, genre.toMap(),
-        where: '${GenreTable.colGenreId} : ?', whereArgs: [genre.genreId]);
+        where: '${GenreTable.colGenreId} = ?', whereArgs: [genre.genreId]);
     // int result = await db.rawUpdate('UPDATE ${UsersTable.tableName} SET {}')
     return result;
   }
