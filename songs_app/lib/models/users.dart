@@ -75,7 +75,7 @@ class User {
     userMap['gender'] = this._gender;
     userMap['dateOfBirth'] = this._dateOfBirth.toIso8601String();
     userMap['lastLogin'] = this._lastLogin.toIso8601String();
-    userMap['activeStatus'] = this._activeStatus;
+    userMap['activeStatus'] = this._activeStatus.toString();
 
     return userMap;
   }
@@ -89,6 +89,12 @@ class User {
     this._gender = map['gender'];
     this._dateOfBirth = DateTime.parse(map['dateOfBirth']);
     this._lastLogin = DateTime.parse(map['lastLogin']);
-    this._activeStatus = map['activeStatus'];
+    // this._activeStatus = map['activeStatus'];
+    if (map['activeStatus'] == 'true') {
+      this._activeStatus = true;
+    }
+    else {
+      this._activeStatus = false;
+    }
   }
 }

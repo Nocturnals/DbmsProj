@@ -31,7 +31,7 @@ class ArtistsCRUD {
     Database db = await databaseHelper.database;
 
     int result = await db.update(ArtistTable.tableName, artist.toMap(),
-        where: '${ArtistTable.colArtistId} : ?', whereArgs: [artist.artistId]);
+        where: '${ArtistTable.colArtistId} = ?', whereArgs: [artist.artistId]);
     // int result = await db.rawUpdate('UPDATE ${playlistsTable.tableName} SET {}')
     return result;
   }

@@ -21,7 +21,7 @@ class UsersTable {
   // indexing for this table
   static String indexSQL = 'CREATE UNIQUE INDEX ${colEmail}_$tableName ON $tableName ($colEmail)';
 
-}
+} 
 
 class GenreTable {
 

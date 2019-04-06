@@ -31,7 +31,7 @@ class PlaylistCRUD {
     Database db = await databaseHelper.database;
 
     int result = await db.update(PlaylistTable.tableName, playlist.toMap(),
-        where: '${PlaylistTable.colPlaylistId} : ?',
+        where: '${PlaylistTable.colPlaylistId} = ?',
         whereArgs: [playlist.playlistId]);
     // int result = await db.rawUpdate('UPDATE ${playlistsTable.tableName} SET {}')
     return result;

@@ -33,7 +33,7 @@ class FrequentlyHeardCRUD {
 
     int result = await db.update(
         FrequentlyHeardTable.tableName, frequentlyheard.toMap(),
-        where: '${FrequentlyHeardTable.colSongId} : ?',
+        where: '${FrequentlyHeardTable.colSongId} = ?',
         whereArgs: [frequentlyheard.songId]);
     // int result = await db.rawUpdate('UPDATE ${playlistsTable.tableName} SET {}')
     return result;

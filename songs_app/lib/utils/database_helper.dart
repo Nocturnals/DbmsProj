@@ -37,19 +37,14 @@ class DatabaseHelper {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + 'songs_app.db';
 
-    deleteDatabase(path);
+    await deleteDatabase(path);
     Future<Database> userDatabase = openDatabase(path,version: 1,onCreate: _createDB);
     return userDatabase;
   }
 
   void _createDB(Database db, int version) async {
-    _createTables(db);
-    _createIndexes(db);
-    _createTriggers(db);
-  }
 
-  // function to create tables on first time opening of database
-  void _createTables(Database db) async {
+    // Create tables
     await db.execute(UsersTable.createTable);
     await db.execute(GenreTable.createTable);
     await db.execute(PlaylistTable.createTable);
@@ -60,10 +55,9 @@ class DatabaseHelper {
     await db.execute(SongByTable.createTable);
     await db.execute(FrequentlyHeardTable.createTable);
     await db.execute(IncludesTable.createTable);
-  }
+    print('Tables created successfully');
 
-  // function to create all indexed for all tables
-  void _createIndexes(Database db) async {
+    // Create indexes for tables
     await db.execute(UsersTable.indexSQL);
     await db.execute(GenreTable.indexSQL);
     await db.execute(PlaylistTable.indexSQL);
@@ -73,11 +67,12 @@ class DatabaseHelper {
     await db.execute(SongByTable.indexSQL);
     await db.execute(FrequentlyHeardTable.indexSQL);
     await db.execute(IncludesTable.indexSQL);
-  }
+    print('Indexes created successfully');
 
-  // function to create all triggers for the database
-  void _createTriggers(Database db) async {
+    // Create triggers for tables
     await db.execute(Triggers.triggerinsertSongOnArtist);
     await db.execute(Triggers.triggerinsertSongOnAlbum);
+    print('Triggers created successfully');
+
   }
 }

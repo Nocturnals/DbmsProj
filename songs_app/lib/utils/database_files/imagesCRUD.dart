@@ -31,7 +31,7 @@ class ImagesCRUD {
     Database db = await databaseHelper.database;
 
     int result = await db.update(Imagestable.tableName, image.toMap(),
-        where: '${Imagestable.colImageId} : ?', whereArgs: [image.imageId]);
+        where: '${Imagestable.colImageId} = ?', whereArgs: [image.imageId]);
     // int result = await db.rawUpdate('UPDATE ${UsersTable.tableName} SET {}')
     return result;
   }

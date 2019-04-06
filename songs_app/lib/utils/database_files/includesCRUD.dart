@@ -31,7 +31,7 @@ class IncludesCRUD {
     Database db = await databaseHelper.database;
 
     int result = await db.update(IncludesTable.tableName, includes.toMap(),
-        where: '${IncludesTable.colIncludesId} : ?',
+        where: '${IncludesTable.colIncludesId} = ?',
         whereArgs: [includes.includesId]);
     // int result = await db.rawUpdate('UPDATE ${playlistsTable.tableName} SET {}')
     return result;
