@@ -76,5 +76,6 @@ class DatabaseHelper {
     await db.execute(Triggers.triggerinsertSongOnAlbum);
     print('Triggers created successfully');
 
+
   }
 }
