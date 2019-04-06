@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:sqflite/sqflite.dart';
 
-import 'package:songs_app/models/frequentlyheard.dart';
+import 'package:songs_app/models/frequentlyHeard.dart';
 import 'package:songs_app/utils/database_files/tables.dart';
 import 'package:songs_app/utils/database_helper.dart';
 

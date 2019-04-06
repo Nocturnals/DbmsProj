@@ -44,6 +44,8 @@ class DatabaseHelper {
 
   void _createDB(Database db, int version) async {
 
+    await db.execute('PRAGMA foreign_keys = ON');
+
     // Create tables
     await db.execute(UsersTable.createTable);
     await db.execute(GenreTable.createTable);

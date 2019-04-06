@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:songs_app/utils/database_helper.dart';
 import 'package:songs_app/utils/database_files/usersCRUD.dart';
+import 'package:songs_app/utils/database_files/playlistCRUD.dart';
+import 'package:songs_app/models/playlist.dart';
 import 'package:songs_app/models/users.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -16,8 +18,6 @@ class CreateDatabasePage extends StatefulWidget {
 }
 
 class _CreateDatabasePageState extends State<CreateDatabasePage> {
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -72,11 +72,15 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     User user3 = User.withId(3,'Chinna','sheripally','chinnatemp07@gmail.com','male',DateTime(1999,5,7),DateTime(2014,5,12),true);
     User user4 = User.withId(4,'parvathi','kenche','parvathitemp07@gmail.com','female',DateTime(1999,5,7),DateTime(2014,5,12),true);
     User user5 = User.withId(5,'chandana','sheripally','chandanatemp07@gmail.com','female',DateTime(1999,5,7),DateTime(2014,5,12),true);
+    Playlist playlist = Playlist(55, 'newPlaylist');
     await UsersCRUD().insertUser(user1);
     await UsersCRUD().insertUser(user2);
     await UsersCRUD().insertUser(user3);
     await UsersCRUD().insertUser(user4);
     await UsersCRUD().insertUser(user5);
+    print(await PlaylistCRUD().insertPlaylist(playlist));
+    var result1 = await PlaylistCRUD().getPlaylistMapList();
+    print(result1);
     dynamic result = await db.rawQuery('SELECT * FROM Users');
     printMap(result);
   }
@@ -84,11 +88,10 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
   void _doQuery2() async {
     var data = DatabaseHelper();
 
-    Database db = await data.database;
     User user1 = User.withId(1,'Hemanasdf','vanam','hemanthtemp07@gmail.com','male',DateTime(1999,5,7),DateTime(2014,5,12),true);
     await UsersCRUD().deleteUser(user1.email);
-    dynamic result = await UsersCRUD().getUserList();
-    print(result);
+    List<User> result = await UsersCRUD().getUserList();
+    print(result[0]);
   }
 
   void printMap(List<Map<String,dynamic>> map) {
