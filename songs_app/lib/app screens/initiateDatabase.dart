@@ -4,7 +4,27 @@ import 'package:flutter/material.dart';
 
 import 'package:songs_app/utils/database_helper.dart';
 import 'package:songs_app/utils/database_files/usersCRUD.dart';
+import 'package:songs_app/utils/database_files/songsCRUD.dart';
+import 'package:songs_app/utils/database_files/albumsCRUD.dart';
+import 'package:songs_app/utils/database_files/artist.CRUD.dart';
+import 'package:songs_app/utils/database_files/genreCRUD.dart';
+import 'package:songs_app/utils/database_files/imagesCRUD.dart';
+import 'package:songs_app/utils/database_files/frequentlyheardCRUD.dart';
+import 'package:songs_app/utils/database_files/includesCRUD.dart';
+import 'package:songs_app/utils/database_files/songbyCRUD.dart';
+import 'package:songs_app/utils/database_files/playlistCRUD.dart';
+
+
 import 'package:songs_app/models/users.dart';
+import 'package:songs_app/models/albums.dart';
+import 'package:songs_app/models/artists.dart';
+import 'package:songs_app/models/frequentlyHeard.dart';
+import 'package:songs_app/models/genre.dart';
+import 'package:songs_app/models/image.dart';
+import 'package:songs_app/models/includes.dart';
+import 'package:songs_app/models/playlist.dart';
+import 'package:songs_app/models/songby.dart';
+
 import 'package:sqflite/sqflite.dart';
 
 class CreateDatabasePage extends StatefulWidget {
@@ -27,7 +47,7 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
         title: Text('Creating Database'),
       ),
       body: Center(
-        child: Column(
+        child: ListView(
           children: <Widget>[
             Text('Hello World'),
             RaisedButton(
@@ -41,6 +61,66 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
             RaisedButton(
               child: Text('Update Users'),
               onPressed: _doQuery2,
+            ),
+            
+            RaisedButton(
+              child: Text('insert genre'),
+              onPressed: _doQuery9,
+            ),
+            RaisedButton(
+              child: Text('update genre'),
+              onPressed: _doQuery10,
+            ),
+            RaisedButton(
+              child: Text('delete genre'),
+              onPressed: _doQuery11,
+            ),
+            RaisedButton(
+              child: Text('insert playlist'),
+              onPressed: _doQuery12,
+            ),
+            RaisedButton(
+              child: Text('update playlist'),
+              onPressed: _doQuery13,
+            ),
+            RaisedButton(
+              child: Text('delete playlist'),
+              onPressed: _doQuery14,
+            ),RaisedButton(
+              child: Text('insert image'),
+              onPressed: _doQuery15,
+            ),
+            RaisedButton(
+              child: Text('update image'),
+              onPressed: _doQuery16,
+            ),
+            RaisedButton(
+              child: Text('delete image'),
+              onPressed: _doQuery17,
+            ),
+            RaisedButton(
+              child: Text('insert albums'),
+              onPressed: _doQuery3,
+            ),
+            RaisedButton(
+              child: Text('update albums'),
+              onPressed: _doQuery4,
+            ),
+            RaisedButton(
+              child: Text('delete albums'),
+              onPressed: _doQuery5,
+            ),
+            RaisedButton(
+              child: Text('insert artist'),
+              onPressed: _doQuery6,
+            ),
+            RaisedButton(
+              child: Text('update artist'),
+              onPressed: _doQuery7,
+            ),
+            RaisedButton(
+              child: Text('delete artist'),
+              onPressed: _doQuery8,
             )
           ],
         ),
@@ -87,9 +167,198 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     Database db = await data.database;
     User user1 = User.withId(1,'Hemanasdf','vanam','hemanthtemp07@gmail.com','male',DateTime(1999,5,7),DateTime(2014,5,12),true);
     await UsersCRUD().deleteUser(user1.email);
-    dynamic result = await UsersCRUD().getUserList();
+    dynamic result = await UsersCRUD().getUserMapList();
     print(result);
   }
+
+
+  void _doQuery3() async {
+    var data = DatabaseHelper();
+    // data.createTandI();
+    Database db = await data.database;
+    Album album1 = Album.withId(1,'album1',DateTime(2109,4,6),4,1,1,1);
+    Album album2 = Album.withId(2,'album2',DateTime(2109,4,7),5,2,2,2);
+    Album album3 = Album.withId(3,'album3',DateTime(2109,4,8),6,3,3,3);
+    
+    
+    await AlbumCRUD().insertAlbum(album1);
+    await AlbumCRUD().insertAlbum(album2);
+    await AlbumCRUD().insertAlbum(album3);
+    dynamic result = await db.rawQuery('SELECT * FROM Albums');
+    printMap(result);
+  }
+
+ void _doQuery4() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    Album album1 =Album.withId(1,'updated album1',DateTime(2109,4,6),4,1,1,1);
+    await AlbumCRUD().updateAlbum(album1);
+    dynamic result = await AlbumCRUD().getAlbumMapList();
+    printMap(result);
+  }
+
+
+  void _doQuery5() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    Album album1 =Album.withId(1,'updated album1',DateTime(2109,4,6),4,1,1,1);
+    await AlbumCRUD().deleteAlbum(album1.albumName);
+    dynamic result = await AlbumCRUD().getAlbumMapList();
+    printMap(result);
+  }
+
+
+  void _doQuery6() async {
+    var data = DatabaseHelper();
+    // data.createTandI();
+    Database db = await data.database;
+    Artist artist1 = Artist.withId(1, "artist1", 1, 1,1);
+    Artist artist2 = Artist.withId(2, "artist1", 2, 2,2);
+    Artist artist3 = Artist.withId(3, "artist1", 3, 3,3);
+    
+    await ArtistsCRUD().insertArtist(artist1);
+    await ArtistsCRUD().insertArtist(artist2);
+    await ArtistsCRUD().insertArtist(artist3);
+    dynamic result = await db.rawQuery('SELECT * FROM Artists');
+    printMap(result);
+  }
+
+ void _doQuery7() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    Artist artist1 = Artist.withId(1, "updated artist1", 1, 1,1);
+    await ArtistsCRUD().updateArtist(artist1);
+    dynamic result = await ArtistsCRUD().getArtistMapList();
+    printMap(result);
+  }
+
+
+  void _doQuery8() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    Artist artist1 = Artist.withId(1, "updated artist1", 1, 1,1);
+    await ArtistsCRUD().deleteArtist("updated artist1");
+    dynamic result = await ArtistsCRUD().getArtistMapList();
+    printMap(result);
+  }
+
+
+  void _doQuery9() async {
+    var data = DatabaseHelper();
+    // data.createTandI();
+    Database db = await data.database;
+    Genre genre1 = Genre.withId(1, "genre1");
+    Genre genre2 = Genre.withId(2, "genre2");
+    Genre genre3 = Genre.withId(3, "genre3");
+    
+    await GenreCRUD().insertGenre(genre1);
+    await GenreCRUD().insertGenre(genre2);
+    await GenreCRUD().insertGenre(genre3);
+    dynamic result = await db.rawQuery('SELECT * FROM Genre');
+    printMap(result);
+  }
+
+ void _doQuery10() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    Genre genre1 = Genre.withId(1, " updated genre1");
+    await GenreCRUD().updateGenre(genre1);
+    dynamic result = await GenreCRUD().getGenreMapList();
+    print(result);
+  }
+
+
+  void _doQuery11() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    Genre genre1 = Genre.withId(1, " updated genre1");
+    await GenreCRUD().deleteGenre(genre1.name);
+    dynamic result = await GenreCRUD().getGenreMapList();
+    print(result);
+  }
+
+
+  void _doQuery12() async {
+    var data = DatabaseHelper();
+    // data.createTandI();
+    Database db = await data.database;
+    Playlist playlist1 = Playlist.wihtID(1, 1, "playlist1");
+    Playlist playlist2 = Playlist.wihtID(2, 2, "playlist2");
+    Playlist playlist3 = Playlist.wihtID(3, 3, "playlist3");
+    
+
+    await PlaylistCRUD().insertPlaylist(playlist1);
+    await PlaylistCRUD().insertPlaylist(playlist2);
+    await PlaylistCRUD().insertPlaylist(playlist3);
+    dynamic result = await db.rawQuery('SELECT * FROM Playlists');
+    printMap(result);
+  }
+
+ void _doQuery13() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    Playlist playlist1 = Playlist.wihtID(1, 1, "updated playlist1");
+    await PlaylistCRUD().updatePlaylist(playlist1);
+    dynamic result = await PlaylistCRUD().getPlaylistMapList();
+    print(result);
+  }
+
+
+  void _doQuery14() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    Playlist playlist1 = Playlist.wihtID(1, 1, "updated playlist1");
+    await PlaylistCRUD().deletePlaylist(playlist1.name);
+    dynamic result = await PlaylistCRUD().getPlaylistMapList();
+    print(result);
+  }
+
+  void _doQuery15() async {
+    var data = DatabaseHelper();
+    // data.createTandI();
+    Database db = await data.database;
+    Images image1 = Images.withId(1, "image location1", "image name1");
+    Images image2 = Images.withId(2, "image location2", "image name2");
+    Images image3 = Images.withId(3, "image location3", "image name3");
+    
+
+    await ImagesCRUD().insertImage(image1);
+    await ImagesCRUD().insertImage(image2);
+    await ImagesCRUD().insertImage(image3);
+    dynamic result = await db.rawQuery('SELECT * FROM Images');
+    printMap(result);
+  }
+
+ void _doQuery16() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    Images image1 = Images.withId(1, "image location", "omage name1");
+    await ImagesCRUD().updateImage(image1);
+    dynamic result = await ImagesCRUD().getImageMapList();
+    print(result);
+  }
+
+
+  void _doQuery17() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    Images image1 = Images.withId(1, "image location", "omage name1");
+    await ImagesCRUD().deleteImage(image1.name);
+    dynamic result = await ImagesCRUD().getImageMapList();
+    print(result);
+  }
+
+
 
   void printMap(List<Map<String,dynamic>> map) {
     for(int i=0; i<map.length;i++) {

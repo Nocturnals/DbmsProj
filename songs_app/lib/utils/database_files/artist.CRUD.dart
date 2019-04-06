@@ -55,7 +55,7 @@ class ArtistsCRUD {
     return result;
   }
 
-  Future<List<Artist>> getArtisstList() async {
+  Future<List<Artist>> getArtistList() async {
     List<Map<String, dynamic>> mapList = await getArtistMapList();
     int count = mapList.length;
 
