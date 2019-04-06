@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
+import 'package:songs_app/app screens/home.dart';
 
 void main() {
   runApp(OnlineMusic());
@@ -10,7 +10,7 @@ class OnlineMusic extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return MaterialApp(
-      title: 'Online Music Store',
+      title: 'BLINK',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.deepPurple
