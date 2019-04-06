@@ -6,14 +6,20 @@ class Triggers {
   static String triggerinsertSongOnArtist = 'CREATE TRIGGER ${SongsTable.tableName}_OnInsert_${ArtistTable.tableName} '+
                                             'AFTER INSERT ON ${SongsTable.tableName} '+
                                             'BEGIN '+
-                                            'UPDATE ${ArtistTable.tableName} SET ${ArtistTable.colTotalSongs} = ${ArtistTable.colTotalSongs}+1; '+
+                                            'UPDATE ${ArtistTable.tableName} SET ${ArtistTable.colTotalSongs} = ${ArtistTable.colTotalSongs}+1 '+
+                                            'WHERE ${ArtistTable.colArtistId} = (SELECT (${SongByTable.colArtistId}) FROM ${SongByTable.tableName} '+
+                                            'WHERE ${SongByTable.colSongId} = new.${SongsTable.colSongId} ) ; '+
                                             'END';
 
   // trigger to update album songs count on insert of a song in songs table
   static String triggerinsertSongOnAlbum =  'CREATE TRIGGER ${SongsTable.tableName}_OnInsert_${AlbumsTable.tableName} '+
                                             'AFTER INSERT ON ${SongsTable.tableName} '+
                                             'BEGIN '+
-                                            'UPDATE ${AlbumsTable.tableName} SET ${AlbumsTable.colTotalTracks} = ${AlbumsTable.colTotalTracks}+1; '+
+                                            'UPDATE ${AlbumsTable.tableName} SET ${AlbumsTable.colTotalTracks} = ${AlbumsTable.colTotalTracks}+1 '+
+                                            'WHERE ${AlbumsTable.colAlbumId} = (SELECT (${SongByTable.colAlbumId}) FROM ${SongByTable.tableName} '+
+                                            'WHERE ${SongByTable.colSongId} = new.${SongsTable.colSongId} ) ; '+
                                             'END';
+
+  // trigger to
 
 }

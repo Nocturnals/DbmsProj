@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:songs_app/utils/database_files/albumsCRUD.dart';
 import 'package:songs_app/utils/database_files/artist.CRUD.dart';
 import 'package:songs_app/utils/database_files/genreCRUD.dart';
+import 'package:songs_app/utils/database_files/imagesCRUD.dart';
 
 import 'package:songs_app/utils/database_helper.dart';
 import 'package:songs_app/utils/database_files/usersCRUD.dart';
@@ -16,8 +15,6 @@ import 'package:songs_app/models/frequentlyHeard.dart';
 import 'package:songs_app/models/genre.dart';
 import 'package:songs_app/models/image.dart';
 import 'package:songs_app/models/includes.dart';
-import 'package:songs_app/models/playlist.dart';
-import 'package:songs_app/models/songby.dart';
 
 import 'package:sqflite/sqflite.dart';
 
@@ -29,8 +26,6 @@ import 'package:songs_app/utils/database_files/includesCRUD.dart';
 
 import 'package:songs_app/models/songs.dart';
 import 'package:songs_app/models/songby.dart';
-import 'package:songs_app/models/frequentlyHeard.dart';
-import 'package:songs_app/models/includes.dart';
 
 
 class CreateDatabasePage extends StatefulWidget {
@@ -528,7 +523,7 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
 
     Database db = await data.database;
     FrequentlyHeard freq1 = FrequentlyHeard.withId(1, 2, 2, 1, 2);
-    await FrequentlyHeardCRUD().deleteFrequentlyHeard(freq1);
+    await FrequentlyHeardCRUD().deleteFrequentlyHeard(freq1.songId);
     dynamic result = await FrequentlyHeardCRUD().getFrequentlyHeardById(2);
     print(result);
   }
