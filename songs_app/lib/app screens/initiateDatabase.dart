@@ -27,6 +27,18 @@ import 'package:songs_app/models/songby.dart';
 
 import 'package:sqflite/sqflite.dart';
 
+
+import 'package:songs_app/utils/database_files/songbyCRUD.dart';
+import 'package:songs_app/utils/database_files/songsCRUD.dart';
+import 'package:songs_app/utils/database_files/frequentlyheardCRUD.dart';
+import 'package:songs_app/utils/database_files/includesCRUD.dart';
+
+import 'package:songs_app/models/songs.dart';
+import 'package:songs_app/models/songby.dart';
+import 'package:songs_app/models/frequentlyHeard.dart';
+import 'package:songs_app/models/includes.dart';
+
+
 class CreateDatabasePage extends StatefulWidget {
 
   @override
@@ -121,7 +133,55 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
             RaisedButton(
               child: Text('delete artist'),
               onPressed: _doQuery8,
-            )
+            ),
+            RaisedButton(
+              child: Text('insert songs'),
+              onPressed: _doQuery50,
+            ),
+            RaisedButton(
+              child: Text('Update song'),
+              onPressed: _doQuery51,
+            ),
+            RaisedButton(
+              child: Text('delete songs'),
+              onPressed: _doQuery52,
+            ),
+            RaisedButton(
+              child: Text('insert songby'),
+              onPressed: _doQuery53,
+            ),
+            RaisedButton(
+              child: Text('update songby'),
+              onPressed: _doQuery54,
+            ),
+            RaisedButton(
+              child: Text('delete songby'),
+              onPressed: _doQuery55,
+            ),
+            RaisedButton(
+              child: Text('insert freq'),
+              onPressed: _doQuery56,
+            ),
+            RaisedButton(
+              child: Text('update freq'),
+              onPressed: _doQuery57,
+            ),
+            RaisedButton(
+              child: Text('delete freq'),
+              onPressed: _doQuery58,
+            ),
+            RaisedButton(
+              child: Text('insert freq'),
+              onPressed: _doQuery59,
+            ),
+            RaisedButton(
+              child: Text('update freq'),
+              onPressed: _doQuery60,
+            ),
+            RaisedButton(
+              child: Text('delete freq'),
+              onPressed: _doQuery61,
+            ),
           ],
         ),
       ),
@@ -366,4 +426,158 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
       print('\n\n');
     }
   }
+
+    void _doQuery50() async {
+    var data = DatabaseHelper();
+    // data.createTandI();
+    Database db = await data.database;
+    Song song1 = Song.withId(1, 'IntheEnd', 150 , 4, 5, 6);
+    Song song2 = Song.withId(2, 'new', 150 , 8, 2, 6);
+    Song song3 = Song.withId(3, 'kiss', 150 , 6, 5, 6);
+    Song song4 = Song.withId(4, 'anything', 150 , 4, 7, 6);
+   
+    await SongsCRUD().insertSong(song1);
+    await SongsCRUD().insertSong(song2);
+    await SongsCRUD().insertSong(song3);
+    await SongsCRUD().insertSong(song4);
+    
+    dynamic result = await db.rawQuery('SELECT * FROM Songs');
+    printMap(result);
+  }
+
+  void _doQuery51() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    Song song1 = Song.withId(1, 'In the End', 150 , 4, 5, 6);
+    await SongsCRUD().updateSong(song1);
+    dynamic result = await SongsCRUD().getSongList();
+    print(result);
+  }
+  void _doQuery52() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    Song song1 = Song.withId(1, 'In the End', 150 , 4, 5, 6);
+    await SongsCRUD().deleteSong(song1.title);
+    dynamic result = await SongsCRUD().getSongList();
+    print(result);
+  }
+
+  void _doQuery53() async {
+    var data = DatabaseHelper();
+    // data.createTandI();
+    Database db = await data.database;
+    
+    SongBy songby1 = SongBy.withId(1,4,5);
+    SongBy songby2= SongBy.withId(1,4,5);
+    SongBy songby3 = SongBy.withId(1,4,5);
+    
+    await SongByCRUD().insertSongBy(songby1);
+    await SongByCRUD().insertSongBy(songby2);
+    await SongByCRUD().insertSongBy(songby3);
+
+    dynamic result = await db.rawQuery('SELECT * FROM SongBy');
+    printMap(result);
+  }
+
+  void _doQuery54() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    SongBy songby1 = SongBy.withId(1,4,5);
+    await SongByCRUD().updateSongBy(songby1);
+    dynamic result = await SongByCRUD().getSongByList();
+    print(result);
+  }
+
+  void _doQuery55() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    SongBy songby1 = SongBy.withId(1,4,5);
+    await SongByCRUD().deleteSongBy(songby1.artistId);
+    dynamic result = await SongByCRUD().getSongByList();
+    print(result);
+  }
+
+  void _doQuery56() async {
+    var data = DatabaseHelper();
+    // data.createTandI();
+    Database db = await data.database;
+    
+    FrequentlyHeard freq1 = FrequentlyHeard.withId(1, 2, 2, 1, 2);
+    FrequentlyHeard freq2 = FrequentlyHeard.withId(2, 4, 1, 1, 2);
+    FrequentlyHeard freq3 = FrequentlyHeard.withId(3, 2, 2, 1, 2);
+
+    await FrequentlyHeardCRUD().insertFrequentlyHeard(freq1);
+    await FrequentlyHeardCRUD().insertFrequentlyHeard(freq2);
+    await FrequentlyHeardCRUD().insertFrequentlyHeard(freq3);
+
+    dynamic result = await db.rawQuery('SELECT * FROM FrequentlyHeard');
+    printMap(result);
+  }
+  
+  void _doQuery57() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    FrequentlyHeard freq1 = FrequentlyHeard.withId(1, 2, 2, 1, 2);
+    await FrequentlyHeardCRUD().updateFrequentlyHeard(freq1);
+    dynamic result = await FrequentlyHeardCRUD().getFrequentlyHeardById(2);
+    print(result);
+  }
+
+  void _doQuery58() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    FrequentlyHeard freq1 = FrequentlyHeard.withId(1, 2, 2, 1, 2);
+    await FrequentlyHeardCRUD().deleteFrequentlyHeard(freq1);
+    dynamic result = await FrequentlyHeardCRUD().getFrequentlyHeardById(2);
+    print(result);
+  }
+
+   void _doQuery59() async {
+    var data = DatabaseHelper();
+    // data.createTandI();
+    Database db = await data.database;
+    
+    Includes incl1 = Includes.withId(1, 1, 2);
+    Includes incl2 = Includes.withId(2, 2, 3);
+    Includes incl3 = Includes.withId(3, 3, 4);
+
+    await IncludesCRUD().insertIncludes(incl1);
+    await IncludesCRUD().insertIncludes(incl3);
+    await IncludesCRUD().insertIncludes(incl2);
+
+    dynamic result = await db.rawQuery('SELECT * FROM Includes');
+    printMap(result);
+  }
+
+  void _doQuery60() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+    
+    Includes incl2 = Includes.withId(2, 2, 3);
+    await IncludesCRUD().updateIncludes(incl2);
+    dynamic result = await IncludesCRUD().getIncludesMapById(incl2.songId);
+    print(result);
+  }
+
+  void _doQuery61() async {
+    var data = DatabaseHelper();
+
+    Database db = await data.database;
+
+    
+    Includes incl2 = Includes.withId(2, 2, 3);
+    
+    await IncludesCRUD().deleteIncludes(incl2.songId);
+    dynamic result = await IncludesCRUD().getIncludesMapById(2);
+    print(result);
+  }
+
+
 }
