@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'home.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(OnlineMusic());
 }
 
-class MyApp extends StatelessWidget {
+class OnlineMusic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        "Hello World hey hello hey5",
-        textDirection: TextDirection.rtl,
+    
+    return MaterialApp(
+      title: 'Online Music Store',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple
       ),
+      home: Home(),
     );
   }
 }

@@ -84,4 +84,9 @@ class Song {
     this._genreId = map["genreId"];
     this._imageId = map['imageId'];
   }
+
+// Function to convert a song object to list
+  List fromSongtoList(){
+    return [this._title, this._length, this._albumId, this._genreId, this._imageId];
+  }
 }
