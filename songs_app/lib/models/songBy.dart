@@ -4,6 +4,9 @@ class SongBy {
   int _albumId;
   int _artistId;
 
+//Constructor functions
+  SongBy.id(this._songId, this._albumId, this._artistId);
+
   // get functions for variables
   int get songId => this._songId;
   int get albumId => this._albumId;
