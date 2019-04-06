@@ -20,6 +20,6 @@ class Triggers {
                                             'WHERE ${SongByTable.colSongId} = new.${SongsTable.colSongId} ) ; '+
                                             'END';
 
-  // trigger to
+  // trigger to 
 
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:songs_app/app screens/login_page.dart';
 import 'package:songs_app/app screens/initiateDatabase.dart';
 
 void main() => runApp(MyApp());
