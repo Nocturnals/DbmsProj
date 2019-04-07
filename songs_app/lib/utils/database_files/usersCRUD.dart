@@ -71,7 +71,7 @@ class UsersCRUD {
     Database db = await databaseHelper.database;
 
     List<Map<String, dynamic>> result = await db.rawQuery(
-        'SELECT * FROM ${UsersTable.tableName} WHERE ${UsersTable.colEmail} = $emailid');
+        'SELECT * FROM ${UsersTable.tableName} WHERE ${UsersTable.colEmail} = \'$emailid\' ');
     return result;
   }
 }
