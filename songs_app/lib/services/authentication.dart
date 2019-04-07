@@ -23,9 +23,11 @@ class BaseAuth {
   }
 
   Future<String> login(String email, String password) async {
-    FirebaseUser user = await firebaseAuth.signInWithEmailAndPassword(
+    // FirebaseUser user = await firebaseAuth.signInWithEmailAndPassword(
+    //     email: email, password: password);
+      FirebaseUser user = await firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    return user.uid;
+      return user.uid;
   }
 
   Future<String> signUp(String email, String password) async {
@@ -52,5 +54,4 @@ class BaseAuth {
     FirebaseUser user = await firebaseAuth.currentUser();
     return user.isEmailVerified;
   }
-
 }

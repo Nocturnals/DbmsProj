@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:sqflite/sqflite.dart';
 
-import 'package:songs_app/models/songby.dart';
+import 'package:songs_app/models/songBy.dart';
 import 'package:songs_app/utils/database_files/tables.dart';
 import 'package:songs_app/utils/database_helper.dart';
 
@@ -41,7 +41,7 @@ class SongByCRUD {
     Database db = await databaseHelper.database;
 
     int result = await db.rawDelete(
-        'DELETE FROM ${SongByTable.tableName} WHERE ${SongByTable.colArtistId} = \'$artistId\'');
+        'DELETE FROM ${SongByTable.tableName} WHERE ${SongByTable.colArtistId} = $artistId');
     return result;
   }
 

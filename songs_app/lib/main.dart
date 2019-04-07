@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
-
+// import 'package:songs_app/app screens/home.dart';
 import 'package:songs_app/app screens/initiateDatabase.dart';
+import 'package:songs_app/app screens/login.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(OnlineMusic());
+}
 
-class MyApp extends StatelessWidget {
-
-  // This widget is the root of your application.
+class OnlineMusic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
-      title: 'Songs',
+      title: 'BLINK',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.deepPurple
       ),
-      debugShowCheckedModeBanner: true,
-      home: CreateDatabasePage(), 
+      // home: CreateDatabasePage(),
+      home: Login(),
     );
   }
 }
