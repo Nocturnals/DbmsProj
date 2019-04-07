@@ -17,13 +17,6 @@ class RegisterState extends State<Register> {
 
   final BaseAuth auth = BaseAuth();
 
-  // final TextEditingController fNameController =TextEditingController();
-  // final TextEditingController lNameController =TextEditingController();
-  // final TextEditingController genderController =TextEditingController();
-  // final TextEditingController doBController =TextEditingController();
-  // final TextEditingController emailController =TextEditingController();
-  // final TextEditingController passwordController =TextEditingController();
-
   String _firstName;
   String _lastName;
   String _email;
