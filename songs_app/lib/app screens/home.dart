@@ -199,8 +199,8 @@ class BottomNavigator extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Text('    '),
-                Icon(Icons.play_arrow, size: 40,),
-                Icon(Icons.pause, size: 40,),
+                Icon(Icons.play_arrow, size: 35,),
+                Icon(Icons.pause, size: 35,),
                 Text('    '),
               ],
             ),

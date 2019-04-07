@@ -19,7 +19,7 @@ class FavouritesState extends State<Favourites> {
       appBar: AppBar(
         title: Text('Online Music Store'),
       ),
-      body: MusicListView(),
+      body: musicListView(),
 
       floatingActionButton: FloatingActionButton(
 		    
@@ -34,7 +34,7 @@ class FavouritesState extends State<Favourites> {
     );
   }
 
-  ListView MusicListView() {
+  ListView musicListView() {
     
     TextStyle titleStyle = Theme.of(context).textTheme.subhead;
 
