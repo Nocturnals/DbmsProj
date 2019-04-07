@@ -41,7 +41,7 @@ class SongByCRUD {
     Database db = await databaseHelper.database;
 
     int result = await db.rawDelete(
-        'DELETE FROM ${SongByTable.tableName} WHERE ${SongByTable.colArtistId} = \'$artistId\'');
+        'DELETE FROM ${SongByTable.tableName} WHERE ${SongByTable.colArtistId} = $artistId');
     return result;
   }
 
