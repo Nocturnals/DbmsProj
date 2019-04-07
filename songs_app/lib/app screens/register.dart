@@ -342,6 +342,9 @@ class RegisterState extends State<Register> {
     User user = User(_firstName, _lastName, _email, _gender, _dob, DateTime.now(), true);
 
     await UsersCRUD().insertUser(user);
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return Login();
+        }));
     // var userlist = await UsersCRUD().getUserMapById(_email);
     // print(userlist);
   }

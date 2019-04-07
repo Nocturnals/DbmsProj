@@ -4,6 +4,7 @@ import 'package:songs_app/models/songs.dart';
 import './login.dart';
 import './register.dart';
 import './profile.dart';
+import 'package:songs_app/services/authentication.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -147,8 +148,9 @@ class SideDrawer extends StatelessWidget {
               new ListTile(
                 leading: new Icon(Icons.account_circle,
                 color: Theme.of(context).accentColor),
-                title: new Text("Log In"),
-                onTap: () {
+                title: new Text("LogOut"),
+                onTap: () async {
+                  await BaseAuth().signOut();
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
                   debugPrint('Navigated to login page');
                 }
