@@ -342,9 +342,6 @@ class InitData {
       }
       includesId += 1;
     }
-    includesList.add(Includes.withId(1,1,3));
-    includesList.add(Includes.withId(1, 2, 3));
-    includesList.add(Includes.withId(2, 3, 4));
 
     // insert into tables
     for(int i=0;i<includesList.length;i++) {
