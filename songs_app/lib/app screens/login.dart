@@ -23,12 +23,7 @@ class _LoginPageState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context, true);
-          },
-        ),
+        leading: null,
         title: Text(
           'BLINK',
           style: TextStyle(

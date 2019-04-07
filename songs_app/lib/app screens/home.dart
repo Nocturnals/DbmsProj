@@ -158,9 +158,9 @@ class SideDrawer extends StatelessWidget {
               new ListTile(
                 leading: new Icon(Icons.account_box,
                 color: Theme.of(context).accentColor),
-                title: new Text("Register"),
+                title: new Text("Profile"),
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Register()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
                   debugPrint('Navigated to login page');
                 }
               ),
@@ -207,7 +207,6 @@ class BottomNavigator extends StatelessWidget {
               ],
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
               debugPrint('Cannot play this song');
             },
           ),
@@ -272,9 +271,10 @@ class RecentlyPlayed extends StatelessWidget {
         itemCount: songs.length,
         itemBuilder: (BuildContext context, int index) {
           String songName = '';
-          for (var i = 0; i < 18; i++) {
+          for (var i = 0; i < 16; i++) {
             songName += songs[index][0][i];
           }
+          songName += '...';
           return Container(
             child: SizedBox(
               width: 140,
@@ -349,9 +349,10 @@ class Playlist extends StatelessWidget {
         itemCount: playlists.length,
         itemBuilder: (BuildContext context, int index) {
           String songName = '';
-          for (var i = 0; i < 18; i++) {
+          for (var i = 0; i < 16; i++) {
             songName += playlists[index][2][0][0][i];
           }
+          songName += '...';
           return Container(
             child: SizedBox(
               width: 140,
