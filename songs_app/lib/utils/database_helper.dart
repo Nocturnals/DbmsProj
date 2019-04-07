@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:songs_app/utils/database_files/tables.dart';
 import 'package:songs_app/utils/database_files/triggers.dart';
 import 'package:songs_app/utils/database_files/viewsDB.dart';
+import 'package:songs_app/services/initDatabase.dart';
 
 class DatabaseHelper {
   // Making the instances of the class singleton
@@ -75,6 +76,7 @@ class DatabaseHelper {
     // Create triggers for tables
     await db.execute(Triggers.triggerinsertSongOnArtist);
     await db.execute(Triggers.triggerinsertSongOnAlbum);
+    await db.execute(Triggers.triggerinsertAlbumOnArtist);
     print('Triggers created successfully');
 
     // Create views for tables
@@ -89,5 +91,6 @@ class DatabaseHelper {
     await db.execute(Views.getOldIsGold);
     print('Views created successfully');
 
+    InitData();
   }
 }

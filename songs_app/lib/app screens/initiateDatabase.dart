@@ -25,7 +25,7 @@ import 'package:songs_app/utils/database_files/frequentlyheardCRUD.dart';
 import 'package:songs_app/utils/database_files/includesCRUD.dart';
 
 import 'package:songs_app/models/songs.dart';
-import 'package:songs_app/models/songby.dart';
+import 'package:songs_app/models/songBy.dart';
 
 
 class CreateDatabasePage extends StatefulWidget {
