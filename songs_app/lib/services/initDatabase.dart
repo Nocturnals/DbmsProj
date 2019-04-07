@@ -1,3 +1,4 @@
+import 'dart:math';
 // imports of models
 import 'package:songs_app/models/users.dart';
 import 'package:songs_app/models/genre.dart';
@@ -39,19 +40,34 @@ class InitData {
     // Users table
     List<User> userlist = List<User>();
 
-    // strings
-    // String firstName = '';
-    // String lastName = '';
-    // String email = '';
-    // List<String> gender = ['male','female'];
-    // DateTime dob = DateTime(1999,05,15);
-    // DateTime lastLogin = DateTime(2017,01,01);
-    // bool activeStatus = true;
-
     // initialize the instances
-    userlist.add(User('Ravi','Vanam','ravi@home.com','male',DateTime(2002,09,09),DateTime(2017,01,01),false));
-    userlist.add(User('Chinna','Sheripally','chinna@example.com','male',DateTime(2000,03,14),DateTime(2017,01,01),false));
-    
+    String fName = 'firstName';
+    String lName = 'lastName';
+    String emailprfx = 'user';
+    String emailsfx = '@gmail.com';
+    int sufx = 1;
+    int year = 1999;
+    int month = 01;
+    int day = 01;
+    List<String> gender = ['male', 'female'];
+    int opt = 0;
+    List<bool> activeStat = [true, false];
+    for (var i = 0; i < 20; i++) {
+      userlist.add(User(fName + sufx.toString(), lName + sufx.toString(), emailprfx + sufx.toString() + emailsfx,
+                        gender[opt], DateTime(year, month, day), DateTime(year+10, month, day), activeStat[opt]));
+      sufx += 1;
+      if ((i % 5) == 0 ) {
+        year += 1;
+      }
+      if ((i % 3) == 0) {
+        month += 1;
+      }
+      if ((i % 2) == 0) {
+        day += 1;
+      }
+      opt = (i+1) % 2;
+    }
+
 
     // insert into table
     for(int i=0;i<userlist.length;i++) {
@@ -110,13 +126,17 @@ class InitData {
 
 
 
-    // images table
+    // images table 200
     List<Images> imagesList = List<Images>();
 
     // initialize the instances
-    imagesList.add(Images('nowhere','god'));
-    imagesList.add(Images('no way','satan'));
-    imagesList.add(Images('i am here','human'));
+    String imgLoc = 'location';
+    String imgName = 'image';
+    sufx = 1;
+    for (var i = 0; i < 200; i++) {
+      imagesList.add(Images(imgLoc + sufx.toString(), imgName + sufx.toString()));
+      sufx += 1;
+    }
 
     // insert into table
     for(int i=0;i<imagesList.length;i++) {
@@ -204,13 +224,27 @@ class InitData {
 
 
 
-    // frequentlyHeard table
+    // frequentlyHeard table 10 per user
     List<FrequentlyHeard> frequentlyHeardList = List<FrequentlyHeard>();
 
     // initialize the instances
-    frequentlyHeardList.add(FrequentlyHeard.withId(1, 3, 3, 5, 3));
-    frequentlyHeardList.add(FrequentlyHeard.withId(2, 1, 3, 6, 4));
-    frequentlyHeardList.add(FrequentlyHeard.withId(3, 2, 3, 7, 2));
+    int userId = 1;
+    // 100
+    int songId = 1; 
+    // 50
+    int albumId = 1;
+    int count;
+    int weekNo;
+    for (var i = 0; i < 20; i++) {
+      for (var j = 0; j < 10; j++) {
+        count =Random().nextInt(20);
+        weekNo =Random().nextInt(10);
+        frequentlyHeardList.add(FrequentlyHeard.withId(userId, songId, albumId, count, weekNo));
+        songId = (songId+1) % 101;
+        albumId = (albumId+1) % 51;
+      }
+      userId += 1;
+    }
 
     // insert into tables
     for(int i=0;i<frequentlyHeardList.length;i++) {
@@ -224,10 +258,21 @@ class InitData {
 
 
 
-    // includes table
+    // includes table 10 per playlist
     List<Includes> includesList = List<Includes>();
 
     // creating instances
+    int includesId = 1;
+    songId = 1;
+    albumId = 1;
+    for (var i = 0; i < 6; i++) {
+      for (var i = 0; i < 20; i++) {
+        includesList.add(Includes.withId(includesId, songId, albumId));
+        songId = (songId+1) % 101;
+        albumId = (albumId+1) % 51;
+      }
+      includesId += 1;
+    }
     includesList.add(Includes.withId(1,1,3));
     includesList.add(Includes.withId(1, 2, 3));
     includesList.add(Includes.withId(2, 3, 4));
