@@ -158,15 +158,15 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
               onPressed: _doQuery58,
             ),
             RaisedButton(
-              child: Text('insert freq'),
+              child: Text('insert includes'),
               onPressed: _doQuery59,
             ),
             RaisedButton(
-              child: Text('update freq'),
+              child: Text('update includes'),
               onPressed: _doQuery60,
             ),
             RaisedButton(
-              child: Text('delete freq'),
+              child: Text('delete includes'),
               onPressed: _doQuery61,
             ),
           ],
@@ -273,6 +273,8 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     await ArtistsCRUD().insertArtist(artist3);
     dynamic result = await db.rawQuery('SELECT * FROM Artists');
     printMap(result);
+
+
   }
 
  void _doQuery7() async {
@@ -433,6 +435,10 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     
     dynamic result = await db.rawQuery('SELECT * FROM Songs');
     printMap(result);
+
+    dynamic result1 = await db.rawQuery('SELECT * FROM Artists');
+    print('\n\n idhuiwudi');
+    printMap(result1);
   }
 
   void _doQuery51() async {
@@ -441,7 +447,7 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     Database db = await data.database;
     Song song1 = Song.withId(1, 'In the End', 150 , 4, 5, 6);
     await SongsCRUD().updateSong(song1);
-    dynamic result = await SongsCRUD().getSongList();
+    dynamic result = await SongsCRUD().getSongMapList();
     print(result);
   }
   void _doQuery52() async {
@@ -450,7 +456,7 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     Database db = await data.database;
     Song song1 = Song.withId(1, 'In the End', 150 , 4, 5, 6);
     await SongsCRUD().deleteSong(song1.title);
-    dynamic result = await SongsCRUD().getSongList();
+    dynamic result = await SongsCRUD().getSongMapList();
     print(result);
   }
 
@@ -460,8 +466,8 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     Database db = await data.database;
     
     SongBy songby1 = SongBy.withId(1,4,5);
-    SongBy songby2= SongBy.withId(1,4,5);
-    SongBy songby3 = SongBy.withId(1,4,5);
+    SongBy songby2= SongBy.withId(2,5,6);
+    SongBy songby3 = SongBy.withId(3,6,7);
     
     await SongByCRUD().insertSongBy(songby1);
     await SongByCRUD().insertSongBy(songby2);
@@ -477,7 +483,7 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     Database db = await data.database;
     SongBy songby1 = SongBy.withId(1,4,5);
     await SongByCRUD().updateSongBy(songby1);
-    dynamic result = await SongByCRUD().getSongByList();
+    dynamic result = await SongByCRUD().getSongByMapList();
     print(result);
   }
 
@@ -487,7 +493,7 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     Database db = await data.database;
     SongBy songby1 = SongBy.withId(1,4,5);
     await SongByCRUD().deleteSongBy(songby1.artistId);
-    dynamic result = await SongByCRUD().getSongByList();
+    dynamic result = await SongByCRUD().getSongByMapList();
     print(result);
   }
 
@@ -496,11 +502,11 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     // data.createTandI();
     Database db = await data.database;
     
-    FrequentlyHeard freq1 = FrequentlyHeard.withId(1, 2, 2, 1, 2);
-    FrequentlyHeard freq2 = FrequentlyHeard.withId(2, 4, 1, 1, 2);
-    FrequentlyHeard freq3 = FrequentlyHeard.withId(3, 2, 2, 1, 2);
+    FrequentlyHeard frequentlyheard = FrequentlyHeard.withId(1, 2, 2, 1, 2);
+    FrequentlyHeard freq2 = FrequentlyHeard.withId(2, 3, 1, 1, 2);
+    FrequentlyHeard freq3 = FrequentlyHeard.withId(3, 4, 2, 1, 2);
 
-    await FrequentlyHeardCRUD().insertFrequentlyHeard(freq1);
+    await FrequentlyHeardCRUD().insertFrequentlyHeard(frequentlyheard);
     await FrequentlyHeardCRUD().insertFrequentlyHeard(freq2);
     await FrequentlyHeardCRUD().insertFrequentlyHeard(freq3);
 
@@ -512,9 +518,9 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     var data = DatabaseHelper();
 
     Database db = await data.database;
-    FrequentlyHeard freq1 = FrequentlyHeard.withId(1, 2, 2, 1, 2);
+    FrequentlyHeard freq1 = FrequentlyHeard.withId(2, 5, 2, 1, 2);
     await FrequentlyHeardCRUD().updateFrequentlyHeard(freq1);
-    dynamic result = await FrequentlyHeardCRUD().getFrequentlyHeardById(2);
+    dynamic result = await FrequentlyHeardCRUD().getFrequentlyHeardMapList();
     print(result);
   }
 
@@ -524,7 +530,7 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     Database db = await data.database;
     FrequentlyHeard freq1 = FrequentlyHeard.withId(1, 2, 2, 1, 2);
     await FrequentlyHeardCRUD().deleteFrequentlyHeard(freq1.songId);
-    dynamic result = await FrequentlyHeardCRUD().getFrequentlyHeardById(2);
+    dynamic result = await FrequentlyHeardCRUD().getFrequentlyHeardMapList();
     print(result);
   }
 
@@ -550,9 +556,9 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
 
     Database db = await data.database;
     
-    Includes incl2 = Includes.withId(2, 2, 3);
+    Includes incl2 = Includes.withId(4, 4, 3);
     await IncludesCRUD().updateIncludes(incl2);
-    dynamic result = await IncludesCRUD().getIncludesMapById(incl2.songId);
+    dynamic result = await IncludesCRUD().getIncludesMapList();
     print(result);
   }
 
@@ -565,7 +571,7 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     Includes incl2 = Includes.withId(2, 2, 3);
     
     await IncludesCRUD().deleteIncludes(incl2.songId);
-    dynamic result = await IncludesCRUD().getIncludesMapById(2);
+    dynamic result = await IncludesCRUD().getIncludesMapList();
     print(result);
   }
 

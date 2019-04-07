@@ -42,7 +42,7 @@ class IncludesCRUD {
     Database db = await databaseHelper.database;
 
     int result = await db.rawDelete(
-        'DELETE FROM ${IncludesTable.tableName} WHERE ${IncludesTable.colSongId} = \'$songid\'');
+        'DELETE FROM ${IncludesTable.tableName} WHERE ${IncludesTable.colSongId} = $songid');
     return result;
   }
 
@@ -56,7 +56,7 @@ class IncludesCRUD {
     return result;
   }
 
-  Future<List<Includes>> getPlaylistList() async {
+  Future<List<Includes>> getIncludesList() async {
     List<Map<String, dynamic>> mapList = await getIncludesMapList();
     int count = mapList.length;
 
