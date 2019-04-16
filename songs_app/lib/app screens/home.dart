@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import './playlists_class.dart';
+
+import 'package:songs_app/app screens/playlists_class.dart';
 import 'package:songs_app/models/songs.dart';
-import './login.dart';
-import './register.dart';
-import './profile.dart';
+import 'package:songs_app/app screens/login.dart';
+import 'package:songs_app/app screens/profile.dart';
 import 'package:songs_app/services/authentication.dart';
 
 class Home extends StatefulWidget {
@@ -17,7 +17,7 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return new WillPopScope(
+    return WillPopScope(
       child: Scaffold(
 
         // App Bar...
