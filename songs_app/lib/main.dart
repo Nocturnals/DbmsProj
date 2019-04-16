@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:songs_app/app screens/home.dart';
-import 'package:songs_app/app screens/initiateDatabase.dart';
+// import 'package:songs_app/app screens/initiateDatabase.dart';
 import 'package:songs_app/app screens/login.dart';
 
 void main() {

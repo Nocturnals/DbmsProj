@@ -18,7 +18,6 @@ import 'package:songs_app/models/includes.dart';
 
 import 'package:sqflite/sqflite.dart';
 
-
 import 'package:songs_app/utils/database_files/songbyCRUD.dart';
 import 'package:songs_app/utils/database_files/songsCRUD.dart';
 import 'package:songs_app/utils/database_files/frequentlyheardCRUD.dart';
@@ -27,9 +26,7 @@ import 'package:songs_app/utils/database_files/includesCRUD.dart';
 import 'package:songs_app/models/songs.dart';
 import 'package:songs_app/models/songBy.dart';
 
-
 class CreateDatabasePage extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return _CreateDatabasePageState();
@@ -37,7 +34,6 @@ class CreateDatabasePage extends StatefulWidget {
 }
 
 class _CreateDatabasePageState extends State<CreateDatabasePage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +57,6 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
               child: Text('Update Users'),
               onPressed: _doQuery2,
             ),
-            
             RaisedButton(
               child: Text('insert genre'),
               onPressed: _doQuery9,
@@ -85,7 +80,8 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
             RaisedButton(
               child: Text('delete playlist'),
               onPressed: _doQuery14,
-            ),RaisedButton(
+            ),
+            RaisedButton(
               child: Text('insert image'),
               onPressed: _doQuery15,
             ),
@@ -175,10 +171,10 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     );
   }
 
-  void _deleteDB() {
-    DatabaseHelper databaseHelper = DatabaseHelper();
-    print("\n\n\nDeleted database\n\n\n\n\n");
-  }
+  // void _deleteDB() {
+  //   DatabaseHelper databaseHelper = DatabaseHelper();
+  //   print("\n\n\nDeleted database\n\n\n\n\n");
+  // }
 
   void _initializeDatabase() async {
     // UsersCRUD();
@@ -187,18 +183,43 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     var data = DatabaseHelper();
     Database db = await data.database;
     print(db);
-    
   }
 
   void _doQuery1() async {
     var data = DatabaseHelper();
     // data.createTandI();
     Database db = await data.database;
-    User user1 = User.withId(1,'Hemanth','vanam','hemanthtemp07@gmail.com','male',DateTime(1999,5,7),DateTime(2014,5,12),true);
-    User user2 = User.withId(2,'Ravi','vanam','ravitemp07@gmail.com','male',DateTime(1999,5,7),DateTime(2014,5,12),true);
-    User user3 = User.withId(3,'Chinna','sheripally','chinnatemp07@gmail.com','male',DateTime(1999,5,7),DateTime(2014,5,12),true);
-    User user4 = User.withId(4,'parvathi','kenche','parvathitemp07@gmail.com','female',DateTime(1999,5,7),DateTime(2014,5,12),true);
-    User user5 = User.withId(5,'chandana','sheripally','chandanatemp07@gmail.com','female',DateTime(1999,5,7),DateTime(2014,5,12),true);
+    User user1 = User.withId(1, 'Hemanth', 'vanam', 'hemanthtemp07@gmail.com',
+        'male', DateTime(1999, 5, 7), DateTime(2014, 5, 12), true);
+    User user2 = User.withId(2, 'Ravi', 'vanam', 'ravitemp07@gmail.com', 'male',
+        DateTime(1999, 5, 7), DateTime(2014, 5, 12), true);
+    User user3 = User.withId(
+        3,
+        'Chinna',
+        'sheripally',
+        'chinnatemp07@gmail.com',
+        'male',
+        DateTime(1999, 5, 7),
+        DateTime(2014, 5, 12),
+        true);
+    User user4 = User.withId(
+        4,
+        'parvathi',
+        'kenche',
+        'parvathitemp07@gmail.com',
+        'female',
+        DateTime(1999, 5, 7),
+        DateTime(2014, 5, 12),
+        true);
+    User user5 = User.withId(
+        5,
+        'chandana',
+        'sheripally',
+        'chandanatemp07@gmail.com',
+        'female',
+        DateTime(1999, 5, 7),
+        DateTime(2014, 5, 12),
+        true);
     Playlist playlist = Playlist(55, 'newPlaylist');
     await UsersCRUD().insertUser(user1);
     await UsersCRUD().insertUser(user2);
@@ -213,24 +234,21 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
   }
 
   void _doQuery2() async {
-    var data = DatabaseHelper();
-
-    User user1 = User.withId(1,'Hemanasdf','vanam','hemanthtemp07@gmail.com','male',DateTime(1999,5,7),DateTime(2014,5,12),true);
+    User user1 = User.withId(1, 'Hemanasdf', 'vanam', 'hemanthtemp07@gmail.com',
+        'male', DateTime(1999, 5, 7), DateTime(2014, 5, 12), true);
     await UsersCRUD().deleteUser(user1.email);
     dynamic result = await UsersCRUD().getUserMapList();
     print(result);
   }
 
-
   void _doQuery3() async {
     var data = DatabaseHelper();
     // data.createTandI();
     Database db = await data.database;
-    Album album1 = Album.withId(1,'album1',DateTime(2109,4,6),4,1,1,1);
-    Album album2 = Album.withId(2,'album2',DateTime(2109,4,7),5,2,2,2);
-    Album album3 = Album.withId(3,'album3',DateTime(2109,4,8),6,3,3,3);
-    
-    
+    Album album1 = Album.withId(1, 'album1', DateTime(2109, 4, 6), 4, 1, 1, 1);
+    Album album2 = Album.withId(2, 'album2', DateTime(2109, 4, 7), 5, 2, 2, 2);
+    Album album3 = Album.withId(3, 'album3', DateTime(2109, 4, 8), 6, 3, 3, 3);
+
     await AlbumCRUD().insertAlbum(album1);
     await AlbumCRUD().insertAlbum(album2);
     await AlbumCRUD().insertAlbum(album3);
@@ -238,66 +256,49 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     printMap(result);
   }
 
- void _doQuery4() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
-    Album album1 =Album.withId(1,'updated album1',DateTime(2109,4,6),4,1,1,1);
+  void _doQuery4() async {
+    Album album1 =
+        Album.withId(1, 'updated album1', DateTime(2109, 4, 6), 4, 1, 1, 1);
     await AlbumCRUD().updateAlbum(album1);
     dynamic result = await AlbumCRUD().getAlbumMapList();
     printMap(result);
   }
 
-
   void _doQuery5() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
-    Album album1 =Album.withId(1,'updated album1',DateTime(2109,4,6),4,1,1,1);
+    Album album1 =
+        Album.withId(1, 'updated album1', DateTime(2109, 4, 6), 4, 1, 1, 1);
     await AlbumCRUD().deleteAlbum(album1.albumName);
     dynamic result = await AlbumCRUD().getAlbumMapList();
     printMap(result);
   }
 
-
   void _doQuery6() async {
     var data = DatabaseHelper();
     // data.createTandI();
     Database db = await data.database;
-    Artist artist1 = Artist.withId(1, "artist1", 1, 1,1);
-    Artist artist2 = Artist.withId(2, "artist1", 2, 2,2);
-    Artist artist3 = Artist.withId(3, "artist1", 3, 3,3);
-    
+    Artist artist1 = Artist.withId(1, "artist1", 1, 1, 1);
+    Artist artist2 = Artist.withId(2, "artist1", 2, 2, 2);
+    Artist artist3 = Artist.withId(3, "artist1", 3, 3, 3);
+
     await ArtistsCRUD().insertArtist(artist1);
     await ArtistsCRUD().insertArtist(artist2);
     await ArtistsCRUD().insertArtist(artist3);
     dynamic result = await db.rawQuery('SELECT * FROM Artists');
     printMap(result);
-
-
   }
 
- void _doQuery7() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
-    Artist artist1 = Artist.withId(1, "updated artist1", 1, 1,1);
+  void _doQuery7() async {
+    Artist artist1 = Artist.withId(1, "updated artist1", 1, 1, 1);
     await ArtistsCRUD().updateArtist(artist1);
     dynamic result = await ArtistsCRUD().getArtistMapList();
     printMap(result);
   }
 
-
   void _doQuery8() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
-    Artist artist1 = Artist.withId(1, "updated artist1", 1, 1,1);
     await ArtistsCRUD().deleteArtist("updated artist1");
     dynamic result = await ArtistsCRUD().getArtistMapList();
     printMap(result);
   }
-
 
   void _doQuery9() async {
     var data = DatabaseHelper();
@@ -306,7 +307,7 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     Genre genre1 = Genre.withId(1, "genre1");
     Genre genre2 = Genre.withId(2, "genre2");
     Genre genre3 = Genre.withId(3, "genre3");
-    
+
     await GenreCRUD().insertGenre(genre1);
     await GenreCRUD().insertGenre(genre2);
     await GenreCRUD().insertGenre(genre3);
@@ -314,27 +315,19 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     printMap(result);
   }
 
- void _doQuery10() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
+  void _doQuery10() async {
     Genre genre1 = Genre.withId(1, " updated genre1");
     await GenreCRUD().updateGenre(genre1);
     dynamic result = await GenreCRUD().getGenreMapList();
     print(result);
   }
 
-
   void _doQuery11() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
     Genre genre1 = Genre.withId(1, " updated genre1");
     await GenreCRUD().deleteGenre(genre1.name);
     dynamic result = await GenreCRUD().getGenreMapList();
     print(result);
   }
-
 
   void _doQuery12() async {
     var data = DatabaseHelper();
@@ -343,7 +336,6 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     Playlist playlist1 = Playlist.wihtID(1, 1, "playlist1");
     Playlist playlist2 = Playlist.wihtID(2, 2, "playlist2");
     Playlist playlist3 = Playlist.wihtID(3, 3, "playlist3");
-    
 
     await PlaylistCRUD().insertPlaylist(playlist1);
     await PlaylistCRUD().insertPlaylist(playlist2);
@@ -352,21 +344,14 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     printMap(result);
   }
 
- void _doQuery13() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
+  void _doQuery13() async {
     Playlist playlist1 = Playlist.wihtID(1, 1, "updated playlist1");
     await PlaylistCRUD().updatePlaylist(playlist1);
     dynamic result = await PlaylistCRUD().getPlaylistMapList();
     print(result);
   }
 
-
   void _doQuery14() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
     Playlist playlist1 = Playlist.wihtID(1, 1, "updated playlist1");
     await PlaylistCRUD().deletePlaylist(playlist1.name);
     dynamic result = await PlaylistCRUD().getPlaylistMapList();
@@ -380,7 +365,6 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     Images image1 = Images.withId(1, "image location1", "image name1");
     Images image2 = Images.withId(2, "image location2", "image name2");
     Images image3 = Images.withId(3, "image location3", "image name3");
-    
 
     await ImagesCRUD().insertImage(image1);
     await ImagesCRUD().insertImage(image2);
@@ -389,50 +373,43 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     printMap(result);
   }
 
- void _doQuery16() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
+  void _doQuery16() async {
     Images image1 = Images.withId(1, "image location", "omage name1");
     await ImagesCRUD().updateImage(image1);
     dynamic result = await ImagesCRUD().getImageMapList();
     print(result);
   }
 
-
   void _doQuery17() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
     Images image1 = Images.withId(1, "image location", "omage name1");
     await ImagesCRUD().deleteImage(image1.name);
     dynamic result = await ImagesCRUD().getImageMapList();
     print(result);
   }
 
-
-
-  void printMap(List<Map<String,dynamic>> map) {
-    for(int i=0; i<map.length;i++) {
-      map[i].forEach((k,v) { return print('key $k, value:$v');});
+  void printMap(List<Map<String, dynamic>> map) {
+    for (int i = 0; i < map.length; i++) {
+      map[i].forEach((k, v) {
+        return print('key $k, value:$v');
+      });
       print('\n\n');
     }
   }
 
-    void _doQuery50() async {
+  void _doQuery50() async {
     var data = DatabaseHelper();
     // data.createTandI();
     Database db = await data.database;
-    Song song1 = Song.withId(1, 'IntheEnd', 150 , 4, 5, 6);
-    Song song2 = Song.withId(2, 'new', 150 , 8, 2, 6);
-    Song song3 = Song.withId(3, 'kiss', 150 , 6, 5, 6);
-    Song song4 = Song.withId(4, 'anything', 150 , 4, 7, 6);
-   
+    Song song1 = Song.withId(1, 'IntheEnd', 150, 4, 5, 6);
+    Song song2 = Song.withId(2, 'new', 150, 8, 2, 6);
+    Song song3 = Song.withId(3, 'kiss', 150, 6, 5, 6);
+    Song song4 = Song.withId(4, 'anything', 150, 4, 7, 6);
+
     await SongsCRUD().insertSong(song1);
     await SongsCRUD().insertSong(song2);
     await SongsCRUD().insertSong(song3);
     await SongsCRUD().insertSong(song4);
-    
+
     dynamic result = await db.rawQuery('SELECT * FROM Songs');
     printMap(result);
 
@@ -442,19 +419,14 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
   }
 
   void _doQuery51() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
-    Song song1 = Song.withId(1, 'In the End', 150 , 4, 5, 6);
+    Song song1 = Song.withId(1, 'In the End', 150, 4, 5, 6);
     await SongsCRUD().updateSong(song1);
     dynamic result = await SongsCRUD().getSongMapList();
     print(result);
   }
-  void _doQuery52() async {
-    var data = DatabaseHelper();
 
-    Database db = await data.database;
-    Song song1 = Song.withId(1, 'In the End', 150 , 4, 5, 6);
+  void _doQuery52() async {
+    Song song1 = Song.withId(1, 'In the End', 150, 4, 5, 6);
     await SongsCRUD().deleteSong(song1.title);
     dynamic result = await SongsCRUD().getSongMapList();
     print(result);
@@ -464,11 +436,11 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     var data = DatabaseHelper();
     // data.createTandI();
     Database db = await data.database;
-    
-    SongBy songby1 = SongBy.withId(1,4,5);
-    SongBy songby2= SongBy.withId(2,5,6);
-    SongBy songby3 = SongBy.withId(3,6,7);
-    
+
+    SongBy songby1 = SongBy.withId(1, 4, 5);
+    SongBy songby2 = SongBy.withId(2, 5, 6);
+    SongBy songby3 = SongBy.withId(3, 6, 7);
+
     await SongByCRUD().insertSongBy(songby1);
     await SongByCRUD().insertSongBy(songby2);
     await SongByCRUD().insertSongBy(songby3);
@@ -478,20 +450,14 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
   }
 
   void _doQuery54() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
-    SongBy songby1 = SongBy.withId(1,4,5);
+    SongBy songby1 = SongBy.withId(1, 4, 5);
     await SongByCRUD().updateSongBy(songby1);
     dynamic result = await SongByCRUD().getSongByMapList();
     print(result);
   }
 
   void _doQuery55() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
-    SongBy songby1 = SongBy.withId(1,4,5);
+    SongBy songby1 = SongBy.withId(1, 4, 5);
     await SongByCRUD().deleteSongBy(songby1.artistId);
     dynamic result = await SongByCRUD().getSongByMapList();
     print(result);
@@ -501,7 +467,7 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     var data = DatabaseHelper();
     // data.createTandI();
     Database db = await data.database;
-    
+
     FrequentlyHeard frequentlyheard = FrequentlyHeard.withId(1, 2, 2, 1, 2);
     FrequentlyHeard freq2 = FrequentlyHeard.withId(2, 3, 1, 1, 2);
     FrequentlyHeard freq3 = FrequentlyHeard.withId(3, 4, 2, 1, 2);
@@ -513,11 +479,8 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
     dynamic result = await db.rawQuery('SELECT * FROM FrequentlyHeard');
     printMap(result);
   }
-  
-  void _doQuery57() async {
-    var data = DatabaseHelper();
 
-    Database db = await data.database;
+  void _doQuery57() async {
     FrequentlyHeard freq1 = FrequentlyHeard.withId(2, 5, 2, 1, 2);
     await FrequentlyHeardCRUD().updateFrequentlyHeard(freq1);
     dynamic result = await FrequentlyHeardCRUD().getFrequentlyHeardMapList();
@@ -525,20 +488,17 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
   }
 
   void _doQuery58() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
     FrequentlyHeard freq1 = FrequentlyHeard.withId(1, 2, 2, 1, 2);
     await FrequentlyHeardCRUD().deleteFrequentlyHeard(freq1.songId);
     dynamic result = await FrequentlyHeardCRUD().getFrequentlyHeardMapList();
     print(result);
   }
 
-   void _doQuery59() async {
+  void _doQuery59() async {
     var data = DatabaseHelper();
     // data.createTandI();
     Database db = await data.database;
-    
+
     Includes incl1 = Includes.withId(1, 1, 2);
     Includes incl2 = Includes.withId(2, 2, 3);
     Includes incl3 = Includes.withId(3, 3, 4);
@@ -552,10 +512,6 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
   }
 
   void _doQuery60() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
-    
     Includes incl2 = Includes.withId(4, 4, 3);
     await IncludesCRUD().updateIncludes(incl2);
     dynamic result = await IncludesCRUD().getIncludesMapList();
@@ -563,17 +519,10 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
   }
 
   void _doQuery61() async {
-    var data = DatabaseHelper();
-
-    Database db = await data.database;
-
-    
     Includes incl2 = Includes.withId(2, 2, 3);
-    
+
     await IncludesCRUD().deleteIncludes(incl2.songId);
     dynamic result = await IncludesCRUD().getIncludesMapList();
     print(result);
   }
-
-
 }
