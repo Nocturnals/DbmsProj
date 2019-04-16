@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:songs_app/app screens/home.dart';
-import 'package:songs_app/app screens/register.dart';
 import 'package:songs_app/services/authentication.dart';
 
 class Login extends StatefulWidget {
@@ -150,10 +148,7 @@ class _LoginPageState extends State<Login> {
                               style: TextStyle(fontSize: 15),
                             ),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Register()));
+                              Navigator.of(context).pushNamed('/registerPage');
                             },
                             textColor: Colors.blue,
                           ),
@@ -244,9 +239,7 @@ class _LoginPageState extends State<Login> {
                 );
               });
         } else {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return Home();
-          }));
+          Navigator.of(context).pushReplacementNamed('/homePage');
         }
         // _getUserFromDB();
       } catch (error) {

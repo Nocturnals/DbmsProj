@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-// import 'package:songs_app/app screens/home.dart';
+
+import 'package:songs_app/app screens/profile.dart';
+import 'package:songs_app/app screens/home.dart';
 // import 'package:songs_app/app screens/initiateDatabase.dart';
 import 'package:songs_app/app screens/login.dart';
+import 'package:songs_app/app screens/register.dart';
 
 void main() {
   runApp(OnlineMusic());
@@ -18,6 +21,12 @@ class OnlineMusic extends StatelessWidget {
         primarySwatch: Colors.deepPurple
       ),
       // home: CreateDatabasePage(),
+      routes: <String, WidgetBuilder> {
+        '/loginPage': (BuildContext context) => Login(),
+        '/registerPage': (BuildContext context) => Register(),
+        '/homePage': (BuildContext context) => Home(), 
+        '/profilePage': (BuildContext context) => Profile(), 
+      },
       home: Login(),
     );
   }

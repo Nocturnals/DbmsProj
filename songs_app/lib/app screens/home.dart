@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:songs_app/app screens/playlists_class.dart';
 import 'package:songs_app/models/songs.dart';
-import 'package:songs_app/app screens/login.dart';
-import 'package:songs_app/app screens/profile.dart';
 import 'package:songs_app/services/authentication.dart';
 
 class Home extends StatefulWidget {
@@ -151,7 +149,8 @@ class SideDrawer extends StatelessWidget {
                 title: new Text("LogOut"),
                 onTap: () async {
                   await BaseAuth().signOut();
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+                  Navigator.of(context).pushNamedAndRemoveUntil('/loginPage', (Route<dynamic> route) => false);
+                  // Navigator.popUntil(context, ModalRoute.withName('/loginPage'));
                   debugPrint('Navigated to login page');
                 }
               ),
@@ -160,7 +159,7 @@ class SideDrawer extends StatelessWidget {
                 color: Theme.of(context).accentColor),
                 title: new Text("Profile"),
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+                  Navigator.of(context).pushNamed('/profilePage');
                   debugPrint('Navigated to login page');
                 }
               ),
@@ -190,7 +189,7 @@ class BottomNavigator extends StatelessWidget {
             icon: Icon(Icons.home),
             onPressed: () {
               _currentIndex = 0;
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+              Navigator.popUntil(context, ModalRoute.withName('/homePage'));
             },
           ),
           title: Text('Home'),
@@ -218,7 +217,7 @@ class BottomNavigator extends StatelessWidget {
             icon: Icon(Icons.account_circle),
             onPressed: () {
               _currentIndex = 2;
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Profile()));
+              Navigator.of(context).pushNamed('/profilePage');
               debugPrint('No Profile');
             },
           ),
