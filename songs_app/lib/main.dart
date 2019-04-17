@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 
 import 'package:songs_app/app screens/profile.dart';
 import 'package:songs_app/app screens/home.dart';
@@ -11,6 +13,9 @@ void main() {
 }
 
 class OnlineMusic extends StatelessWidget {
+
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
+
   @override
   Widget build(BuildContext context) {
     
@@ -20,7 +25,9 @@ class OnlineMusic extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple
       ),
-      // home: CreateDatabasePage(),
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: analytics),
+      ],
       routes: <String, WidgetBuilder> {
         '/loginPage': (BuildContext context) => Login(),
         '/registerPage': (BuildContext context) => Register(),
