@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:songs_app/services/loader.dart';
 import 'package:songs_app/services/authentication.dart';
 
 class Login extends StatefulWidget {
@@ -14,6 +15,7 @@ class _LoginPageState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final BaseAuth auth = BaseAuth();
+  bool _isLoading = false;
 
   String _email;
   String _password;
@@ -35,7 +37,44 @@ class _LoginPageState extends State<Login> {
           centerTitle: true,
           backgroundColor: Colors.deepPurple,
         ),
-        body: Form(
+        body: _getBody(),
+      ),
+      onWillPop: () {
+        AlertDialog alertDialog = AlertDialog(
+          title: Center(
+            child: Text('Are you sure'),
+          ),
+          content: Text('  want to close the app?'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Not Yet'),
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+            ),
+            FlatButton(
+              child: Text('Yes'),
+              onPressed: () {
+                // return exit(0);
+                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+              },
+            ),
+          ],
+        );
+        showDialog(
+            context: context,
+            builder: (_) {
+              return alertDialog;
+            });
+      },
+    );
+  }
+
+  Widget _getBody() {
+    if (_isLoading) {
+      return Loader();
+    } else {
+      return Form(
           key: _formKey,
           child: ListView(
             children: <Widget>[
@@ -160,37 +199,8 @@ class _LoginPageState extends State<Login> {
               ),
             ],
           ),
-        ),
-      ),
-      onWillPop: () {
-        AlertDialog alertDialog = AlertDialog(
-          title: Center(
-            child: Text('Are you sure'),
-          ),
-          content: Text('  want to close the app?'),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Not Yet'),
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).pop('dialog');
-              },
-            ),
-            FlatButton(
-              child: Text('Yes'),
-              onPressed: () {
-                // return exit(0);
-                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-              },
-            ),
-          ],
         );
-        showDialog(
-            context: context,
-            builder: (_) {
-              return alertDialog;
-            });
-      },
-    );
+    }
   }
 
   bool _validateAndSave() {
@@ -205,10 +215,16 @@ class _LoginPageState extends State<Login> {
   void _validateAndSubmit() async {
     if (_validateAndSave()) {
       debugPrint('Validated the form');
+      setState(() {
+       _isLoading = true; 
+      });
       try {
         String userid = await auth.login(_email, _password);
         print(userid);
         bool userStatus = await auth.isEmailVerified();
+        setState(() {
+         _isLoading = false; 
+        });
         print('user Status:$userStatus');
         if (userStatus == false) {
           showDialog(
@@ -232,7 +248,8 @@ class _LoginPageState extends State<Login> {
                       child: Text('OK'),
                       onPressed: () {
                         auth.signOut();
-                        Navigator.of(context,rootNavigator: true).pop('dialog');
+                        Navigator.of(context, rootNavigator: true)
+                            .pop('dialog');
                       },
                     )
                   ],
@@ -250,9 +267,15 @@ class _LoginPageState extends State<Login> {
   }
 
   void _resendEmailVerification() async {
+    setState(() {
+     _isLoading = true; 
+    });
     await auth.sendEmailVerification();
     await auth.signOut();
-    Navigator.of(context,rootNavigator: true).pop('dialog');
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+    setState(() {
+     _isLoading = false; 
+    });
   }
 
   void _showAlertDialog(String title, String message) {
