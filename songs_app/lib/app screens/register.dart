@@ -355,6 +355,9 @@ class RegisterState extends State<Register> {
       } catch (error) {
         print('error: $error');
         _showAlertDialog('Error', error.toString());
+        setState(() {
+         _isLoading = false; 
+        });
       }
     }
   }
