@@ -25,6 +25,8 @@ class RegisterState extends State<Register> {
   String _password;
   String _gender = 'Male';
 
+  TextEditingController passWordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -224,6 +226,7 @@ class RegisterState extends State<Register> {
                     height: 50,
                     margin: EdgeInsets.only(top: 30),
                     child: TextFormField(
+                      controller: passWordController,
                       textAlign: TextAlign.justify,
                       cursorRadius: Radius.circular(5),
                       cursorColor: Colors.grey,
@@ -240,7 +243,37 @@ class RegisterState extends State<Register> {
                           return 'Password can\'t be null';
                         }
                         if (value.length <= 6) {
-                          return 'Password must be atleast 6 letter';
+                          return 'Password must be atleast 7 letter';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _password = value;
+                      },
+                    ),
+                  ),
+
+
+                  // ReEnter password
+                  Container(
+                    width: 350,
+                    height: 50,
+                    margin: EdgeInsets.only(top: 30),
+                    child: TextFormField(
+                      textAlign: TextAlign.justify,
+                      cursorRadius: Radius.circular(5),
+                      cursorColor: Colors.grey,
+                      keyboardAppearance: Brightness.dark,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.deepPurple)),
+                        labelText: 'Confirm Password',
+                        hintText: '*************',
+                      ),
+                      obscureText: true,
+                      validator: (value) {
+                        if(value != passWordController.text) {
+                          return 'Password didn\'t match';
                         }
                         return null;
                       },

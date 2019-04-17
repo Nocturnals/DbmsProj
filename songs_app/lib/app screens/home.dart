@@ -6,39 +6,30 @@ import 'package:songs_app/services/authentication.dart';
 
 class Home extends StatefulWidget {
   @override
-  State<StatefulWidget> createState(){
+  State<StatefulWidget> createState() {
     return HomeState();
   }
 }
 
 class HomeState extends State<Home> {
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-
         // App Bar...
         appBar: new AppBar(
-
           title: new Text(
             'BLINK',
-            style: TextStyle(
-              fontFamily: 'Velhos Tempos',
-              fontSize: 28
-            ),
+            style: TextStyle(fontFamily: 'Velhos Tempos', fontSize: 28),
           ),
           centerTitle: true,
-
           actions: <Widget>[
             new IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                debugPrint('Not Working!!');
-              }
-            )
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  debugPrint('Not Working!!');
+                })
           ],
-
         ),
 
         // Drawer...
@@ -47,75 +38,63 @@ class HomeState extends State<Home> {
         // Body...
         body: ListView(
           children: <Widget>[
-
             Column(
               children: <Widget>[
-
                 //Recently Played...
                 Container(
-                  margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
+                  margin:
+                      EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
                   height: 246,
                   child: Column(
                     children: <Widget>[
-
                       Headers('Recently Played'),
                       RecentlyPlayed(),
-                    
                     ],
                   ),
                 ),
 
                 // Top Releasess...
                 Container(
-                  margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
-                  height: 400,
-                  child: Column(
-                    children: <Widget>[
-
-                      Headers('Top ten Recently Released'),
-                      TopRelease(),
-                    
-                    ],
-                  )
-                ),
+                    margin: EdgeInsets.only(
+                        left: 10, right: 10, top: 10, bottom: 5),
+                    height: 400,
+                    child: Column(
+                      children: <Widget>[
+                        Headers('Top ten Recently Released'),
+                        TopRelease(),
+                      ],
+                    )),
 
                 //Playlists...
                 Container(
-                  margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
+                  margin:
+                      EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 5),
                   height: 246,
                   child: Column(
                     children: <Widget>[
-
                       Headers('Playlists'),
                       Playlist(),
                       CreatePlaylist(),
-                    
                     ],
                   ),
                 ),
-
               ],
             ),
-
           ],
         ),
 
         // Bottom Navigation Bar...
         bottomNavigationBar: BottomNavigator(),
-
       ),
-
       onWillPop: () {
         _goToLastScreen();
       },
-
     );
   }
 
   void _goToLastScreen() {
     Navigator.pop(context, true);
   }
-
 }
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -124,66 +103,58 @@ class HomeState extends State<Home> {
 
 // Side Drawer...
 class SideDrawer extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return new Drawer(
       child: new Column(
         children: <Widget>[
-        
           new UserAccountsDrawerHeader(
               accountName: new Text("Music player"), accountEmail: null),
           new Column(
             children: <Widget>[
               new ListTile(
-                leading: new Icon(Icons.settings,
-                color: Theme.of(context).accentColor),
-                title: new Text("Settings"),
-                onTap: () {
-                  debugPrint('No Settings available!!');
-                }
-              ),
+                  leading: new Icon(Icons.settings,
+                      color: Theme.of(context).accentColor),
+                  title: new Text("Settings"),
+                  onTap: () {
+                    debugPrint('No Settings available!!');
+                  }),
               new ListTile(
-                leading: new Icon(Icons.account_circle,
-                color: Theme.of(context).accentColor),
-                title: new Text("LogOut"),
-                onTap: () async {
-                  await BaseAuth().signOut();
-                  Navigator.of(context).pushNamedAndRemoveUntil('/loginPage', (Route<dynamic> route) => false);
-                  // Navigator.popUntil(context, ModalRoute.withName('/loginPage'));
-                  debugPrint('Navigated to login page');
-                }
-              ),
+                  leading: new Icon(Icons.account_circle,
+                      color: Theme.of(context).accentColor),
+                  title: new Text("LogOut"),
+                  onTap: () async {
+                    await BaseAuth().signOut();
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/loginPage', (Route<dynamic> route) => false);
+                    // Navigator.popUntil(context, ModalRoute.withName('/loginPage'));
+                    debugPrint('Navigated to login page');
+                  }),
               new ListTile(
-                leading: new Icon(Icons.account_box,
-                color: Theme.of(context).accentColor),
-                title: new Text("Profile"),
-                onTap: () {
-                  Navigator.of(context).pushNamed('/profilePage');
-                  debugPrint('Navigated to login page');
-                }
-              ),
+                  leading: new Icon(Icons.account_box,
+                      color: Theme.of(context).accentColor),
+                  title: new Text("Profile"),
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/profilePage');
+                    debugPrint('Navigated to login page');
+                  }),
             ],
           )
         ],
-
       ),
     );
   }
-
 }
 
 int _currentIndex = 1;
+
 // Bottom Navigation Bar...
 class BottomNavigator extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     return new BottomNavigationBar(
       currentIndex: _currentIndex,
       items: [
-
         BottomNavigationBarItem(
           icon: IconButton(
             icon: Icon(Icons.home),
@@ -194,14 +165,19 @@ class BottomNavigator extends StatelessWidget {
           ),
           title: Text('Home'),
         ),
-
         BottomNavigationBarItem(
           icon: FlatButton(
             child: Row(
               children: <Widget>[
                 Text('    '),
-                Icon(Icons.play_arrow, size: 35,),
-                Icon(Icons.pause, size: 35,),
+                Icon(
+                  Icons.play_arrow,
+                  size: 35,
+                ),
+                Icon(
+                  Icons.pause,
+                  size: 35,
+                ),
                 Text('    '),
               ],
             ),
@@ -209,21 +185,21 @@ class BottomNavigator extends StatelessWidget {
               debugPrint('Cannot play this song');
             },
           ),
-          title: Text('', style: TextStyle(fontSize: 0),),
-        ),
-
-        BottomNavigationBarItem(
-          icon: IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: () {
-              _currentIndex = 2;
-              Navigator.of(context).pushNamed('/profilePage');
-              debugPrint('No Profile');
-            },
+          title: Text(
+            '',
+            style: TextStyle(fontSize: 0),
           ),
-          title: Text('Profile')
-        )
-
+        ),
+        BottomNavigationBarItem(
+            icon: IconButton(
+              icon: Icon(Icons.account_circle),
+              onPressed: () {
+                _currentIndex = 2;
+                Navigator.of(context).pushNamed('/profilePage');
+                debugPrint('No Profile');
+              },
+            ),
+            title: Text('Profile'))
       ],
     );
   }
@@ -231,7 +207,6 @@ class BottomNavigator extends StatelessWidget {
 
 // Songs List Header...
 class Headers extends StatelessWidget {
-
   Headers(this._header);
 
   final String _header;
@@ -244,10 +219,7 @@ class Headers extends StatelessWidget {
         leading: Text(
           _header,
           style: TextStyle(
-            fontSize: 20,
-            fontFamily: 'LUMOS',
-            fontWeight: FontWeight.w800
-          ),
+              fontSize: 20, fontFamily: 'LUMOS', fontWeight: FontWeight.w800),
         ),
       ),
     );
@@ -256,16 +228,13 @@ class Headers extends StatelessWidget {
 
 // Recently Played Songs...
 class RecentlyPlayed extends StatelessWidget {
-
   final List<List> songs = createPlaylist();
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: 140,
       child: ListView.builder(
-
         scrollDirection: Axis.horizontal,
         itemCount: songs.length,
         itemBuilder: (BuildContext context, int index) {
@@ -280,20 +249,18 @@ class RecentlyPlayed extends StatelessWidget {
               child: Card(
                 child: Column(
                   children: <Widget>[
-
                     Container(
-                      margin: EdgeInsets.only(top: 30, right: 20),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.play_arrow,
-                          size: 50,
-                          color: Colors.orangeAccent,
-                        ),
-                        onPressed: () {
-                          debugPrint('Cannot Play this playlist!');
-                        },
-                      )
-                    ),
+                        margin: EdgeInsets.only(top: 30, right: 20),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.play_arrow,
+                            size: 50,
+                            color: Colors.orangeAccent,
+                          ),
+                          onPressed: () {
+                            debugPrint('Cannot Play this playlist!');
+                          },
+                        )),
                     Container(
                       margin: EdgeInsets.only(top: 20),
                       child: Row(
@@ -307,22 +274,19 @@ class RecentlyPlayed extends StatelessWidget {
                           Text(
                             songName,
                             style: TextStyle(
-                              fontSize: 11,
-                              fontFamily: 'Gothic',
-                              fontWeight: FontWeight.bold
-                            ),
+                                fontSize: 11,
+                                fontFamily: 'Gothic',
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),
             ),
           );
         },
-      
       ),
     );
   }
@@ -330,20 +294,21 @@ class RecentlyPlayed extends StatelessWidget {
 
 // Playlists...
 class Playlist extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     List<List> playlists = List<List>();
-    playlists.add(PlaylistClass('playlist01', 01, createPlaylist()).fromPlaylisttoList());
-    playlists.add(PlaylistClass('playlist02', 02, createPlaylist()).fromPlaylisttoList());
-    playlists.add(PlaylistClass('playlist03', 03, createPlaylist()).fromPlaylisttoList());
-    playlists.add(PlaylistClass('playlist03', 03, createPlaylist()).fromPlaylisttoList());
+    playlists.add(
+        PlaylistClass('playlist01', 01, createPlaylist()).fromPlaylisttoList());
+    playlists.add(
+        PlaylistClass('playlist02', 02, createPlaylist()).fromPlaylisttoList());
+    playlists.add(
+        PlaylistClass('playlist03', 03, createPlaylist()).fromPlaylisttoList());
+    playlists.add(
+        PlaylistClass('playlist03', 03, createPlaylist()).fromPlaylisttoList());
 
     return Container(
       height: 140,
       child: ListView.builder(
-
         scrollDirection: Axis.horizontal,
         itemCount: playlists.length,
         itemBuilder: (BuildContext context, int index) {
@@ -358,16 +323,14 @@ class Playlist extends StatelessWidget {
               child: Card(
                 child: Column(
                   children: <Widget>[
-
                     ListTile(
                       dense: true,
                       title: Text(
                         playlists[index][0],
                         style: TextStyle(
-                          fontSize: 15,
-                          fontFamily: 'Magnificent',
-                          fontWeight: FontWeight.bold
-                        ),
+                            fontSize: 15,
+                            fontFamily: 'Magnificent',
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                     Row(
@@ -389,26 +352,23 @@ class Playlist extends StatelessWidget {
                       ],
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 15),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.playlist_play,
-                          size: 35,
-                          color: Colors.orangeAccent,
-                        ),
-                        onPressed: () {
-                          debugPrint('Cannot Play this playlist!');
-                        },
-                      )
-                    )
-
+                        margin: EdgeInsets.only(top: 15),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.playlist_play,
+                            size: 35,
+                            color: Colors.orangeAccent,
+                          ),
+                          onPressed: () {
+                            debugPrint('Cannot Play this playlist!');
+                          },
+                        ))
                   ],
                 ),
               ),
             ),
           );
         },
-      
       ),
     );
   }
@@ -418,7 +378,6 @@ class Playlist extends StatelessWidget {
 class CreatePlaylist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: 50,
       width: 100,
@@ -432,141 +391,135 @@ class CreatePlaylist extends StatelessWidget {
         ),
       ),
     );
-  
   }
 }
 
 // Top Release Widget...
 class TopRelease extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     final List<List> songs = createPlaylist();
 
     List<String> playlists = List<String>();
-    playlists.add(PlaylistClass('playlist01', 01, createPlaylist()).fromPlaylisttoList()[0]);
-    playlists.add(PlaylistClass('playlist02', 02, createPlaylist()).fromPlaylisttoList()[0]);
-    playlists.add(PlaylistClass('playlist03', 03, createPlaylist()).fromPlaylisttoList()[0]);
-    playlists.add(PlaylistClass('playlist03', 03, createPlaylist()).fromPlaylisttoList()[0]);
+    playlists.add(PlaylistClass('playlist01', 01, createPlaylist())
+        .fromPlaylisttoList()[0]);
+    playlists.add(PlaylistClass('playlist02', 02, createPlaylist())
+        .fromPlaylisttoList()[0]);
+    playlists.add(PlaylistClass('playlist03', 03, createPlaylist())
+        .fromPlaylisttoList()[0]);
+    playlists.add(PlaylistClass('playlist03', 03, createPlaylist())
+        .fromPlaylisttoList()[0]);
 
     return Container(
-      
       color: Color.fromRGBO(190, 190, 190, 0.5),
       height: 300.0,
       child: ListView.builder(
-
-        scrollDirection: Axis.vertical,
-        itemCount: songs.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            width: 160.0,
-            child: SizedBox(
-              child: ListTile(   
-                leading: Icon(
-                  Icons.album,
-                  size: 40,
-                  color: Colors.indigo,
-                ),
-                title: Text(
-                  songs[index][0],
-                  style: TextStyle(
-                    color: Color.fromRGBO(0, 158, 108, 1),
-                    fontFamily: 'Gothic',
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.w800
-                  ),
-                ),
-                subtitle: Row(
-                  children: <Widget>[
-                    
-                    Text(
-                      'Album: ' + songs[index][2].toString(),
-                      style: TextStyle(
-                        fontSize: 12.5
-                      ),
+          scrollDirection: Axis.vertical,
+          itemCount: songs.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+                width: 160.0,
+                child: SizedBox(
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.album,
+                      size: 40,
+                      color: Colors.indigo,
                     ),
-                    Text(
-                      '      Duraton: ' + songs[index][1].toString() + ' mins',
+                    title: Text(
+                      songs[index][0],
                       style: TextStyle(
-                        fontSize: 12.5,
-                      ),
+                          color: Color.fromRGBO(0, 158, 108, 1),
+                          fontFamily: 'Gothic',
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w800),
                     ),
-
-                  ],
-                ),
-                // PopUpMenu...
-                trailing: new PopupMenuButton<String>(
-                  child: Icon(Icons.playlist_add),
-                  itemBuilder: (BuildContext context) {
-                    return playlists.map((String playlist) {
-                      return new PopupMenuItem<String>(
-                        child: Text(playlist),
-                        value: playlist,
-                      );
-                    }).toList();
-                  },
-                ),
-                onLongPress: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Not Interested?'),
-                        content: SingleChildScrollView(
-                          child: ListBody(
-                            children: <Widget>[
-                              Text('You don\'t want to see this song on your home screen?'),
-                            ],
+                    subtitle: Row(
+                      children: <Widget>[
+                        Text(
+                          'Album: ' + songs[index][2].toString(),
+                          style: TextStyle(fontSize: 12.5),
+                        ),
+                        Text(
+                          '      Duraton: ' +
+                              songs[index][1].toString() +
+                              ' mins',
+                          style: TextStyle(
+                            fontSize: 12.5,
                           ),
                         ),
-                        actions: <Widget>[
-                          
-                          FlatButton(
-                            child: Text('Remove'),
-                            onPressed: () {
-                              debugPrint('Cancelled Operation!');
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          FlatButton(
-                            child: Text('Cancel'),
-                            onPressed: () {
-                              debugPrint('Cancelled Operation!');
-                              Navigator.of(context).pop();
-                            },
-                          ),
+                      ],
+                    ),
+                    // PopUpMenu...
+                    trailing: new PopupMenuButton<String>(
+                      child: Icon(Icons.playlist_add),
+                      itemBuilder: (BuildContext context) {
+                        return playlists.map((String playlist) {
+                          return new PopupMenuItem<String>(
+                            child: Text(playlist),
+                            value: playlist,
+                          );
+                        }).toList();
+                      },
+                    ),
+                    onLongPress: () {
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Not Interested?'),
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: <Widget>[
+                                    Text(
+                                        'You don\'t want to see this song on your home screen?'),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('Remove'),
+                                  onPressed: () {
+                                    debugPrint('Cancelled Operation!');
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () {
+                                    debugPrint('Cancelled Operation!');
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          });
 
-                        ],
-                      );
-                    }
-                  );
-
-                  debugPrint('Pressed too long');
-                },
-                onTap: () {
-                  debugPrint('Canot play this song!');
-                },
-
-              ),
-            )
-          );
-        }
-      ),
-
+                      debugPrint('Pressed too long');
+                    },
+                    onTap: () {
+                      debugPrint('Canot play this song!');
+                    },
+                  ),
+                ));
+          }),
     );
   }
 }
 
-
 // External Functions...
-List createPlaylist(){
+List createPlaylist() {
   List<List> playlistSongs = List<List>();
-  playlistSongs.add(Song('You Belong With Me', 3.4, 01, 01, 01).fromSongtoList());
-  playlistSongs.add(Song('We don\'t talk anymore', 4.4, 01, 01, 01).fromSongtoList());
-  playlistSongs.add(Song('You Belong With Me', 5.4, 01, 01, 01).fromSongtoList());
-  playlistSongs.add(Song('You Belong With Me', 3.4, 01, 01, 01).fromSongtoList());
-  playlistSongs.add(Song('You Belong With Me', 3.4, 01, 01, 01).fromSongtoList());
+  playlistSongs
+      .add(Song('You Belong With Me', 3.4, 01, 01, 01).fromSongtoList());
+  playlistSongs
+      .add(Song('We don\'t talk anymore', 4.4, 01, 01, 01).fromSongtoList());
+  playlistSongs
+      .add(Song('You Belong With Me', 5.4, 01, 01, 01).fromSongtoList());
+  playlistSongs
+      .add(Song('You Belong With Me', 3.4, 01, 01, 01).fromSongtoList());
+  playlistSongs
+      .add(Song('You Belong With Me', 3.4, 01, 01, 01).fromSongtoList());
   return playlistSongs;
 }
