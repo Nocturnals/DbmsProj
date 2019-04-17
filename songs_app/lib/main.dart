@@ -7,6 +7,7 @@ import 'package:songs_app/app screens/home.dart';
 // import 'package:songs_app/app screens/initiateDatabase.dart';
 import 'package:songs_app/app screens/login.dart';
 import 'package:songs_app/app screens/register.dart';
+import 'package:songs_app/app screens/resetPassword.dart';
 
 void main() {
   runApp(OnlineMusic());
@@ -32,7 +33,8 @@ class OnlineMusic extends StatelessWidget {
         '/loginPage': (BuildContext context) => Login(),
         '/registerPage': (BuildContext context) => Register(),
         '/homePage': (BuildContext context) => Home(), 
-        '/profilePage': (BuildContext context) => Profile(), 
+        '/profilePage': (BuildContext context) => Profile(),
+        '/resetPasswordPage': (BuildContext context) => ResetPassword(),
       },
       home: Login(),
     );
