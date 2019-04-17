@@ -25,8 +25,7 @@ class _LoaderState extends State<Loader> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    super.initState();
-
+    
     offsetRadius = widget.radius;
     dotRadius = widget.dotradius;
 
@@ -68,6 +67,13 @@ class _LoaderState extends State<Loader> with SingleTickerProviderStateMixin {
     });
 
     animationController.repeat();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
 
   @override
