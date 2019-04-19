@@ -73,9 +73,9 @@ class User {
     userMap['lastName'] = this._lastName;
     userMap['email'] = this._email;
     userMap['gender'] = this._gender;
-    userMap['dateOfBirth'] = this._dateOfBirth;
-    userMap['lastLogin'] = this._lastLogin;
-    userMap['activeStatus'] = this._activeStatus;
+    userMap['dateOfBirth'] = this._dateOfBirth.toIso8601String();
+    userMap['lastLogin'] = this._lastLogin.toIso8601String();
+    userMap['activeStatus'] = this._activeStatus.toString();
 
     return userMap;
   }
@@ -87,8 +87,14 @@ class User {
     this._lastName = map['lastName'];
     this._email = map['email'];
     this._gender = map['gender'];
-    this._dateOfBirth = map['dateOfBirth'];
-    this._lastLogin = map['lastLogin'];
-    this._activeStatus = map['activeStatus'];
+    this._dateOfBirth = DateTime.parse(map['dateOfBirth']);
+    this._lastLogin = DateTime.parse(map['lastLogin']);
+    // this._activeStatus = map['activeStatus'];
+    if (map['activeStatus'] == 'true') {
+      this._activeStatus = true;
+    }
+    else {
+      this._activeStatus = false;
+    }
   }
 }

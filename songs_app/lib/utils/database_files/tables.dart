@@ -15,8 +15,11 @@ class UsersTable {
   // create table command
   static String createTable = 'CREATE TABLE $tableName($colUserId INTEGER PRIMARY KEY AUTOINCREMENT,' +
                       ' $colFirstName TEXT NOT NULL, $colLastName TEXT NOT NULL, ' + 
-                      ' $colEmail TEXT NOT NULL, $colGender TEXT NOT NULL, $colDOB TEXT NOT NULL, ' + 
+                      ' $colEmail TEXT NOT NULL UNIQUE, $colGender TEXT NOT NULL, $colDOB TEXT NOT NULL, ' + 
                       '$colLastLogin TEXT NULL, $colActiveStatus TEXT NULL)';
+
+  // indexing for this table
+  static String indexSQL = 'CREATE UNIQUE INDEX ${colEmail}_$tableName ON $tableName ($colEmail)';
 
 }
 
@@ -30,13 +33,16 @@ class GenreTable {
 
   // create table command
   static String createTable = 'CREATE TABLE $tableName($colGenreId INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
-                              '$colName TEXT NOT NULL)';
+                              '$colName TEXT NOT NULL UNIQUE)';
+
+  // indexing for this table
+  static String indexSQL = 'CREATE INDEX ${colName}_$tableName ON $tableName ($colName)';
 
 }
 
 class PlaylistTable {
 
-  static String tableName = 'playlists';
+  static String tableName = 'Playlists';
 
   // column names
   static String colPlaylistId = 'playlistId';
@@ -48,6 +54,9 @@ class PlaylistTable {
                               '$colUserId INT NOT NULL, $colName VARCHAR(30), ' +  
                               'CONSTRAINT FK_${UsersTable.tableName} FOREIGN KEY ($colUserId) '+
                               'REFERENCES ${UsersTable.tableName}(${UsersTable.colUserId}))';
+
+  // indexing for this table
+  static String indexSQL = 'CREATE INDEX ${colName}_$tableName ON $tableName ($colName)';
 
 }
 
@@ -62,8 +71,11 @@ class Imagestable {
 
   // create table command
   static String createTable = 'CREATE TABLE $tableName($colImageId INTEGER PRIMARY KEY AUTOINCREMENT, '+
-                              '$colImgLocation VARCHAR(300) NOT NULL, $colName VARCHAR(150) NOT NULL '+
+                              '$colImgLocation VARCHAR(300) NOT NULL UNIQUE, $colName VARCHAR(150) NOT NULL UNIQUE'+
                               ')';
+
+  // indexing for this table
+  // static String indexSQL = 'CREATE INDEX ${}_${} ON $tableName ($)';
 
 }
 
@@ -91,6 +103,9 @@ class AlbumsTable {
                               'CONSTRAINT FK_${GenreTable.tableName} FOREIGN KEY ($colGenreId) '+
                               'REFERENCES ${GenreTable.tableName}(${GenreTable.colGenreId}))'; 
 
+  // indexing for this table
+  static String indexSQL = 'CREATE INDEX ${colAlbumName}_$tableName ON $tableName ($colAlbumName)';
+
 }
 
 class ArtistTable {
@@ -112,6 +127,9 @@ class ArtistTable {
                               '$colImageId INT NOT NULL, '+
                               'CONSTRAINT FK_${Imagestable.tableName} FOREIGN KEY ($colImageId) '+
                               'REFERENCES ${Imagestable.tableName}(${Imagestable.colImageId}))';
+
+  // indexing for this table
+  static String indexSQL = 'CREATE INDEX ${colName}_$tableName ON $tableName ($colName)';
 
 }
 
@@ -141,6 +159,9 @@ class SongsTable {
                               'CONSTRAINT FK_${Imagestable.tableName} FOREIGN KEY ($colImageId) '+
                               'REFERENCES ${Imagestable.tableName}(${Imagestable.colImageId}))';
 
+  // indexing for this table
+  static String indexSQL = 'CREATE INDEX ${colTitle}_$tableName ON $tableName ($colTitle)';
+
 }
 
 class SongByTable {
@@ -152,7 +173,7 @@ class SongByTable {
   static String colAlbumId = 'albumId';
   static String colArtistId = 'artistId';
 
-  // create table command
+  // create table command secondary indexed the artistid
   static String createTable = 'CREATE TABLE $tableName($colSongId INTEGER PRIMARY KEY NOT NULL, '+
                               '$colAlbumId INT NOT NULL, '+
                               '$colArtistId INT NOT NULL, '+
@@ -162,6 +183,9 @@ class SongByTable {
                               'REFERENCES ${AlbumsTable.tableName}(${AlbumsTable.colAlbumId}), '+
                               'CONSTRAINT FK_${ArtistTable.tableName} FOREIGN KEY ($colArtistId) '+
                               'REFERENCES ${ArtistTable.tableName}(${ArtistTable.colArtistId}))';
+
+  // indexing for this table
+  static String indexSQL = 'CREATE INDEX all_$tableName ON $tableName ($colAlbumId,$colArtistId)';
 
 }
 
@@ -176,7 +200,7 @@ class FrequentlyHeardTable {
   static String colCount = 'count';
   static String colWeekNo = 'weekNo';
   
-  // create table command
+  // create table command clusterind indexed userid
   static String createTable = 'CREATE TABLE $tableName($colUserId INTEGER NOT NULL, '+
                               '$colSongId INT NOT NULL, '+
                               '$colAlbumId INT NOT NULL, '+
@@ -188,7 +212,10 @@ class FrequentlyHeardTable {
                               'CONSTRAINT FK_${SongsTable.tableName} FOREIGN KEY ($colSongId) '+
                               'REFERENCES ${SongsTable.tableName}(${SongsTable.colSongId}), '+
                               'CONSTRAINT FK_${AlbumsTable.tableName} FOREIGN KEY ($colAlbumId) '+
-                              'REFERENCES ${AlbumsTable.tableName}(${AlbumsTable.colAlbumId}))';
+                              'REFERENCES ${AlbumsTable.tableName}(${AlbumsTable.colAlbumId})) WITHOUT ROWID';
+
+  // indexing for this table
+  static String indexSQL = 'CREATE INDEX user_$tableName ON $tableName ($colUserId)';
 
 }
 
@@ -201,14 +228,21 @@ class IncludesTable {
   static String colSongId = 'songId';
   static String colAlbumId = 'albumId';
 
-  // create table command
-  static String createTable = 'CREATE TABLE $tableName($colIncludesId INTEGER PRIMARY KEY AUTOINCREMENT, '+
+  // create table command cluster indexed
+  static String createTable = 'CREATE TABLE $tableName($colIncludesId INTEGER, '+
                               '$colSongId INT NOT NULL, '+
                               '$colAlbumId INT NOT NULL, '+
+                              'CONSTRAINT PK_${IncludesTable.tableName} PRIMARY KEY '+
+                              '(${IncludesTable.colSongId},${IncludesTable.colIncludesId}) '+
+                              'CONSTRAINT FK_${PlaylistTable.tableName} FOREIGN KEY ($colIncludesId) '+
+                              'REFERENCES ${PlaylistTable.tableName}(${PlaylistTable.colPlaylistId}), '+
                               'CONSTRAINT FK_${SongsTable.tableName} FOREIGN KEY ($colSongId) '+
                               'REFERENCES ${SongsTable.tableName}(${SongsTable.colSongId}), '+
                               'CONSTRAINT FK_${AlbumsTable.tableName} FOREIGN KEY ($colAlbumId) '+
-                              'REFERENCES ${AlbumsTable.tableName}(${AlbumsTable.colAlbumId}))';
+                              'REFERENCES ${AlbumsTable.tableName}(${AlbumsTable.colAlbumId})) WITHOUT ROWID';
+
+  // indexing for this table
+  static String indexSQL = 'CREATE INDEX ${colIncludesId}_$tableName ON $tableName ($colIncludesId)';
 
 }
 

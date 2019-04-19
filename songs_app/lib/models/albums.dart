@@ -17,6 +17,10 @@ class Album {
   int get genreId => this._genreId;
   int get imageId => this._imageId;
 
+  //constructors
+  Album(this._albumName,this._releaseDate,this._albumLength,this._totalTracks,this._genreId,this._imageId);
+  Album.withId(this._albumId,this._albumName,this._releaseDate,this._albumLength,this._totalTracks,this._genreId,this._imageId);
+
   // setter functions for variables
   set albumName(String name) {
     this._albumName = name;
@@ -44,7 +48,7 @@ class Album {
     if(this._albumId != null)
       map['albumId'] = this._albumId;
     map['albumName'] = this._albumName;
-    map['releaseDate'] = this._releaseDate;
+    map['releaseDate'] = this._releaseDate.toIso8601String();
     map['albumLength'] = this._albumLength;
     map['totalTracks'] = this._totalTracks;
     map['genreId'] = this._genreId;
@@ -56,7 +60,7 @@ class Album {
   Album.fromMaptoAlbum(Map<String,dynamic> map) {
     this._albumId = map['albumId'];
     this._albumName = map['albumName'];
-    this._releaseDate = map['releaseDate'];
+    this._releaseDate = DateTime.parse( map['releaseDate']);
     this._albumLength = map['albumLength'];
     this._totalTracks = map['totalTracks'];
     this._genreId = map['genreId'];
