@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BaseAuth {
   static BaseAuth _baseAuth;
-  static FirebaseAuth _firebaseAuth;
+  static FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  static Firestore _db = Firestore.instance;
 
   BaseAuth._createInstance();
 
@@ -16,15 +18,14 @@ class BaseAuth {
   }
 
   FirebaseAuth get firebaseAuth {
-    if(_firebaseAuth == null) {
-      _firebaseAuth = FirebaseAuth.instance;
-    }
     return _firebaseAuth;
   }
 
+  Firestore get firestoreDB {
+    return _db;
+  }
+
   Future<String> login(String email, String password) async {
-    // FirebaseUser user = await firebaseAuth.signInWithEmailAndPassword(
-    //     email: email, password: password);
       FirebaseUser user = await firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
       return user.uid;
@@ -53,5 +54,9 @@ class BaseAuth {
   Future<bool> isEmailVerified() async {
     FirebaseUser user = await firebaseAuth.currentUser();
     return user.isEmailVerified;
+  }
+
+  Future<void> resetPassword(String email) async {
+    await firebaseAuth.sendPasswordResetEmail(email: email);
   }
 }
