@@ -17,6 +17,7 @@ import 'package:songs_app/models/image.dart';
 import 'package:songs_app/models/includes.dart';
 
 import 'package:sqflite/sqflite.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:songs_app/utils/database_files/songbyCRUD.dart';
 import 'package:songs_app/utils/database_files/songsCRUD.dart';
@@ -45,6 +46,10 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
         child: ListView(
           children: <Widget>[
             Text('Hello World'),
+            RaisedButton(
+              child: Text('Add Data to firebase'),
+              onPressed: _addToFirestore,
+            ),
             RaisedButton(
               child: Text('Add Database'),
               onPressed: _initializeDatabase,
@@ -175,6 +180,13 @@ class _CreateDatabasePageState extends State<CreateDatabasePage> {
   //   DatabaseHelper databaseHelper = DatabaseHelper();
   //   print("\n\n\nDeleted database\n\n\n\n\n");
   // }
+
+  void _addToFirestore() async {
+    final Firestore _db = Firestore.instance;
+    DocumentReference ref = await _db.collection('CRUD').add({'data': {'hello':15}});
+    print(ref.updateData({'data':'hey'}));
+    // await _db.collection('helloall').where(field);
+  }
 
   void _initializeDatabase() async {
     // UsersCRUD();
