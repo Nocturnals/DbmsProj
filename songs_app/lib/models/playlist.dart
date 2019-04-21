@@ -32,7 +32,9 @@ class Playlist {
   // function to convert object to map
   Map<String, dynamic> toMap() {
     Map<String, dynamic> playlistMap = Map<String, dynamic>();
-    playlistMap['playlistId'] = this._playlistId;
+    if (this._playlistId != null) {
+      playlistMap['playlistId'] = this._playlistId;
+    }
     playlistMap['userId'] = this._userId;
     playlistMap['name'] = this._name;
 

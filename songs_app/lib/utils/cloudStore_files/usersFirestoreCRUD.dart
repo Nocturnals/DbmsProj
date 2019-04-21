@@ -10,16 +10,19 @@ class UserFirestoreCRUD {
   /// inserts user map to the firestore collection
   // function to insert into user collection
   Future<DocumentReference> insertUser(User user) async {
-    return await Firestore.instance.collection(UsersTable.tableName).add(user.toMap());
+    DocumentReference userDoc = await Firestore.instance.collection(UsersTable.tableName).add(user.toMap());
+    return userDoc;
   }
 
+  /// gets user snapshot with userid as parameter
   Future<DocumentSnapshot> getUser(String userId) async {
-    return await Firestore.instance.collection(UsersTable.tableName).document(userId).get();
+    DocumentSnapshot userSnap = await Firestore.instance.collection(UsersTable.tableName).document(userId).get();
+    return userSnap;
   }
 
+  /// gets all users snapshots in list form
   Future<QuerySnapshot> getAllUsers() async {
     QuerySnapshot result = await Firestore.instance.collection(UsersTable.tableName).getDocuments();
-    print('users count ${result.documents.length}');
     return result;
   }
 }

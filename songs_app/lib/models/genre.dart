@@ -4,7 +4,8 @@ class Genre {
   String _name;
 
   //constructors
-  Genre(this._genreId,this._name);
+  Genre(this._name);
+  Genre.withId(this._genreId,this._name);
 
   // get functions for variables
   String get genreId => this._genreId;
@@ -19,7 +20,9 @@ class Genre {
   Map<String,dynamic> toMap() {
     Map<String,dynamic> map = Map<String,dynamic>();
 
-    map['genreId'] = this._genreId;
+    if (this._genreId != null) {
+      map['genreId'] = this._genreId;
+    }
     map['name'] = this._name;
 
     return map;

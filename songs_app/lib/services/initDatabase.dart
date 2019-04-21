@@ -27,13 +27,10 @@ class InitData {
     // users table
     print('Addind users collection to user table');
     QuerySnapshot usersDocs = await UserFirestoreCRUD().getAllUsers();
-    // print('Users count ${usersDocs.documents.length}');
+
     for (DocumentSnapshot userDoc in usersDocs.documents) {
       User user = User.fromFirestoreMaptoUser(userDoc.data, userDoc.documentID);
-      print('$user');
       await UsersCRUD().insertUser(user);
     }
-
-    // 
   }
 }
