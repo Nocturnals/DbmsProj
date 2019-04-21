@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:songs_app/services/authentication.dart';
 import 'package:songs_app/services/loader.dart';
 import 'package:songs_app/utils/database_files/usersCRUD.dart';
+import 'package:songs_app/utils/cloudStore_files/usersFirestoreCRUD.dart';
 import 'package:songs_app/models/users.dart';
 
 class Register extends StatefulWidget {
@@ -253,7 +255,6 @@ class RegisterState extends State<Register> {
                     ),
                   ),
 
-
                   // ReEnter password
                   Container(
                     width: 350,
@@ -272,7 +273,7 @@ class RegisterState extends State<Register> {
                       ),
                       obscureText: true,
                       validator: (value) {
-                        if(value != passWordController.text) {
+                        if (value != passWordController.text) {
                           return 'Password didn\'t match';
                         }
                         return null;
@@ -348,7 +349,7 @@ class RegisterState extends State<Register> {
         print(userid);
         _showAlertDialog('Status', 'Check your mail to verify');
         await auth.signOut();
-        _saveUserToDB();
+        _saveUserToDatabases();
         setState(() {
           _isLoading = false;
         });
@@ -356,7 +357,7 @@ class RegisterState extends State<Register> {
         print('error: $error');
         _showAlertDialog('Error', error.toString());
         setState(() {
-         _isLoading = false; 
+          _isLoading = false;
         });
       }
     }
@@ -386,17 +387,18 @@ class RegisterState extends State<Register> {
         });
   }
 
-  void _saveUserToDB() async {
+  void _saveUserToDatabases() async {
     User user = User(
         _firstName, _lastName, _email, _gender, _dob, DateTime.now(), true);
 
-    await UsersCRUD().insertUser(user);
-    // Navigator.push(context, MaterialPageRoute(builder: (context) {
-    //   return Login();
-    // }));
+    debugPrint('inserting user to firestore');
+    DocumentReference userRef = await UserFirestoreCRUD().insertUser(user);
+    debugPrint('created user to firestore');
+    DocumentSnapshot userDoc = await userRef.get();
+    await UsersCRUD().insertUser(
+        User.fromFirestoreMaptoUser(userDoc.data, userRef.documentID));
+
     Navigator.of(context)
         .pushNamedAndRemoveUntil('/loginPage', (Route<dynamic> route) => false);
-    // var userlist = await UsersCRUD().getUserMapById(_email);
-    // print(userlist);
   }
 }

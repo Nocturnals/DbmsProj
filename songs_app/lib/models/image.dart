@@ -1,16 +1,14 @@
 class Images {
   // Image attributes
-  int _imageId;
+  String _imageId;
   String _imgLocation;
   String _name;
 
-//constructors
-
-Images(this._imgLocation,this._name);
-Images.withId(this._imageId,this._imgLocation,this._name);
+  //constructors
+  Images(this._imageId,this._imgLocation,this._name);
 
   // get functions 
-  int get imageId => this._imageId;
+  String get imageId => this._imageId;
   String get imgLocation => this._imgLocation;
   String get name => this._name;
 
@@ -41,4 +39,11 @@ Images.withId(this._imageId,this._imgLocation,this._name);
     this._imgLocation = map['imgLocation'];
     this._name = map['name'];
   }
+
+  // function to convert firestore database map to class object
+  Images.fromFirestoreMaptoImage(Map<String,dynamic> map, String fid) {
+    this._imageId = fid;
+    this._imgLocation = map['imgLocation'];
+    this._name = map['name'];
   }
+}

@@ -1,14 +1,13 @@
 class Genre {
   // attributes for genre
-  int _genreId;
+  String _genreId;
   String _name;
 
   //constructors
-  Genre(this._name);
-  Genre.withId(this._genreId,this._name);
+  Genre(this._genreId,this._name);
 
   // get functions for variables
-  int get genreId => this._genreId;
+  String get genreId => this._genreId;
   String get name => this._name;
 
   // set functions for varaibles
@@ -29,6 +28,12 @@ class Genre {
   // function to convert map object to class object
   Genre.fromMaptoGenre(Map<String,dynamic> map) {
     this._genreId = map['genreId'];
+    this._name = map['name'];
+  }
+
+  // function to convert firestore database map object to class object
+  Genre.fromFirestoreMaptoGenre(Map<String,dynamic> map, String fid) {
+    this._genreId = fid;
     this._name = map['name'];
   }
 }

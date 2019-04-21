@@ -1,20 +1,19 @@
 class Artist {
   // artist attributes
-  int _artistId;
+  String _artistId;
   String _name;
   int _totalSongs;
   int _totalAlbums;
-  int _imageId;
+  String _imageId;
 
 //constructer functions for variables
 
-  Artist(this._name, this._totalSongs, this._totalAlbums, this._imageId);
-  Artist.withId(this._artistId, this._name, this._totalSongs,
+  Artist(this._artistId, this._name, this._totalSongs,
       this._totalAlbums, this._imageId);
 
 //get function variables
 
-  int get artistId {
+  String get artistId {
     return _artistId;
   }
 
@@ -30,7 +29,7 @@ class Artist {
     return _totalAlbums;
   }
 
-  int get imageId {
+  String get imageId {
     return _imageId;
   }
 
@@ -48,7 +47,7 @@ class Artist {
     this._totalAlbums = totalAlbums;
   }
 
-  set imageId(int imageId) {
+  set imageId(String imageId) {
     this._imageId = imageId;
   }
 
@@ -70,6 +69,15 @@ class Artist {
 
   Artist.fromMaptoArtist(Map<String, dynamic> map) {
     this._artistId = map['artistId'];
+    this._name = map['name'];
+    this._totalSongs = map['totalSongs'];
+    this._totalAlbums = map['totalAlbums'];
+    this._imageId = map['imageId'];
+  }
+
+  // function to convert firestore database object to class object
+  Artist.fromFirestoreMaptoArtist(Map<String, dynamic> map, String fid) {
+    this._artistId = fid;
     this._name = map['name'];
     this._totalSongs = map['totalSongs'];
     this._totalAlbums = map['totalAlbums'];
