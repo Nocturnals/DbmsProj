@@ -1,36 +1,31 @@
 class Includes {
-// includes attributes
+  // includes attributes
+  String _includesId;
+  String _songId;
+  String _albumId;
 
-  int _includesId;
-  int _songId;
-  int _albumId;
+  //constructor functions
+  Includes(this._includesId, this._songId, this._albumId);
 
-//constructor functions
-
-  Includes(this._songId, this._albumId);
-  Includes.withId(this._includesId, this._songId, this._albumId);
-
-//getter functions
-
-  int get includesId {
+  //getter functions
+  String get includesId {
     return _includesId;
   }
 
-  int get songId {
+  String get songId {
     return _songId;
   }
 
-  int get albumId {
+  String get albumId {
     return _albumId;
   }
 
-//setter functions
-
-  set songId(int id) {
+  //setter functions
+  set songId(String id) {
     this._songId = id;
   }
 
-  set albumId(int id) {
+  set albumId(String id) {
     this._albumId = id;
   }
 
@@ -43,9 +38,16 @@ class Includes {
     return includesMap;
   }
 
-//functions to convert map object to includes objedct
+  //functions to convert map object to includes object
   Includes.fromMaptoIncludes(Map<String, dynamic> map) {
     this._includesId = map['includesId'];
+    this._songId = map['songId'];
+    this._albumId = map['albumId'];
+  }
+
+  //functions to convert map object to includes object
+  Includes.fromFirestoreMaptoIncludes(Map<String, dynamic> map, String fid) {
+    this._includesId = fid;
     this._songId = map['songId'];
     this._albumId = map['albumId'];
   }

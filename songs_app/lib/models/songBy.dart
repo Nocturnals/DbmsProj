@@ -1,25 +1,25 @@
 class SongBy {
   // attributes 
-  int _songId;
-  int _albumId;
-  int _artistId;
+  String _songId;
+  String _albumId;
+  String _artistId;
 
-//Constructor functions
-  SongBy.withId(this._songId, this._albumId, this._artistId);
+  //Constructor functions
+  SongBy(this._songId, this._albumId, this._artistId);
 
   // get functions for variables
-  int get songId => this._songId;
-  int get albumId => this._albumId;
-  int get artistId => this._artistId;
+  String get songId => this._songId;
+  String get albumId => this._albumId;
+  String get artistId => this._artistId;
 
   // setter functions for variables
-  set songId(int id) {
+  set songId(String id) {
     this._songId = id;
   }
-  set albumId(int id) {
+  set albumId(String id) {
     this._albumId = id;
   }
-  set artistId(int id) {
+  set artistId(String id) {
     this._artistId = id;
   }
 
@@ -37,6 +37,13 @@ class SongBy {
   // function to convert map object to class object
   SongBy.fromMaptoSongBy(Map<String,dynamic> map) {
     this._songId = map['songId'];
+    this._albumId = map['albumId'];
+    this._artistId = map['artistId'];
+  }
+
+  // function to convert firestore database map object to class object
+  SongBy.fromFirestoreMaptoSongBy(Map<String,dynamic> map, String fid) {
+    this._songId = fid;
     this._albumId = map['albumId'];
     this._artistId = map['artistId'];
   }

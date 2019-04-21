@@ -13,7 +13,7 @@ class UsersTable {
   static String colActiveStatus = 'activeStatus';
   
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colUserId INTEGER PRIMARY KEY AUTOINCREMENT,' +
+  static String createTable = 'CREATE TABLE $tableName($colUserId TEXT PRIMARY KEY,' +
                       ' $colFirstName TEXT NOT NULL, $colLastName TEXT NOT NULL, ' + 
                       ' $colEmail TEXT NOT NULL UNIQUE, $colGender TEXT NOT NULL, $colDOB TEXT NOT NULL, ' + 
                       '$colLastLogin TEXT NULL, $colActiveStatus TEXT NULL)';
@@ -32,7 +32,7 @@ class GenreTable {
   static String colName = 'name';
 
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colGenreId INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
+  static String createTable = 'CREATE TABLE $tableName($colGenreId TEXT PRIMARY KEY, ' + 
                               '$colName TEXT NOT NULL UNIQUE)';
 
   // indexing for this table
@@ -50,8 +50,8 @@ class PlaylistTable {
   static String colName = 'name';
 
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colPlaylistId INTEGER PRIMARY KEY AUTOINCREMENT, ' + 
-                              '$colUserId INT NOT NULL, $colName VARCHAR(30), ' +  
+  static String createTable = 'CREATE TABLE $tableName($colPlaylistId TEXT PRIMARY KEY, ' + 
+                              '$colUserId TEXT NOT NULL, $colName VARCHAR(30), ' +  
                               'CONSTRAINT FK_${UsersTable.tableName} FOREIGN KEY ($colUserId) '+
                               'REFERENCES ${UsersTable.tableName}(${UsersTable.colUserId}))';
 
@@ -70,7 +70,7 @@ class Imagestable {
   static String colName = 'name';
 
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colImageId INTEGER PRIMARY KEY AUTOINCREMENT, '+
+  static String createTable = 'CREATE TABLE $tableName($colImageId TEXT PRIMARY KEY, '+
                               '$colImgLocation VARCHAR(300) NOT NULL UNIQUE, $colName VARCHAR(150) NOT NULL UNIQUE'+
                               ')';
 
@@ -93,13 +93,13 @@ class AlbumsTable {
   static String colImageId = 'imageId';
 
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colAlbumId INTEGER PRIMARY KEY AUTOINCREMENT, '+
+  static String createTable = 'CREATE TABLE $tableName($colAlbumId TEXT PRIMARY KEY, '+
                               '$colAlbumName VARCHAR(200) NOT NULL, '+
                               '$colReleaseDate TEXT NOT NULL,'+
                               '$colAlbumLength REAL DEFAULT 0 NOT NULL,'+
                               '$colTotalTracks INT DEFAULT 0 NOT NULL, '+
-                              '$colGenreId INT NOT NULL,'+
-                              '$colImageId INT NOT NULL,'+
+                              '$colGenreId TEXT NOT NULL,'+
+                              '$colImageId TEXT NOT NULL,'+
                               'CONSTRAINT FK_${GenreTable.tableName} FOREIGN KEY ($colGenreId) '+
                               'REFERENCES ${GenreTable.tableName}(${GenreTable.colGenreId}))'; 
 
@@ -120,11 +120,11 @@ class ArtistTable {
   static String colImageId = 'imageId';
 
   //create table command
-  static String createTable = 'CREATE TABLE $tableName($colArtistId INTEGER PRIMARY KEY AUTOINCREMENT, '+
+  static String createTable = 'CREATE TABLE $tableName($colArtistId TEXT PRIMARY KEY, '+
                               '$colName VARCHAR(100) NOT NULL, '+
                               '$colTotalSongs INT DEFAULT 0 NOT NULL, '+
                               '$colTotalAlbums INT DEFAULT 0 NOT NULL, '+
-                              '$colImageId INT NOT NULL, '+
+                              '$colImageId TEXT NOT NULL, '+
                               'CONSTRAINT FK_${Imagestable.tableName} FOREIGN KEY ($colImageId) '+
                               'REFERENCES ${Imagestable.tableName}(${Imagestable.colImageId}))';
 
@@ -146,12 +146,12 @@ class SongsTable {
   static String colImageId = 'imageId';
 
   // create table command
-  static String createTable = 'CREATE TABLE $tableName($colSongId INTEGER PRIMARY KEY AUTOINCREMENT, '+
+  static String createTable = 'CREATE TABLE $tableName($colSongId TEXT PRIMARY KEY, '+
                               '$colTitle VARCHAR(300) NOT NULL, '+
                               '$colLength REAL DEFAULT 0 NOT NULL, '+
-                              '$colAlbumId INT NOT NULL, '+
-                              '$colGenreId INT NOT NULL, '+
-                              '$colImageId INT NOT NULL, '+
+                              '$colAlbumId TEXT NOT NULL, '+
+                              '$colGenreId TEXT NOT NULL, '+
+                              '$colImageId TEXT NOT NULL, '+
                               'CONSTRAINT FK_${AlbumsTable.tableName} FOREIGN KEY ($colAlbumId) '+
                               'REFERENCES ${AlbumsTable.tableName}(${AlbumsTable.colAlbumId}), '+
                               'CONSTRAINT FK_${GenreTable.tableName} FOREIGN KEY ($colGenreId) '+
@@ -174,9 +174,9 @@ class SongByTable {
   static String colArtistId = 'artistId';
 
   // create table command secondary indexed the artistid
-  static String createTable = 'CREATE TABLE $tableName($colSongId INTEGER PRIMARY KEY NOT NULL, '+
-                              '$colAlbumId INT NOT NULL, '+
-                              '$colArtistId INT NOT NULL, '+
+  static String createTable = 'CREATE TABLE $tableName($colSongId TEXT PRIMARY KEY NOT NULL, '+
+                              '$colAlbumId TEXT NOT NULL, '+
+                              '$colArtistId TEXT NOT NULL, '+
                               'CONSTRAINT FK_${SongsTable.tableName} FOREIGN KEY ($colSongId) '+
                               'REFERENCES ${SongsTable.tableName}(${SongsTable.colSongId}), '+
                               'CONSTRAINT FK_${AlbumsTable.tableName} FOREIGN KEY ($colAlbumId) '+
@@ -201,9 +201,9 @@ class FrequentlyHeardTable {
   static String colWeekNo = 'weekNo';
   
   // create table command clusterind indexed userid
-  static String createTable = 'CREATE TABLE $tableName($colUserId INTEGER NOT NULL, '+
-                              '$colSongId INT NOT NULL, '+
-                              '$colAlbumId INT NOT NULL, '+
+  static String createTable = 'CREATE TABLE $tableName($colUserId TEXT NOT NULL, '+
+                              '$colSongId TEXT NOT NULL, '+
+                              '$colAlbumId TEXT NOT NULL, '+
                               '$colCount INT NULL, '+
                               '$colWeekNo INT NULL, '+
                               'CONSTRAINT PK_$tableName PRIMARY KEY ($colUserId,$colSongId), '+
@@ -229,9 +229,9 @@ class IncludesTable {
   static String colAlbumId = 'albumId';
 
   // create table command cluster indexed
-  static String createTable = 'CREATE TABLE $tableName($colIncludesId INTEGER, '+
-                              '$colSongId INT NOT NULL, '+
-                              '$colAlbumId INT NOT NULL, '+
+  static String createTable = 'CREATE TABLE $tableName($colIncludesId TEXT, '+
+                              '$colSongId TEXT NOT NULL, '+
+                              '$colAlbumId TEXT NOT NULL, '+
                               'CONSTRAINT PK_${IncludesTable.tableName} PRIMARY KEY '+
                               '(${IncludesTable.colSongId},${IncludesTable.colIncludesId}) '+
                               'CONSTRAINT FK_${PlaylistTable.tableName} FOREIGN KEY ($colIncludesId) '+

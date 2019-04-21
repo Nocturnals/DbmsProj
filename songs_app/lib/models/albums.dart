@@ -1,25 +1,24 @@
 class Album {
   // Attributes for album
-  int _albumId;
+  String _albumId;
   String _albumName;
   DateTime _releaseDate;
   double _albumLength;
   int _totalTracks;
-  int _genreId;
-  int _imageId;
+  String _genreId;
+  String _imageId;
 
   // get functions for variables
-  int get albumId => this._albumId;
+  String get albumId => this._albumId;
   String get albumName => this._albumName;
   DateTime get releaseDate => this._releaseDate;
   double get albumLength => this._albumLength;
   int get totalTracks => this._totalTracks;
-  int get genreId => this._genreId;
-  int get imageId => this._imageId;
+  String get genreId => this._genreId;
+  String get imageId => this._imageId;
 
   //constructors
-  Album(this._albumName,this._releaseDate,this._albumLength,this._totalTracks,this._genreId,this._imageId);
-  Album.withId(this._albumId,this._albumName,this._releaseDate,this._albumLength,this._totalTracks,this._genreId,this._imageId);
+  Album(this._albumId,this._albumName,this._releaseDate,this._albumLength,this._totalTracks,this._genreId,this._imageId);
 
   // setter functions for variables
   set albumName(String name) {
@@ -34,10 +33,10 @@ class Album {
   set totalTracks(int songsCount) {
     this._totalTracks = songsCount;
   }
-  set genreId(int id) {
+  set genreId(String id) {
     this._genreId = id;
   }
-  set imageId(int id) {
+  set imageId(String id) {
     this._imageId = id;
   }
 
@@ -57,8 +56,20 @@ class Album {
     return map;
   }
 
+  // function to get class object from map
   Album.fromMaptoAlbum(Map<String,dynamic> map) {
     this._albumId = map['albumId'];
+    this._albumName = map['albumName'];
+    this._releaseDate = DateTime.parse( map['releaseDate']);
+    this._albumLength = map['albumLength'];
+    this._totalTracks = map['totalTracks'];
+    this._genreId = map['genreId'];
+    this._imageId = map['imageId'];
+  }
+
+  // function to get class object from firestore database map
+  Album.fromFirestoreMaptoAlbum(Map<String,dynamic> map, String fid) {
+    this._albumId = fid;
     this._albumName = map['albumName'];
     this._releaseDate = DateTime.parse( map['releaseDate']);
     this._albumLength = map['albumLength'];

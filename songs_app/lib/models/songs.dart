@@ -1,20 +1,18 @@
 class Song {
-// Song attributes
-  int _songId;
+  // Song attributes
+  String _songId;
   String _title;
   double _length;
-  int _albumId;
-  int _genreId;
-  int _imageId;
+  String _albumId;
+  String _genreId;
+  String _imageId;
 
-//Constructor functions
-  Song(this._title, this._length, this._albumId, this._genreId,
-      this._imageId);
-  Song.withId(this._songId, this._title, this._length, this._albumId,
+  //Constructor functions
+  Song(this._songId, this._title, this._length, this._albumId,
       this._genreId, this._imageId);
 
-// get functions for variables
-  int get songId {
+  // get functions for variables
+  String get songId {
     return _songId;
   }
 
@@ -26,15 +24,15 @@ class Song {
     return _length;
   }
 
-  int get albumId {
+  String get albumId {
     return _albumId;
   }
 
-  int get genreId {
+  String get genreId {
     return _genreId;
   }
 
-  int get imageId {
+  String get imageId {
     return _imageId;
   }
 
@@ -47,15 +45,15 @@ class Song {
     this._length = length;
   }
 
-  set albumId(int albumId) {
+  set albumId(String albumId) {
     this._albumId = albumId;
   }
 
-  set genreId(int genreId) {
+  set genreId(String genreId) {
     this._genreId = genreId;
   }
 
-  set imageId(int imageId) {
+  set imageId(String imageId) {
     this._imageId = imageId;
   }
 
@@ -78,6 +76,16 @@ class Song {
   //function to convert map object to song object
   Song.fromMaptoSong(Map<String, dynamic> map) {
     this._songId = map["songId"];
+    this._title = map["title"];
+    this._length = map["length"];
+    this._albumId = map["albumId"];
+    this._genreId = map["genreId"];
+    this._imageId = map['imageId'];
+  }
+
+  //function to convert map object to song object
+  Song.fromFirestoreMaptoSong(Map<String, dynamic> map, String fid) {
+    this._songId = fid;
     this._title = map["title"];
     this._length = map["length"];
     this._albumId = map["albumId"];
