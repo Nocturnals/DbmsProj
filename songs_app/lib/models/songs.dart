@@ -3,12 +3,13 @@ class Song {
   String _songId;
   String _title;
   double _length;
+  String _location;
   String _albumId;
   String _genreId;
   String _imageId;
 
   //Constructor functions
-  Song(this._songId, this._title, this._length, this._albumId,
+  Song(this._songId, this._title, this._length,this._location, this._albumId,
       this._genreId, this._imageId);
 
   // get functions for variables
@@ -22,6 +23,10 @@ class Song {
 
   double get length {
     return _length;
+  }
+
+  String get location {
+    return _location;
   }
 
   String get albumId {
@@ -45,6 +50,10 @@ class Song {
     this._length = length;
   }
 
+  set location(String location) {
+    this._location = location;
+  }
+
   set albumId(String albumId) {
     this._albumId = albumId;
   }
@@ -66,6 +75,7 @@ class Song {
       songMap["songId"] = this._songId;
     songMap["title"] = this._title;
     songMap["length"] = this._length;
+    songMap['location'] = this._location;
     songMap["albumId"] = this._albumId;
     songMap["genreId"] = this._genreId;
     songMap['imageId'] = this._imageId;
@@ -78,6 +88,7 @@ class Song {
     this._songId = map["songId"];
     this._title = map["title"];
     this._length = map["length"];
+    this._location = map["location"];
     this._albumId = map["albumId"];
     this._genreId = map["genreId"];
     this._imageId = map['imageId'];
@@ -88,6 +99,7 @@ class Song {
     this._songId = fid;
     this._title = map["title"];
     this._length = map["length"];
+    this._location = map["location"];
     this._albumId = map["albumId"];
     this._genreId = map["genreId"];
     this._imageId = map['imageId'];
@@ -95,6 +107,6 @@ class Song {
 
   // Function to convert a song object to list
   List fromSongtoList(){
-    return [this._title, this._length, this._albumId, this._genreId, this._imageId];
+    return [this._title, this._length,this._location, this._albumId, this._genreId, this._imageId];
   }
 }

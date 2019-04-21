@@ -141,6 +141,7 @@ class SongsTable {
   static String colSongId = 'songId';
   static String colTitle = 'title';
   static String colLength = 'length';
+  static String colLocation = 'location';
   static String colAlbumId = 'albumId';
   static String colGenreId = 'genreId';
   static String colImageId = 'imageId';
@@ -149,6 +150,7 @@ class SongsTable {
   static String createTable = 'CREATE TABLE $tableName($colSongId TEXT PRIMARY KEY, '+
                               '$colTitle VARCHAR(300) NOT NULL, '+
                               '$colLength REAL DEFAULT 0 NOT NULL, '+
+                              '$colLocation TEXT NOT NULL, '+
                               '$colAlbumId TEXT NOT NULL, '+
                               '$colGenreId TEXT NOT NULL, '+
                               '$colImageId TEXT NOT NULL, '+
