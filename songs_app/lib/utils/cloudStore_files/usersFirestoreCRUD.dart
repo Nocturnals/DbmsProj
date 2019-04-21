@@ -16,4 +16,10 @@ class UserFirestoreCRUD {
   Future<DocumentSnapshot> getUser(String userId) async {
     return await Firestore.instance.collection(UsersTable.tableName).document(userId).get();
   }
+
+  Future<QuerySnapshot> getAllUsers() async {
+    QuerySnapshot result = await Firestore.instance.collection(UsersTable.tableName).getDocuments();
+    print('users count ${result.documents.length}');
+    return result;
+  }
 }
