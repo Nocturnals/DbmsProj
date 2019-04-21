@@ -9,7 +9,9 @@ class Song {
   String _imageId;
 
   //Constructor functions
-  Song(this._songId, this._title, this._length,this._location, this._albumId,
+  Song(this._title, this._length,this._location, this._albumId,
+      this._genreId, this._imageId);
+  Song.withID(this._songId, this._title, this._length,this._location, this._albumId,
       this._genreId, this._imageId);
 
   // get functions for variables

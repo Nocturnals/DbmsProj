@@ -512,14 +512,14 @@ class TopRelease extends StatelessWidget {
 List createPlaylist() {
   List<List> playlistSongs = List<List>();
   playlistSongs
-      .add(Song('1','You Belong With Me', 3.4,'dummy loc' , '01', '01', '01').fromSongtoList());
+      .add(Song.withID('1','You Belong With Me', 3.4,'dummy loc' , '01', '01', '01').fromSongtoList());
   playlistSongs
-      .add(Song('2','We don\'t talk anymore', 4.4,'dummy loc' , '01', '01', '01').fromSongtoList());
+      .add(Song.withID('2','We don\'t talk anymore', 4.4,'dummy loc' , '01', '01', '01').fromSongtoList());
   playlistSongs
-      .add(Song('3','You Belong With Me', 5.4,'dummy loc' , '01', '01', '01').fromSongtoList());
+      .add(Song.withID('3','You Belong With Me', 5.4,'dummy loc' , '01', '01', '01').fromSongtoList());
   playlistSongs
-      .add(Song('4','You Belong With Me', 3.4,'dummy loc' , '01', '01', '01').fromSongtoList());
+      .add(Song.withID('4','You Belong With Me', 3.4,'dummy loc' , '01', '01', '01').fromSongtoList());
   playlistSongs
-      .add(Song('5','You Belong With Me', 3.4,'dummy loc' , '01', '01', '01').fromSongtoList());
+      .add(Song.withID('5','You Belong With Me', 3.4,'dummy loc' , '01', '01', '01').fromSongtoList());
   return playlistSongs;
 }
