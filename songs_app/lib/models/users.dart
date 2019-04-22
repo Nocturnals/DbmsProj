@@ -1,7 +1,7 @@
 class User {
   
   // User attributes
-  int _userId;
+  String _userId;
   String _firstName;
   String _lastName;
   String _email;
@@ -15,7 +15,7 @@ class User {
   User.withId(this._userId,this._firstName,this._lastName,this._email,this._gender,this._dateOfBirth,this._lastLogin,this._activeStatus);
 
   // get functions for variables
-  int get userId {
+  String get userId {
     return _userId;
   }
   String get firstName {
@@ -83,6 +83,24 @@ class User {
   // function to convert map object to user object
   User.fromMaptoUser(Map<String,dynamic> map) {
     this._userId = map['userId'];
+    this._firstName = map['firstName'];
+    this._lastName = map['lastName'];
+    this._email = map['email'];
+    this._gender = map['gender'];
+    this._dateOfBirth = DateTime.parse(map['dateOfBirth']);
+    this._lastLogin = DateTime.parse(map['lastLogin']);
+    // this._activeStatus = map['activeStatus'];
+    if (map['activeStatus'] == 'true') {
+      this._activeStatus = true;
+    }
+    else {
+      this._activeStatus = false;
+    }
+  }
+
+  // function to convert firestore database map object to user object
+  User.fromFirestoreMaptoUser(Map<String,dynamic> map, String fid) {
+    this._userId = fid;
     this._firstName = map['firstName'];
     this._lastName = map['lastName'];
     this._email = map['email'];

@@ -643,14 +643,14 @@ void navigateToNowPlaying(BuildContext context, List song, List playlist) {
 List createPlaylist() {
   List<List> playlistSongs = List<List>();
   playlistSongs
-      .add(Song('You Belong With Me', 3.43, 01, 01, 01).fromSongtoList());
+      .add(Song.withID('1','You Belong With Me', 3.4,'dummy loc' , '01', '01', '01').fromSongtoList());
   playlistSongs
-      .add(Song('We don\'t talk anymore', 4.42, 01, 01, 01).fromSongtoList());
+      .add(Song.withID('2','We don\'t talk anymore', 4.4,'dummy loc' , '01', '01', '01').fromSongtoList());
   playlistSongs
-      .add(Song('You Belong With Me', 5.41, 01, 01, 01).fromSongtoList());
+      .add(Song.withID('3','You Belong With Me', 5.4,'dummy loc' , '01', '01', '01').fromSongtoList());
   playlistSongs
-      .add(Song('You Belong With Me', 3.47, 01, 01, 01).fromSongtoList());
+      .add(Song.withID('4','You Belong With Me', 3.4,'dummy loc' , '01', '01', '01').fromSongtoList());
   playlistSongs
-      .add(Song('You Belong With Me', 3.49, 01, 01, 01).fromSongtoList());
+      .add(Song.withID('5','You Belong With Me', 3.4,'dummy loc' , '01', '01', '01').fromSongtoList());
   return playlistSongs;
 }
