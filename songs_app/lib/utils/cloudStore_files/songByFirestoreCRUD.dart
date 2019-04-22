@@ -29,8 +29,11 @@ class SongByForestoreCRUD {
     return songBy;
   }
 
+  /// gets all the songby in al list
   Future<List<SongBy>> getAllSongBy() async {
-    QuerySnapshot songBySnaps = await Firestore.instance.collection(SongByTable.tableName).getDocuments();
+    QuerySnapshot songBySnaps = await Firestore.instance
+        .collection(SongByTable.tableName)
+        .getDocuments();
     List<SongBy> songByList = List<SongBy>();
     for (DocumentSnapshot doc in songBySnaps.documents) {
       songByList.add(SongBy.fromMaptoSongBy(doc.data));
