@@ -4,10 +4,10 @@ import 'package:firebase_analytics/observer.dart';
 
 import 'package:songs_app/app screens/profile.dart';
 import 'package:songs_app/app screens/home.dart';
-// import 'package:songs_app/app screens/initiateDatabase.dart';
 import 'package:songs_app/app screens/login.dart';
 import 'package:songs_app/app screens/register.dart';
 import 'package:songs_app/app screens/resetPassword.dart';
+// import 'package:songs_app/app screens/test.dart';
 
 void main() {
   runApp(OnlineMusic());
@@ -37,6 +37,7 @@ class OnlineMusic extends StatelessWidget {
         '/resetPasswordPage': (BuildContext context) => ResetPassword(),
       },
       home: Login(),
+      // home: ShowUsers(),
     );
   }
 }
