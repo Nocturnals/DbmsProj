@@ -8,7 +8,9 @@ class Artist {
 
 //constructer functions for variables
 
-  Artist(this._artistId, this._name, this._totalSongs,
+  Artist(this._name, this._totalSongs,
+      this._totalAlbums, this._imageId);
+  Artist.withID(this._artistId, this._name, this._totalSongs,
       this._totalAlbums, this._imageId);
 
 //get function variables

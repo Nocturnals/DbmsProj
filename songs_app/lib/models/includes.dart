@@ -46,9 +46,9 @@ class Includes {
   }
 
   //functions to convert map object to includes object
-  Includes.fromFirestoreMaptoIncludes(Map<String, dynamic> map, String fid) {
-    this._includesId = fid;
-    this._songId = map['songId'];
-    this._albumId = map['albumId'];
-  }
+  // Includes.fromFirestoreMaptoIncludes(Map<String, dynamic> map, String fid) {
+  //   this._includesId = fid;
+  //   this._songId = map['songId'];
+  //   this._albumId = map['albumId'];
+  // }
 }

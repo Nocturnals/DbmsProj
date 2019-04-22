@@ -41,10 +41,10 @@ class SongBy {
     this._artistId = map['artistId'];
   }
 
-  // function to convert firestore database map object to class object
-  SongBy.fromFirestoreMaptoSongBy(Map<String,dynamic> map, String fid) {
-    this._songId = fid;
-    this._albumId = map['albumId'];
-    this._artistId = map['artistId'];
-  }
+  // // function to convert firestore database map object to class object
+  // SongBy.fromFirestoreMaptoSongBy(Map<String,dynamic> map, String fid) {
+  //   this._songId = fid;
+  //   this._albumId = map['albumId'];
+  //   this._artistId = map['artistId'];
+  // }
 }

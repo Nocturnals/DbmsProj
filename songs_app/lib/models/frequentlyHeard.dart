@@ -8,7 +8,7 @@ class FrequentlyHeard {
   int _weekNo;
 
   // constructor functions
-  FrequentlyHeard.withId(this._userId,this._songId,this._albumId,this._count,this._weekNo);
+  FrequentlyHeard(this._userId,this._songId,this._albumId,this._count,this._weekNo);
 
   // get functions for variables
   String get userId => _userId;
@@ -57,11 +57,11 @@ class FrequentlyHeard {
   }
 
   // function to convert map object to frequntlyHeard object
-  FrequentlyHeard.fromFirestoreMaptoFrequentlyHeard(Map<String, dynamic> map, String fid) {
-    this._userId = fid;
-    this._songId = map['songId'];
-    this._albumId = map['albumId'];
-    this._count = map['count'];
-    this._weekNo = map['weekNo'];
-  }
+  // FrequentlyHeard.fromFirestoreMaptoFrequentlyHeard(Map<String, dynamic> map, String fid) {
+  //   this._userId = fid;
+  //   this._songId = map['songId'];
+  //   this._albumId = map['albumId'];
+  //   this._count = map['count'];
+  //   this._weekNo = map['weekNo'];
+  // }
 }

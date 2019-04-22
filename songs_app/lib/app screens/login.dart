@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:songs_app/services/loader.dart';
 import 'package:songs_app/services/authentication.dart';
+
+import 'package:songs_app/models/users.dart';
+import 'package:songs_app/utils/cloudStore_files/usersFirestoreCRUD.dart';
+import 'package:songs_app/utils/database_files/usersCRUD.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -310,6 +315,7 @@ class _LoginPageState extends State<Login> {
                 );
               });
         } else {
+          _updateLastLogin();
           Navigator.of(context).pushReplacementNamed('/homePage');
         }
         // _getUserFromDB();
@@ -321,6 +327,15 @@ class _LoginPageState extends State<Login> {
         });
       }
     }
+  }
+
+  void _updateLastLogin() async {
+    FirebaseUser firebaseUser = await auth.getCurrentUser();
+    User loggedUser = await UsersCRUD().getUserByID(firebaseUser.email);
+    loggedUser.lastLogin = DateTime.now();
+    print(loggedUser.lastLogin);
+    await UsersCRUD().updateUser(loggedUser);
+    await UserFirestoreCRUD().updateUserWithID(loggedUser);
   }
 
   void _resendEmailVerification() async {
