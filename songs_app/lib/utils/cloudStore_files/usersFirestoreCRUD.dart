@@ -25,6 +25,14 @@ class UserFirestoreCRUD {
     return user;
   }
 
+  Future<void> updateUserWithID(User user) async {
+    await Firestore.instance
+        .collection(UsersTable.tableName)
+        .document(user.userId)
+        .updateData(user.toMap());
+    return;
+  }
+
   /// gets all users snapshots in list form
   Future<List<User>> getAllUsers() async {
     QuerySnapshot userDocs = await Firestore.instance
