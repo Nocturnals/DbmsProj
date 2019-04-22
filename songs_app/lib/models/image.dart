@@ -5,7 +5,8 @@ class Images {
   String _name;
 
   //constructors
-  Images(this._imageId,this._imgLocation,this._name);
+  Images(this._imgLocation,this._name);
+  Images.withID(this._imageId,this._imgLocation,this._name);
 
   // get functions 
   String get imageId => this._imageId;

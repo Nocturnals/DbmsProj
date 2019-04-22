@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 // imports of models
 import 'package:songs_app/models/users.dart';
 
@@ -26,10 +24,9 @@ class InitData {
 
     // users table
     print('Addind users collection to user table');
-    QuerySnapshot usersDocs = await UserFirestoreCRUD().getAllUsers();
+    List<User> userList = await UserFirestoreCRUD().getAllUsers();
 
-    for (DocumentSnapshot userDoc in usersDocs.documents) {
-      User user = User.fromFirestoreMaptoUser(userDoc.data, userDoc.documentID);
+    for (User user in userList) {
       await UsersCRUD().insertUser(user);
     }
   }

@@ -5,7 +5,8 @@ class Playlist {
   String _name;
 
   //constructor functions
-  Playlist(this._playlistId, this._userId, this._name);
+  Playlist(this._userId, this._name);
+  Playlist.withID(this._playlistId, this._userId, this._name);
 
   // get functions
   String get playlistId {
