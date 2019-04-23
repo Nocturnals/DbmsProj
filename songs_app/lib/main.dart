@@ -8,7 +8,7 @@ import 'package:songs_app/app screens/login.dart';
 import 'package:songs_app/app screens/register.dart';
 import 'package:songs_app/app screens/resetPassword.dart';
 import 'package:songs_app/app screens/testing/test.dart';
-import 'package:songs_app/app screens/now_playing.dart';
+// import 'package:songs_app/app screens/now_playing.dart';
 
 void main() {
   runApp(OnlineMusic());

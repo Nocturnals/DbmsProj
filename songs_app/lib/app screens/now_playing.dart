@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 
 import 'package:songs_app/app screens/now_playing_widgets/widgets.dart';
-import 'package:songs_app/app screens/home.dart';
+// import 'package:songs_app/app screens/home.dart';
 import 'package:songs_app/app screens/playlists.dart';
 
 // Now Playing Widget
