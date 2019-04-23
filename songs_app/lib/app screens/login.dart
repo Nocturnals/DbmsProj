@@ -9,8 +9,6 @@ import 'package:songs_app/services/authentication.dart';
 import 'package:songs_app/models/users.dart';
 import 'package:songs_app/utils/cloudStore_files/usersFirestoreCRUD.dart';
 import 'package:songs_app/utils/database_files/usersCRUD.dart';
-import 'package:songs_app/utils/database_helper.dart';
-import 'package:songs_app/services/initDatabase.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -25,30 +23,10 @@ class _LoginPageState extends State<Login> {
   final BaseAuth auth = BaseAuth();
   Database db;
   bool _isLoading = false;
-  bool _dataRetrivalStatus = false;
 
   String _email;
   String _password;
 
-  @override
-  void initState() {
-    getDatabase();
-    super.initState();
-  }
-
-  void getDatabase() async {
-    setState(() {
-     _isLoading = true;
-     _dataRetrivalStatus = true;
-    });
-    db = await DatabaseHelper().database;
-    print('Got the database');
-    await InitData.populateDatatoDatabase();
-    setState(() {
-     _isLoading =false; 
-     _dataRetrivalStatus = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,22 +79,7 @@ class _LoginPageState extends State<Login> {
   }
 
   Widget _getBody() {
-    if (_isLoading && _dataRetrivalStatus) {
-      return Center(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Container(),
-            ),
-            Loader(),
-            Text('Syncing local database to firebase database',style: TextStyle(fontSize: 20),),
-            Expanded(
-              child: Container(),
-            )
-          ],
-        ),
-      );
-    } else if (_isLoading) {
+    if (_isLoading) {
       return Loader();
     } else {
       return Form(
@@ -364,7 +327,12 @@ class _LoginPageState extends State<Login> {
               });
         } else {
           _updateLastLogin();
-          Navigator.of(context).pushReplacementNamed('/homePage');
+          print('$_email');
+          if (_email == 'hemanthtemp07@gmail.com') {
+            Navigator.of(context).pushNamed('/test');
+          } else {
+            Navigator.of(context).pushReplacementNamed('/homePage');
+          }
         }
         // _getUserFromDB();
       } catch (error) {

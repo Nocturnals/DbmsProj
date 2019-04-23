@@ -1,28 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:songs_app/models/users.dart';
-import 'package:songs_app/utils/database_files/usersCRUD.dart';
+import 'package:songs_app/models/genre.dart';
+import 'package:songs_app/utils/database_files/genreCRUD.dart';
+import 'package:songs_app/utils/cloudStore_files/genreFirestoreCRUD.dart';
 
-class ShowUsers extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _ShowUsersState();
-  }
-}
-
-class _ShowUsersState extends State<ShowUsers> {
-  List<User> userList = List<User>();
-
-  @override
-  void initState() {
-    debugPrint('hello');
-    getUsers();
-    super.initState();
-  }
-
+class TestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      child: Scaffold(
         appBar: AppBar(
           leading: null,
           title: Text(
@@ -36,24 +23,37 @@ class _ShowUsersState extends State<ShowUsers> {
           centerTitle: true,
           backgroundColor: Colors.deepPurple,
         ),
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              RaisedButton(
-                child: Text('get users'),
-                onPressed: getUsers,
-              ),
-            ],
-          ),
-        ));
+        body: _getBody(),
+      )
+    );
   }
 
-  void getUsers() async {
-    debugPrint('getting all users');
-    userList = await UsersCRUD().getUserList();
-    debugPrint('Got users of ${userList.length} ${userList[0].email}');
-    setState(() {
-      userList = userList;
-    });
+  Widget _getBody() {
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          RaisedButton(
+            child: Text('Add data'),
+            onPressed: addData,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void addData() async {
+    List<Genre> genreList = List<Genre>();
+
+    genreList.add(Genre('Rock'));
+    genreList.add(Genre('Party'));
+    genreList.add(Genre('Horror'));
+
+    for (Genre genre in genreList) {
+      DocumentReference ref = await GenreFirestoreCRUD().insertGenre(genre);
+      DocumentSnapshot snap = await ref.get();
+      Genre newGenre = Genre.fromFirestoreMaptoGenre(snap.data, snap.documentID);
+      await GenreCRUD().insertGenre(newGenre);
+    }
   }
 }

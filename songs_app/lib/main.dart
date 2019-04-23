@@ -8,6 +8,8 @@ import 'package:songs_app/app screens/login.dart';
 import 'package:songs_app/app screens/register.dart';
 import 'package:songs_app/app screens/resetPassword.dart';
 import 'package:songs_app/app screens/testing/test.dart';
+import 'package:songs_app/app screens/test.dart';
+import 'package:songs_app/app screens/initiateDatabase.dart';
 // import 'package:songs_app/app screens/now_playing.dart';
 
 void main() {
@@ -37,9 +39,10 @@ class OnlineMusic extends StatelessWidget {
         '/profilePage': (BuildContext context) => Profile(),
         '/resetPasswordPage': (BuildContext context) => ResetPassword(),
         '/playAsong': (BuildContext context) => AudioPlayerWidget(),
+        '/test': (BuildContext context) => TestPage(),
         // '/nowPlayingPage': (BuildContext context) => NowPlayingWidget(),
       },
-      home: Login(),
+      home: InitDatabasePage(),
       // home: ShowUsers(),
     );
   }
