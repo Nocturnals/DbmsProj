@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:songs_app/app screens/home/home.dart';
 import 'package:songs_app/app screens/now_playing_widgets/current_song_display.dart';
-// import 'package:audioplayers/audioplayers.dart';
 
 import 'package:songs_app/app screens/now_playing_widgets/widgets.dart';
-// import 'package:songs_app/app screens/home.dart';
 import 'package:songs_app/app screens/playlists.dart';
 
 

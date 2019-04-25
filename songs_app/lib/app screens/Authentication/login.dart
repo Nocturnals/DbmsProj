@@ -328,7 +328,7 @@ class _LoginPageState extends State<Login> {
         } else {
           _updateLastLogin();
           print('$_email');
-          if (_email == 'hemanthtemp07@gmail.com') {
+          if (1 == 2) {
             Navigator.of(context).pushNamed('/test');
           } else {
             Navigator.of(context).pushReplacementNamed('/homePage');
