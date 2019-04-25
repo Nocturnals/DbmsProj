@@ -7,6 +7,13 @@ import 'package:songs_app/utils/database_files/tables.dart';
 import 'package:songs_app/utils/database_helper.dart';
 
 class UsersCRUD {
+
+  static UsersCRUD _usersCRUD = UsersCRUD._createInstance();
+
+  UsersCRUD._createInstance();
+
+  factory UsersCRUD() => _usersCRUD;
+
   DatabaseHelper databaseHelper = DatabaseHelper();
 
   /// fetch all users
