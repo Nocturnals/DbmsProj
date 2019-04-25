@@ -3,8 +3,6 @@ import 'package:animator/animator.dart';
 
 import 'package:songs_app/services/authentication.dart';
 
-import 'package:songs_app/app screens/profile/profile.dart';
-
 import 'package:songs_app/app screens/titles.dart';
 
 

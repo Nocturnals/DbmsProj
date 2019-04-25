@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/services.dart';
 
 import 'package:songs_app/app screens/home/home.dart';
 import 'package:songs_app/app screens/now_playing_widgets/current_song_display.dart';
 import 'package:songs_app/app screens/playlists.dart';
 import 'package:songs_app/app screens/now_playing_widgets/widgets.dart';
-
-import 'package:songs_app/data/song_data.dart';
 
 
 /// Communicates the current state of the audio player.
