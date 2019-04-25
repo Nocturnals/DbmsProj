@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 
-import 'package:songs_app/app screens/profile.dart';
-import 'package:songs_app/app screens/home.dart';
-import 'package:songs_app/app screens/login.dart';
-import 'package:songs_app/app screens/register.dart';
-import 'package:songs_app/app screens/resetPassword.dart';
-import 'package:songs_app/app screens/testing/test.dart';
+import 'package:songs_app/app screens/profile/profile.dart';
+import 'package:songs_app/app screens/home/home.dart';
+import 'package:songs_app/app screens/Authentication/login.dart';
+import 'package:songs_app/app screens/Authentication/register.dart';
+import 'package:songs_app/app screens/Authentication/resetPassword.dart';
 import 'package:songs_app/app screens/test.dart';
 import 'package:songs_app/app screens/initiateDatabase.dart';
 // import 'package:songs_app/app screens/now_playing.dart';
@@ -24,7 +23,7 @@ class OnlineMusic extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return MaterialApp(
-      title: 'BLINK',
+      title: 'BLYNK',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.deepPurple
@@ -38,7 +37,6 @@ class OnlineMusic extends StatelessWidget {
         '/homePage': (BuildContext context) => Home(), 
         '/profilePage': (BuildContext context) => Profile(),
         '/resetPasswordPage': (BuildContext context) => ResetPassword(),
-        '/playAsong': (BuildContext context) => AudioPlayerWidget(),
         '/test': (BuildContext context) => TestPage(),
         // '/nowPlayingPage': (BuildContext context) => NowPlayingWidget(),
       },

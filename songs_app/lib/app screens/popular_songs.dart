@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './home.dart';
+import 'package:songs_app/app screens/home/home.dart';
+import 'package:songs_app/app screens/titles.dart';
 
 // PopularSongs Widget...
 class PopularSongsWidget extends StatefulWidget {
@@ -21,24 +22,15 @@ class PopularSongsWidgetState extends State<PopularSongsWidget> {
     return Container(
       child: ListView(
         scrollDirection: Axis.vertical,
+        
         children: <Widget>[
 
-          Container(
-            margin: EdgeInsets.only(top: 30, bottom: 5),
-            child: Text(
-              'Top Releases',
-              style: TextStyle(
-                fontSize: 40,
-                fontFamily: 'LUMOS',
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          sortedSongsTitles('Top Releases'),
           TopRelease(),
 
         ],
       ),
+
       decoration: BoxDecoration(
         border: Border(
           top: BorderSide(

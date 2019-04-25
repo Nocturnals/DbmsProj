@@ -1,137 +1,185 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-// Variables...
-bool shuffleOn = false;
 
 // Currently Playing Part...
-Widget firstWidget(Map<String, dynamic> args) {
-  
-  return Center(
-    child: Column(
-      children: <Widget>[
-        Card(
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          margin: EdgeInsets.only(top: args['topPadding']),
-          child: Container(
-            height: 300,
-            width: 300,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(args['artistImage']),
-                    fit: BoxFit.cover)),
-          ),
-          elevation: 32,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 42),
-          child: Text(
-            args['songName'],
-            style: TextStyle(fontSize: 32,
-            fontWeight: FontWeight.bold),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Album: ', style: TextStyle(color: Colors.black54),),
-            Text(
-              args['albumName'],
-              style: TextStyle(color: Colors.indigo),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Artist: ', style: TextStyle(color: Colors.black54),),
-            Text(
-              args['artistName'],
-              style: TextStyle(color: Colors.indigo),
-            ),
-          ],
-        ),
-        Container(
-          height: 4,
-          margin: EdgeInsets.only(top: 40, left: 10, right: 10),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                child: Text('0.0', style: TextStyle(), textAlign: TextAlign.start,),
-              ),
-              Expanded(
-                child: Text(args['songLength'], style: TextStyle(), textAlign: TextAlign.end,),
-              )
-            ],
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 20),
-          width: 400,
-          height: 2,
-          decoration: BoxDecoration(
-            color: Colors.blueGrey
-          ),
-          child: Container(
-            margin: EdgeInsets.only(right: double.infinity, left: 0),
-            child: IconButton(
-              padding: EdgeInsets.only(top: 0),
-              icon: Icon(Icons.album, color: Colors.blueGrey, size: 15,),
-              onPressed: () {debugPrint('pressed');},
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 50),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Expanded(child: IconButton(
-                icon: Icon(Icons.shuffle, color: shuffleOn ? Colors.black : Colors.grey,),
-                onPressed: () {
-                  switch (shuffleOn) {
-                    case true:
-                      shuffleOn = false;
-                      break;
-                    case false:
-                      shuffleOn = true;
-                      break;
-                    default:
-                  }
-                },
-              )),
-              Expanded(child: IconButton(
-                icon: Icon(Icons.skip_previous),
-                onPressed: () {},
-              )),
-              Expanded(
-                child: Center(
-                  child: IconButton(
-                    padding: EdgeInsets.only(left: 0, bottom: 30),
-                    icon: Icon(
-                      Icons.play_circle_outline,
-                      color: Colors.black,
-                      size: 54,
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-              ),
-              Expanded(child: IconButton(
-                icon: Icon(Icons.skip_next),
-                onPressed: () {},
-              )),
-              Expanded(child: IconButton(
-                icon: Icon(Icons.repeat, color: Colors.grey,),
-                onPressed: () {},
-              )),
-            ],
-          ),
-        ),
+class CurrentSongDisplayWidget {
 
+// Widgets...
+
+  // Go Back Button...
+  Widget exitFullScreen(TabController tabController, BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      child: Center(
+          child: RaisedButton(
+          elevation: 6.0,
+          child: Text('Exit Full Screen', style: TextStyle(color: Colors.white),),
+          onPressed: () {
+            tabController.index = 1;
+            Navigator.pushNamed(context, '/homePage');
+          },
+          shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+          color: Colors.red[400],
+        ),
+      )
+    );
+  }
+
+
+  // Song Card...
+  Widget songDisplayCard(args) {
+    return Card(
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      margin: EdgeInsets.only(top: 50),
+      child: Container(
+        height: 300,
+        width: 300,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(args['artistImage']),
+                fit: BoxFit.cover)),
+      ),
+      elevation: 32,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+    );
+  }
+
+
+  // Song Name...
+  Widget songName(args) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 42),
+      child: Text(
+        args['songName'],
+        style: TextStyle(fontSize: 32,
+        fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+
+  // Album Name...
+  Widget albumArtistName(String type, String key, args) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(type + ':  ', style: TextStyle(color: Colors.black54),),
+        Text(
+          args[key],
+          style: TextStyle(color: Colors.indigo),
+        ),
       ],
-    ),
-  );
+    );
+  }
+
+
+  // Song Length indicator...
+  Widget songLengthIndicator(args) {
+    return Container(
+      height: 4,
+      margin: EdgeInsets.only(top: 40, left: 10, right: 10, bottom: 10),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text('0.0', style: TextStyle(), textAlign: TextAlign.start,),
+          ),
+          Expanded(
+            child: Text(args['songLength'], style: TextStyle(), textAlign: TextAlign.end,),
+          )
+        ],
+      ),
+    );
+  }
+
+
+  // Slider...
+  Widget songSlider() {
+    return Slider(
+      value: 2.0,
+      min: 0.0,
+      activeColor: Colors.red[500],
+      inactiveColor: Colors.red[100],
+      max: 4.47,
+      onChangeStart: (value) {},
+      onChanged: (value) {},
+      onChangeEnd: (value) async {},
+    );
+  }
+
+
+  // Play bar buttons..
+  Widget playBarButton(Icon icon, String name) {
+    return Expanded(child: IconButton(
+      icon: icon,
+      onPressed: () {
+        
+      },
+    ));
+  }
+
+
+  // Display Playlist Header...
+  Widget displayPlaylistHeader() {
+    
+    return Container(
+      
+      height: 70,
+      
+      margin: EdgeInsets.only(left: 0,),
+      
+      child: Center(
+        child: Text(
+
+          'playlist'.toUpperCase(),
+          style: TextStyle(
+            fontSize: 30,
+            fontFamily: 'Magnificent',
+          ),
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.fade,
+        
+        ),
+      ),
+
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: Colors.black))
+      ),
+    
+    );
+  
+  }
+
+
+  // Display Playlist Name...
+  Widget displayPlaylistName(String playlistName, Color backgroundColor) {
+
+    return Container(
+      
+      height: 70,
+      
+      margin: EdgeInsets.only(left: 0,),
+      
+      child: Container(
+        padding: EdgeInsets.only(top: 17, left: 20),
+        child: Text(
+
+          playlistName,
+          style: TextStyle(
+            fontSize: 30,
+            fontFamily: 'Magnificent',
+          ),
+          textAlign: TextAlign.start,
+          overflow: TextOverflow.fade,
+
+        ),
+      ),
+
+      color: backgroundColor,
+    
+    );
+  }
+
 }

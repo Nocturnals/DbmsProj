@@ -1,58 +1,44 @@
 import 'package:flutter/material.dart';
 
-import 'package:songs_app/app screens/home.dart';
+import 'package:songs_app/app screens/home/home.dart';
+import 'package:songs_app/app screens/titles.dart';
 
 // Playlists Widget...
 class PlaylistWidget extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState() {
     return PlaylistWidgetState();
   }
+
 }
 
 // Playlists Widget State...
 class PlaylistWidgetState extends State<PlaylistWidget> {
+
   @override
   Widget build(BuildContext context) {
+
     return Container(
       child: ListView(
+
         scrollDirection: Axis.vertical,
+        
         children: <Widget>[
+
           // Recently Played...
-          Container(
-            margin: EdgeInsets.only(top: 30, bottom: 5),
-            child: Text(
-              'Recently Played',
-              style: TextStyle(
-                fontSize: 40,
-                fontFamily: 'LUMOS',
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          sortedSongsTitles('Recently Played'),
           RecentlyPlayed(),
 
           // Playlists...
-          Container(
-            margin: EdgeInsets.only(top: 30, bottom: 5),
-            child: Text(
-              'Your Playlists',
-              style: TextStyle(
-                fontSize: 40,
-                fontFamily: 'LUMOS',
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          sortedSongsTitles('Your Playlists'),
           Playlist(),
+
         ],
+
       ),
-      decoration: BoxDecoration(
-          border: Border(
-              top: BorderSide(
-                  color: Colors.blue, width: 3.0, style: BorderStyle.solid))),
+
+      decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.blue, width: 3.0, style: BorderStyle.solid))),
     );
   }
 }
@@ -109,10 +95,10 @@ Widget displayPlaylistSongs(List<List> playlists, List playlist) {
                   trailing: new PopupMenuButton<String>(
                     child: Icon(Icons.playlist_add),
                     itemBuilder: (BuildContext context) {
-                      return playlistNames.map((String playlist) {
+                      return playlistNames.map((String playlistName) {
                         return new PopupMenuItem<String>(
-                          child: Text(playlist),
-                          value: playlist,
+                          child: Text(playlistName),
+                          value: playlistName,
                         );
                       }).toList();
                     },
@@ -157,7 +143,7 @@ Widget displayPlaylistSongs(List<List> playlists, List playlist) {
                     debugPrint('Canot play this song!');
                     currSong.clear();
                     currSong = songs[index].toList();
-                    navigateToNowPlaying(context, currSong, playlist);
+                    navigateToNowPlaying(context,);
                   },
                 ),
               ));
