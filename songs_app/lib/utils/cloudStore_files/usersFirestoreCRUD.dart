@@ -25,6 +25,15 @@ class UserFirestoreCRUD {
     return user;
   }
 
+  Future<User> getUserWithEmail(String email) async {
+    QuerySnapshot userSnaps = await Firestore.instance.collection(UsersTable.tableName).where(UsersTable.colEmail, isEqualTo: email).getDocuments();
+    if (userSnaps.documents.isEmpty) {
+      return null;
+    }
+    User user = await getUserWithID(userSnaps.documents.first.documentID);
+    return user;
+  }
+
   Future<void> updateUserWithID(User user) async {
     await Firestore.instance
         .collection(UsersTable.tableName)

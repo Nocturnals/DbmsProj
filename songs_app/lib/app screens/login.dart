@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sqflite/sqflite.dart';
 
 import 'package:songs_app/services/loader.dart';
 import 'package:songs_app/services/authentication.dart';
@@ -20,10 +21,12 @@ class _LoginPageState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final BaseAuth auth = BaseAuth();
+  Database db;
   bool _isLoading = false;
 
   String _email;
   String _password;
+
 
   @override
   Widget build(BuildContext context) {
@@ -179,12 +182,17 @@ class _LoginPageState extends State<Login> {
                         color: Colors.indigo,
                       )),
                   Container(
-                    margin: EdgeInsets.fromLTRB(75.0,0.0,0.0,0.0),
+                    margin: EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
                     child: Row(
                       children: <Widget>[
+                        Expanded(
+                          child: Container(),
+                        ),
                         Text('Forgot Password?'),
+                        Expanded(
+                          child: Container(),
+                        ),
                         Container(
-                          width: 200.0,
                           child: FlatButton(
                             child: Text(
                               'Reset Password',
@@ -195,7 +203,10 @@ class _LoginPageState extends State<Login> {
                             },
                             textColor: Colors.blue,
                           ),
-                        )
+                        ),
+                        Expanded(
+                          child: Container(),
+                        ),
                       ],
                     ),
                   ),
@@ -316,7 +327,12 @@ class _LoginPageState extends State<Login> {
               });
         } else {
           _updateLastLogin();
-          Navigator.of(context).pushReplacementNamed('/homePage');
+          print('$_email');
+          if (_email == 'hemanthtemp07@gmail.com') {
+            Navigator.of(context).pushNamed('/test');
+          } else {
+            Navigator.of(context).pushReplacementNamed('/homePage');
+          }
         }
         // _getUserFromDB();
       } catch (error) {

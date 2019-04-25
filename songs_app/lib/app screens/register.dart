@@ -167,9 +167,6 @@ class RegisterState extends State<Register> {
                         if (!(value.contains('@'))) {
                           return 'Email is invalid';
                         }
-                        if (!(value.contains('.com'))) {
-                          return 'Email is invalid';
-                        }
                         return null;
                       },
                       onSaved: (value) {
