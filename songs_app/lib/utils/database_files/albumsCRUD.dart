@@ -7,6 +7,13 @@ import 'package:songs_app/utils/database_files/tables.dart';
 import 'package:songs_app/utils/database_helper.dart';
 
 class AlbumCRUD {
+
+  static AlbumCRUD _albumCRUD = AlbumCRUD._createInstance();
+
+  AlbumCRUD._createInstance();
+
+  factory AlbumCRUD() => _albumCRUD;
+
   DatabaseHelper databaseHelper = DatabaseHelper();
 
   // fetch all playlist

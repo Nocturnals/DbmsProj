@@ -6,6 +6,13 @@ import 'package:songs_app/models/users.dart';
 import 'package:songs_app/utils/database_files/tables.dart';
 
 class UserFirestoreCRUD {
+
+  static UserFirestoreCRUD _userFirestoreCRUD = UserFirestoreCRUD._createInstance();
+
+  UserFirestoreCRUD._createInstance();
+
+  factory UserFirestoreCRUD() => _userFirestoreCRUD;
+
   /// inserts user map to the firestore collection
   // function to insert into user collection
   Future<DocumentReference> insertUser(User user) async {
