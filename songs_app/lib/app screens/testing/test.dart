@@ -28,6 +28,12 @@ class AudioPlayerState extends State<AudioPlayerWidget> {
 
   // Play Audio...
   play() async {
-    await audioPlayer.play('./songs/Hymn_For_The_Weekend.mp3', isLocal: true);
+    int result = await audioPlayer.play('songs/Hymn_For_The_Weekend.mp3', isLocal: true);
+    if (result == 1) {
+      debugPrint('Song exists!');
+    }
+    else {
+      debugPrint('Song doesn\'t exists!');
+    }
   }
 }
