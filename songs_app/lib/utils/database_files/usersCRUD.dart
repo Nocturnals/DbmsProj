@@ -7,9 +7,16 @@ import 'package:songs_app/utils/database_files/tables.dart';
 import 'package:songs_app/utils/database_helper.dart';
 
 class UsersCRUD {
+
+  static UsersCRUD _usersCRUD = UsersCRUD._createInstance();
+
+  UsersCRUD._createInstance();
+
+  factory UsersCRUD() => _usersCRUD;
+
   DatabaseHelper databaseHelper = DatabaseHelper();
 
-  // fetch all users
+  /// fetch all users
   Future<List<Map<String, dynamic>>> getUserMapList() async {
     Database db = await databaseHelper.database;
 
@@ -18,7 +25,7 @@ class UsersCRUD {
     return result;
   }
  
-  // insert
+  /// inserts the user to table
   Future<int> insertUser(User user) async {
     Database db = await databaseHelper.database;
 
@@ -26,7 +33,7 @@ class UsersCRUD {
     return result;
   }
 
-  // update
+  /// updates the user
   Future<int> updateUser(User user) async {
     Database db = await databaseHelper.database;
 
@@ -36,7 +43,7 @@ class UsersCRUD {
     return result;
   }
 
-  // delete
+  /// delete the user
   Future<int> deleteUser(String emailid) async {
     Database db = await databaseHelper.database;
 
@@ -45,7 +52,7 @@ class UsersCRUD {
     return result;
   }
 
-  // get number of records
+  /// get number of records
   Future<int> getTotalUserCount() async {
     Database db = await databaseHelper.database;
 
@@ -66,12 +73,21 @@ class UsersCRUD {
     return userList;
   }
 
-  // fetch user by id
+  /// fetch user by id
   Future<List<Map<String, dynamic>>> getUserMapById(String emailid) async {
     Database db = await databaseHelper.database;
 
     List<Map<String, dynamic>> result = await db.rawQuery(
         'SELECT * FROM ${UsersTable.tableName} WHERE ${UsersTable.colEmail} = \'$emailid\' ');
     return result;
+  }
+
+  Future<User> getUserByID(String emailId) async {
+    List<Map<String, dynamic>> userDetails = await getUserMapById(emailId);
+    if(userDetails == null || userDetails.isEmpty) {
+      print('User with emailId: $emailId does not exist');
+      return null;
+    }
+    return User.fromMaptoUser(userDetails.first);
   }
 }

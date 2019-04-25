@@ -5,7 +5,8 @@ class Playlist {
   String _name;
 
   //constructor functions
-  Playlist(this._playlistId, this._userId, this._name);
+  Playlist(this._userId, this._name);
+  Playlist.withID(this._playlistId, this._userId, this._name);
 
   // get functions
   String get playlistId {
@@ -32,7 +33,9 @@ class Playlist {
   // function to convert object to map
   Map<String, dynamic> toMap() {
     Map<String, dynamic> playlistMap = Map<String, dynamic>();
-    playlistMap['playlistId'] = this._playlistId;
+    if (this._playlistId != null) {
+      playlistMap['playlistId'] = this._playlistId;
+    }
     playlistMap['userId'] = this._userId;
     playlistMap['name'] = this._name;
 

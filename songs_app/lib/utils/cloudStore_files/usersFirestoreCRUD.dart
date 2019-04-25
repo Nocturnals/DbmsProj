@@ -7,19 +7,57 @@ import 'package:songs_app/utils/database_files/tables.dart';
 
 class UserFirestoreCRUD {
 
+  static UserFirestoreCRUD _userFirestoreCRUD = UserFirestoreCRUD._createInstance();
+
+  UserFirestoreCRUD._createInstance();
+
+  factory UserFirestoreCRUD() => _userFirestoreCRUD;
+
   /// inserts user map to the firestore collection
   // function to insert into user collection
   Future<DocumentReference> insertUser(User user) async {
-    return await Firestore.instance.collection(UsersTable.tableName).add(user.toMap());
+    DocumentReference userDoc = await Firestore.instance
+        .collection(UsersTable.tableName)
+        .add(user.toMap());
+    return userDoc;
   }
 
-  Future<DocumentSnapshot> getUser(String userId) async {
-    return await Firestore.instance.collection(UsersTable.tableName).document(userId).get();
+  /// gets user snapshot with userid as parameter and returns user object
+  Future<User> getUserWithID(String userId) async {
+    DocumentSnapshot userSnap = await Firestore.instance
+        .collection(UsersTable.tableName)
+        .document(userId)
+        .get();
+    User user = User.fromFirestoreMaptoUser(userSnap.data, userSnap.documentID);
+    return user;
   }
 
-  Future<QuerySnapshot> getAllUsers() async {
-    QuerySnapshot result = await Firestore.instance.collection(UsersTable.tableName).getDocuments();
-    print('users count ${result.documents.length}');
-    return result;
+  Future<User> getUserWithEmail(String email) async {
+    QuerySnapshot userSnaps = await Firestore.instance.collection(UsersTable.tableName).where(UsersTable.colEmail, isEqualTo: email).getDocuments();
+    if (userSnaps.documents.isEmpty) {
+      return null;
+    }
+    User user = await getUserWithID(userSnaps.documents.first.documentID);
+    return user;
+  }
+
+  Future<void> updateUserWithID(User user) async {
+    await Firestore.instance
+        .collection(UsersTable.tableName)
+        .document(user.userId)
+        .updateData(user.toMap());
+    return;
+  }
+
+  /// gets all users snapshots in list form
+  Future<List<User>> getAllUsers() async {
+    QuerySnapshot userDocs = await Firestore.instance
+        .collection(UsersTable.tableName)
+        .getDocuments();
+    List<User> userList = List<User>();
+    for (DocumentSnapshot doc in userDocs.documents) {
+      userList.add(User.fromFirestoreMaptoUser(doc.data, doc.documentID));
+    }
+    return userList;
   }
 }

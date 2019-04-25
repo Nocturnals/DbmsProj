@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 
 import 'package:songs_app/app screens/playlists_class.dart';
 // import 'package:songs_app/services/authentication.dart';
@@ -10,7 +9,6 @@ import 'package:songs_app/app screens/playlists.dart';
 
 import 'package:songs_app/app screens/home/widgets.dart';
 import 'package:songs_app/app screens/home/generateSongs.dart';
-import 'package:songs_app/data/song_data.dart';
 
 
 // Populating PlayLists...
