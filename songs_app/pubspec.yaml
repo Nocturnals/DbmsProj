@@ -74,9 +74,6 @@ flutter:
     - assets/songs/song-bg-1.jpg
     - assets/songs/song-bg-2.jpg
     - assets/songs/song-bg-3.jpg
-    - assets/albums/
-
-
 
   fonts:
     - family: NotoSans
