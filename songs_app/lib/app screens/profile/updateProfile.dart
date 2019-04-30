@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:songs_app/app screens/profile/widgets.dart';
 import 'package:songs_app/utils/database_files/usersCRUD.dart';
 import 'package:songs_app/models/users.dart';
 import 'package:songs_app/utils/database_helper.dart';
-import 'package:songs_app/utils/database_files/usersCRUD.dart';
 import 'package:songs_app/utils/cloudStore_files/usersFirestoreCRUD.dart';
 
 // Profile Widget...
