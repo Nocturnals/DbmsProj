@@ -26,6 +26,10 @@ class PlayControllerIcons {
     return Icon(Icons.playlist_add, color: Colors.brown[500], size: size,);
   }
 
+  Icon getLoadingIcon() {
+    return Icon(Icons.play_circle_filled);
+  } 
+
 }
 
 // Play Mode Icons...

@@ -16,6 +16,8 @@ enum PlayMode {
   NO_REPEAT
 }
 
+AudioPlayer audioPlayer = new AudioPlayer();
+
 // Now Playing Widget
 class NowPlayingWidget extends StatefulWidget {
 
@@ -34,7 +36,6 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
   PlayMode playMode;
 
-  AudioPlayer audioPlayer;
   Duration position;
   Duration duration;
 
@@ -59,11 +60,16 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
   // Function runs on call of it's parent class...
   void initPlayer() async {
-    audioPlayer = new AudioPlayer();
     await audioPlayer.setReleaseMode(ReleaseMode.STOP);
-    // if ( widget.fullScreenOn ) {
-    //   // play('https://api.soundcloud.com/tracks/258735531/stream?secret_token=s-tj3IS&client_id=LBCcHmRB8XSStWL6wKH2HPACspQlXg2P');
-    // }
+    if ( widget.fullScreenOn ) {
+      if (playerState == PlayerState.PLAYING || playerState == PlayerState.PAUSED) {
+        setState(() {
+          playerState = PlayerState.STOPPED;
+          audioPlayer.stop();
+        });
+      }
+      play('https://firebasestorage.googleapis.com/v0/b/songs-app-cc3a1.appspot.com/o/Songs%2FTowards%20The%20Sun.mp3?alt=media&token=40551882-af13-4af8-9814-a7a3afa854d0');
+    }
   }
 
 
@@ -93,32 +99,32 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 /// Controlling Song...
   /// [PLAY] ...
   Future<void> play(String url) async {
-    await audioPlayer.play(url);
     setState(() => playerState = PlayerState.PLAYING);
+    await audioPlayer.play(url);
   }
 
   /// [PAUSE] ...
   Future<void> pause() async {
-  await audioPlayer.pause();
-  setState(() => playerState = PlayerState.PAUSED);
+    setState(() => playerState = PlayerState.PAUSED);
+    await audioPlayer.pause();
   }
 
   /// [STOP] ...
   Future<void> resume() async {
-    await audioPlayer.resume();
     setState(() {
       playerState = PlayerState.PLAYING;
       position = new Duration();
     });
+    await audioPlayer.resume();
   }
 
   /// [STOP] ...
   Future<void> stop() async {
-    await audioPlayer.stop();
     setState(() {
       playerState = PlayerState.STOPPED;
       position = new Duration();
     });
+    await audioPlayer.stop();
   }
 /// End of functions------------------------------------------------------------------------------
   
@@ -293,18 +299,20 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
 
   /// Play/Pause Song..
-  Widget playerStateButton(Icon icon, Future<void> doIt) {
+  Widget playerStateButton() {
     return Expanded(child: IconButton(
-      icon: icon,
+      icon: playerState == PlayerState.PLAYING
+      ?
+      PlayControllerIcons().getPauseIcon()
+      :
+      playerState == PlayerState.PAUSED ? PlayControllerIcons().getPlayIcon() : PlayControllerIcons().getLoadingIcon(),
       onPressed: () {
         switch (playerState) {
           case PlayerState.PLAYING:
-            setPauseState();
-            // doIt;
+            pause();
             break;
           case PlayerState.PAUSED:
-            setPlayingState();
-            // doIt;
+            resume();
             break;
           default:
         }
@@ -420,14 +428,14 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                 /// switching between [play] and [pause] ...
                 playerState == PlayerState.PAUSED
                 ? 
-                playerStateButton(PlayControllerIcons().getPlayIcon(), null)
+                playerStateButton()
                 :
                 (
-                  playerState== PlayerState.PLAYING
+                  playerState == PlayerState.PLAYING
                   ? 
-                  playerStateButton(PlayControllerIcons().getPauseIcon(), null)
+                  playerStateButton()
                   :
-                  playerStateButton(PlayControllerIcons().getPlayIcon(), null)
+                  playerStateButton()
                 ),
 
                 changeSongButton(PlayControllerIcons().getNextIcon()),
