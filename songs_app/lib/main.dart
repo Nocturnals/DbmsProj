@@ -4,6 +4,8 @@ import 'package:firebase_analytics/observer.dart';
 
 import 'package:songs_app/app screens/profile/profile.dart';
 import 'package:songs_app/app screens/home/home.dart';
+import 'package:songs_app/app screens/profile/updateProfile.dart';
+
 import 'package:songs_app/app screens/Authentication/login.dart';
 import 'package:songs_app/app screens/Authentication/register.dart';
 import 'package:songs_app/app screens/Authentication/resetPassword.dart';
