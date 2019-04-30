@@ -4,10 +4,13 @@ import 'package:firebase_analytics/observer.dart';
 
 import 'package:songs_app/app screens/profile/profile.dart';
 import 'package:songs_app/app screens/home/home.dart';
+import 'package:songs_app/app screens/profile/updateProfile.dart';
+
 import 'package:songs_app/app screens/Authentication/login.dart';
 import 'package:songs_app/app screens/Authentication/register.dart';
 import 'package:songs_app/app screens/Authentication/resetPassword.dart';
 import 'package:songs_app/app screens/initiateDatabase.dart';
+import 'package:songs_app/app screens/profile/updateProfile.dart';
 // import 'package:songs_app/app screens/now_playing.dart';
 
 void main() {
@@ -35,6 +38,7 @@ class OnlineMusic extends StatelessWidget {
         '/registerPage': (BuildContext context) => Register(),
         '/homePage': (BuildContext context) => Home(), 
         '/profilePage': (BuildContext context) => Profile(),
+        '/editProfile': (BuildContext context) => UserProfile(),
         '/resetPasswordPage': (BuildContext context) => ResetPassword(),
         // '/nowPlayingPage': (BuildContext context) => NowPlayingWidget(),
       },

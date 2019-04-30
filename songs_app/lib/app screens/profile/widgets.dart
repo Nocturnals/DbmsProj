@@ -39,6 +39,12 @@ Widget appBar(BuildContext context) {
     leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {Navigator.pop(context);},),
     centerTitle: true,
     title: Text('profile'.toUpperCase(), style: TextStyle(fontSize: 30, fontFamily: 'underworld',),),
+    actions: <Widget>[
+      IconButton(
+        icon: Icon(Icons.edit),
+        onPressed: () {Navigator.pushNamed(context, '/editProfile');}
+      )
+    ],
   );
 }
 
