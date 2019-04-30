@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 
 
 // Profile Picture...
-Widget buildProfilePicture() {
+Widget buildProfilePicture(BuildContext context, String imageUrl) {
+
+  Size screenSize = MediaQuery.of(context).size;
+  
   return Container(
-    margin: EdgeInsets.only(left: 20),
-    width: 140.0,
-    height: 140.0,
+    margin: EdgeInsets.only(left: 30),
+    width: screenSize.width / 4.3,
+    height: screenSize.width / 4.3,
     decoration: BoxDecoration(
       image: DecorationImage(
-        image: AssetImage('assets/artists/duaLipa.jpg'),
+        image: AssetImage(imageUrl),
         fit: BoxFit.cover
       ),
-      borderRadius: BorderRadius.circular(80),
+      borderRadius: BorderRadius.circular(85),
       border: Border.all(
         color: Colors.white,
         width: 5.0,
@@ -29,7 +32,18 @@ Widget buildCoverPicture() {
 }
 
 
-Widget userImgName(BuildContext context) {
+/// Go Back Button...
+Widget appBar(BuildContext context) {
+  return AppBar(
+    backgroundColor: Colors.blue[400],
+    leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {Navigator.pop(context);},),
+    centerTitle: true,
+    title: Text('profile'.toUpperCase(), style: TextStyle(fontSize: 30, fontFamily: 'underworld',),),
+  );
+}
+
+
+Widget userImgName(BuildContext context, String imageUrl) {
 
   Size screenSize = MediaQuery.of(context).size;
   String userName = 'Dua Lipa';
@@ -43,7 +57,7 @@ Widget userImgName(BuildContext context) {
           Row(
             children: <Widget>[
 
-              buildProfilePicture(),
+              buildProfilePicture(context, imageUrl),
               Container(
                 margin: EdgeInsets.only(left: 30, top: 30),
                 child: Column(

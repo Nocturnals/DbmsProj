@@ -4,20 +4,23 @@ import 'package:songs_app/app screens/playlists_class.dart';
 // import 'package:songs_app/services/authentication.dart';
 
 import 'package:songs_app/app screens/now_playing.dart';
-import 'package:songs_app/app screens/popular_songs.dart';
-import 'package:songs_app/app screens/playlists.dart';
+import 'package:songs_app/app screens/titles.dart';
 
 import 'package:songs_app/app screens/home/widgets.dart';
 import 'package:songs_app/app screens/home/generateSongs.dart';
 
 
-// Populating PlayLists...
-List<List> playlists = populatePlaylists();
-List playlist =List();
-
-
-// Current Playing Song...
-List currSong = List();
+/// Communicates the current state of the audio player.
+enum PlayerState {
+  /// Player is stopped. No file is loaded to the player. Calling [resume] or [pause] will result in exception.
+  STOPPED,
+  /// Currently playing a file. The user can [pause], [resume] or [stop] the playback.
+  PLAYING,
+  /// Paused. The user can [resume] the playback without providing the URL.
+  PAUSED,
+  /// The playback has been completed. This state is the same as [STOPPED]
+  COMPLETED,
+}
 
 
 // -------------------------------------------------------- //
@@ -29,10 +32,23 @@ class Home extends StatefulWidget {
   }
 }
 
-TabController tabController;
-// SongData songData;
-
 class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
+
+  PlayerState playerState;
+  TabController tabController;
+
+  List<List> songs = createSongs();
+
+  // Populating PlayLists...
+  List<List> playlists = populatePlaylists();
+  List playlist = List();
+
+  // Current Playing Song...
+  List currSong = List();
+
+  // Colors and theme...
+  MaterialColor color = Colors.teal;
+  bool firstIndex = true, secondIndex, thirdIndex;
 
   @override
   void initState() {
@@ -74,12 +90,47 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
     tabController.dispose();
   }
 
-  MaterialColor color = Colors.teal;
-  bool firstIndex = true, secondIndex, thirdIndex;
+/// Controlling State of Song...
+  /// [PlayerState] = [PLAYING] ...
+  void setPlayingState() {
+    setState(() {
+      playerState = PlayerState.PLAYING;
+    });
+  }
+
+  /// [PlayerState] = [PAUSED] ...
+  void setPauseState() {
+    setState(() {
+      playerState = PlayerState.PAUSED;
+    });
+  }
+
+  /// [PlayerState] = [COMPLETED] ...
+  void setCompletedState() {
+    setState(() {
+      playerState = PlayerState.COMPLETED;
+    });
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
+
+    Map<String, dynamic> args = {
+      'tabController': tabController,
+      'songName': currSong[0],
+      'albumName': currSong[3].toString(),
+      'artistName': currSong[2].toString(),
+      'artistImage': currSong[2].toString(),
+      'songLength': currSong[1],
+      'playlists': playlists,
+      'playlist': playlist,
+      'currSong': currSong,
+      'playerState': playerState,
+    };
+
+
     return DefaultTabController(
 
       length: 3,
@@ -104,7 +155,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
               controller: tabController,
               children: <Widget>[
 
-                PopularSongsWidget(),
+                popularSongsWidget(),
                 currSong.length == 0
                 ?
                 Center(
@@ -112,17 +163,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
                 )
                 :
                 NowPlayingWidget(
-                  tabController: tabController,
                   fullScreenOn: false,
-                  songName: currSong[0],
-                  artistName: currSong[3].toString(),
-                  albumName: currSong[2].toString(),
-                  artistImage: 'assets/artists/duaLipa.jpg',
-                  songLength: currSong[1],
-                  playlists: playlists,
-                  playlist: playlist,
+                  
                 ),
-                PlaylistWidget(),
+                playlistWidget(),
 
               ],
             
@@ -135,18 +179,64 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
 
     );
   }
-}
 
-// ---------------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------------
-// Widgets...
 
-// Recently Played Songs...
-class RecentlyPlayed extends StatelessWidget {
-  final List<List> songs = createSongs();
+// Widgets-------------------------------------------------------------------------------------------------------------------
+  /// [Popular Songs Widget] ...
+  Widget popularSongsWidget() {
+    return Container(
+      child: ListView(
+        scrollDirection: Axis.vertical,
+        
+        children: <Widget>[
 
-  @override
-  Widget build(BuildContext context) {
+          sortedSongsTitles('Top Releases'),
+          topRelease(),
+
+        ],
+      ),
+
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: Colors.teal[400],
+            width: 3.0,
+            style: BorderStyle.solid
+          )
+        )
+      ),
+    );
+  }
+
+
+  /// [Playlist Widget] ...
+  Widget playlistWidget() {
+    return Container(
+      child: ListView(
+
+        scrollDirection: Axis.vertical,
+        children: <Widget>[
+
+          // Recently Played...
+          sortedSongsTitles('Recently Played'),
+          recentlyPlayed(),
+
+          // Playlists...
+          sortedSongsTitles('Your Playlists'),
+          playlistsWidget(),
+
+        ],
+
+      ),
+      decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.blue, width: 3.0, style: BorderStyle.solid))),
+    );
+  }
+
+
+// Sub Widgets-----------------------------------------------------------------------------------------------------------------------------
+
+  // Recently Played...
+  Widget recentlyPlayed() {
     return Container(
       height: 140,
       child: ListView.builder(
@@ -209,13 +299,9 @@ class RecentlyPlayed extends StatelessWidget {
       ),
     );
   }
-}
 
-// Playlists...
-class Playlist extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-
+  // Playlists...
+  Widget playlistsWidget() {
     return Container(
       height: 140,
       child: ListView.builder(
@@ -287,14 +373,9 @@ class Playlist extends StatelessWidget {
       ),
     );
   }
-}
 
-// Top Release Widget...
-class TopRelease extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final List<List> songs = createSongs();
-      
+  Widget topRelease() {
+
     List<String> playlistNames = List<String>();
       for (var i = 0; i < playlists.length; i++) {
         playlistNames.add(playlists[i][0]);
@@ -393,6 +474,9 @@ class TopRelease extends StatelessWidget {
                       currSong.clear();
                       currSong = songs[index].toList();
                       playlist = PlaylistClass('Random', playlists.length, createSongs()).fromPlaylisttoList();
+                      setState(() {
+                        playerState = PlayerState.PLAYING;
+                      });
                       navigateToNowPlaying(context);
                     },
                   ),
@@ -400,20 +484,27 @@ class TopRelease extends StatelessWidget {
           }),
     );
   }
-}
 
 
-// Navigation to Now Playing...
-void navigateToNowPlaying(BuildContext context) {
-  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => NowPlayingWidget(
-                                                                                tabController: tabController,
-                                                                                songName: currSong[0],
-                                                                                artistName: currSong[3].toString(),
-                                                                                albumName: currSong[2].toString(),
-                                                                                songLength: currSong[1],
-                                                                                playlists: playlists,
-                                                                                playlist: playlist,
-                                                                                // artistImage: 'assets/msc-bg-2.jpg',
-                                                                              )
-  ));
+// Navigators------------------------------------------------------------------------------------------------------------------
+  /// Navigation to [Now Playing] ...
+  void navigateToNowPlaying(BuildContext context) {
+
+    Map<String, dynamic> args = {
+      'tabController': tabController,
+      'songName': currSong[0],
+      'albumName': currSong[3].toString(),
+      'artistName': currSong[2].toString(),
+      'artistImage': currSong[2].toString(),
+      'songLength': currSong[1],
+      'playlists': playlists,
+      'playlist': playlist,
+      'currSong': currSong,
+      'playerState': playerState,
+    };
+
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => NowPlayingWidget(args: args,)
+    ));
+  }
+
 }
