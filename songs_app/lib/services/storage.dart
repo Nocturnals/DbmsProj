@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-// import 'dart:typed_data';
+import 'dart:typed_data';
 
-// import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:firebase_storage/firebase_storage.dart';
 
 class StorageIO {
@@ -41,5 +41,39 @@ class StorageIO {
     print('Downloaded song of size: $fileSize');
 
     return file;
+  }
+
+  /// upload image file to firebase storage and returns downloaduri string
+  Future<String> uploadImage(String fileName, String path, String folder) async {
+    final ByteData bytes = await rootBundle.load(path);
+    Directory tempDir = Directory.systemTemp;
+    String filePath = '${tempDir.path}/$fileName}';
+
+    File newFile = File(filePath);
+    newFile = await newFile.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write);
+
+    StorageReference ref = FirebaseStorage.instance.ref().child('Images/$folder/$fileName');
+    StorageUploadTask task = ref.putFile(newFile);
+    StorageTaskSnapshot snapshot = await task.onComplete;
+    String downloadUri = await snapshot.ref.getDownloadURL();
+    print('Uploaded image :$fileName and its url is :$downloadUri');
+    return downloadUri;
+  }
+
+  /// upload song to firebase storage
+  Future<String> uploadSong(String fileName, String path, String folder) async {
+    final ByteData bytes = await rootBundle.load(path);
+    Directory tempDir = Directory.systemTemp;
+    String filePath = '${tempDir.path}/$fileName}';
+
+    File newFile = File(filePath);
+    newFile = await newFile.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write);
+
+    StorageReference ref = FirebaseStorage.instance.ref().child('Songs/$folder/$fileName');
+    StorageUploadTask task = ref.putFile(newFile);
+    StorageTaskSnapshot snapshot = await task.onComplete;
+    String downloadUri = await snapshot.ref.getDownloadURL();
+    print('Uploaded Song :$fileName and its url is :$downloadUri');
+    return downloadUri;
   }
 }
