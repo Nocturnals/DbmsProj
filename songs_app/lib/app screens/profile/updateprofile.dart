@@ -6,6 +6,7 @@ import 'package:songs_app/utils/database_files/usersCRUD.dart';
 import 'package:songs_app/models/users.dart';
 import 'package:songs_app/utils/database_helper.dart';
 import 'package:songs_app/utils/database_files/usersCRUD.dart';
+import 'package:songs_app/utils/cloudStore_files/usersFirestoreCRUD.dart';
 
 // Profile Widget...
 
@@ -101,14 +102,14 @@ void update() async {
                 child: Form(
                     key: formkey,
                     child: Column(children: <Widget>[
-                      TextFormField(
-                        decoration: InputDecoration(
-                            labelText: _email,
-                            icon: new Icon(
-                              Icons.email,
-                              color: Colors.grey,
-                            )),
-                            onSaved: (value) => _email = value),
+                      // TextFormField(
+                      //   decoration: InputDecoration(
+                      //       labelText: _email,
+                      //       icon: new Icon(
+                      //         Icons.email,
+                      //         color: Colors.grey,
+                      //       )),
+                      //       onSaved: (value) => _email = value),
                       
                       TextFormField(
                         decoration: InputDecoration(
@@ -121,18 +122,18 @@ void update() async {
                             value.isEmpty ? null : null,
                             onSaved: (value) => value.isEmpty ? value = _firstName : _firstName = value,
                       ),
-                      /*
+                      
                       TextFormField(
                         decoration: InputDecoration(
-                            labelText:_Lastname,
+                            labelText:_lastName,
                             icon: new Icon(
                               Icons.email,
                               color: Colors.grey,
                             )),
                         validator: (value) =>
                             value.isEmpty ? null : null,
-                            onSaved: (value) =>value.isEmpty ? value = _Lastname: _Lastname = value
-                      ),*/
+                            onSaved: (value) =>value.isEmpty ? value = _lastName: _lastName = value
+                      ),
 
                       //NOTE : I AM NOT ABLE TO UPDATE THE LAST NAME //
                     
@@ -152,13 +153,13 @@ void update() async {
                       
                       RaisedButton(
                 child: Text('Update Profile'),
-                onPressed:(){
+                onPressed:() async{
                        bool validator = validateForm();
                        if(validator == true){
                   //databaseHelper.updateEmailll(_email,_user);
-                  UsersCRUD().updateFname(_firstName,_user);
-                  UsersCRUD().updateLname(_lastName,_user);
-                  UsersCRUD().updateGender(_gender,_user);
+                  _user.firstName=_firstName;
+                  _user.lastName=_lastName;
+                  _user.gender=_gender;
                   print('Email updated : $_email');
                   print('FirstName Updated : $_firstName ');
                   print('LastName Updated : $_lastName ');
@@ -168,8 +169,12 @@ void update() async {
                        else{
                          print('Not Validated');
                        }
-             
-                    //update();
+
+                  await UsersCRUD().updateUser(_user);
+                  await UserFirestoreCRUD().updateUserWithID(_user);
+                  setState(() {
+                    
+                  });
                     
                   
                 } ,
