@@ -8,7 +8,7 @@ Text appTitle() {
   return Text(
     "BLYNK",
     style: TextStyle(
-      fontFamily: 'Halfomania-Regular',
+      fontFamily: 'Halfomania',
       color: Colors.white,
       fontSize: 85,
     ),

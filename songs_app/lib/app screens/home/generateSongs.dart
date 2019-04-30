@@ -2,14 +2,14 @@ import 'package:songs_app/models/songs.dart';
 import 'package:songs_app/app screens/playlists_class.dart';
 
 // External Functions...
-List createSongs() {
+List<List> createSongs() {
   List<List> playlistSongs = List<List>();
   
-  playlistSongs.add(Song.withID('1','You Belong With Me', 3.4,'dummy loc' , '01', '01', '01').fromSongtoList());
-  playlistSongs.add(Song.withID('2','We don\'t talk anymore', 4.4,'dummy loc' , '01', '01', '01').fromSongtoList());
-  playlistSongs.add(Song.withID('3','You Belong With Me', 5.4,'dummy loc' , '01', '01', '01').fromSongtoList());
-  playlistSongs.add(Song.withID('4','You Belong With Me', 3.4,'dummy loc' , '01', '01', '01').fromSongtoList());
-  playlistSongs.add(Song.withID('5','You Belong With Me', 3.4,'dummy loc' , '01', '01', '01').fromSongtoList());
+  playlistSongs.add(Song.withID('1','You Belong With Me', 3.4,'assets/songs/song-bg-3.jpg' ,'dummy loc' , '01', 'Dua Lipa').fromSongtoList());
+  playlistSongs.add(Song.withID('2','We don\'t talk anymore', 4.4, 'assets/songs/song-bg-3.jpg','dummy loc' , '01', 'Dua Lipa').fromSongtoList());
+  playlistSongs.add(Song.withID('3','You Belong With Me', 5.4, 'assets/songs/song-bg-3.jpg','dummy loc' , '01', 'Dua Lipa').fromSongtoList());
+  playlistSongs.add(Song.withID('4','You Belong With Me', 3.4, 'assets/songs/song-bg-3.jpg','dummy loc' , '01', 'Dua Lipa').fromSongtoList());
+  playlistSongs.add(Song.withID('5','You Belong With Me', 3.4, 'assets/songs/song-bg-3.jpg','dummy loc' , '01', 'Dua Lipa').fromSongtoList());
   
   return playlistSongs;
 }

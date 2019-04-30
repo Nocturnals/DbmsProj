@@ -16,17 +16,26 @@ class ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-        body: Stack(
+        appBar: appBar(context),
+        body: Column(
           children: <Widget>[
-            buildCoverPicture(),
-            userImgName(context),
+
+            // goBackButton(context),
+            Stack(
+              children: <Widget>[
+                
+                buildCoverPicture(),
+
+                userImgName(context, 'assets/artists/duaLipa.jpg'),
+                
+              ],
+            ),
+
           ],
         ),
         backgroundColor: Colors.black,
       ),
-      onWillPop: () {
-        Navigator.of(context).pop();
-      },
+      onWillPop: () {Navigator.of(context).pop();},
     );
   }
 }
