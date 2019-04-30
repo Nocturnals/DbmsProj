@@ -50,5 +50,34 @@ class SongServies {
     }
 
     return songDetailList;
-  } 
+  }
+
+  Future<List<SongDetails>> getAlbumSongs(String albumid) async {
+    List<Song> songList = await SongsCRUD().getSongList();
+    Album album = await AlbumCRUD().getAlbumById(albumid);
+    List<Artist> artistList = await ArtistsCRUD().getArtistList();
+    List<SongBy> songByList = await SongByCRUD().getSongByList();
+    List<SongDetails> songDetailList = List<SongDetails>();
+    for (SongBy songBy in songByList) {
+      Song song;
+      Artist artist;
+      if (songBy.albumId == albumid) {
+        for (Song songs in songList) {
+          if (songBy.songId == songs.songId) {
+            song = songs;
+            break;
+          }
+        }
+        for (Artist artists in artistList) {
+          if (songBy.artistId == artists.artistId) {
+            artist = artists;
+            break;
+          }
+        }
+        songDetailList.add(SongDetails(song, album, artist));
+      }
+    }
+
+    return songDetailList;
+  }
 }

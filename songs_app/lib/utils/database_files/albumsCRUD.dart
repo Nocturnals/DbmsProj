@@ -75,11 +75,29 @@ class AlbumCRUD {
   }
 
   // fetch playlist by id
-  Future<List<Map<String, dynamic>>> getAlbumMapById(String name) async {
+  Future<List<Map<String, dynamic>>> getAlbumMapByName(String name) async {
     Database db = await databaseHelper.database;
 
     List<Map<String, dynamic>> result = await db.rawQuery(
         'SELECT * FROM ${AlbumsTable.tableName} WHERE ${AlbumsTable.colAlbumName} = $name');
     return result;
+  }
+
+  Future<Album> getAlbumByName(String name) async {
+    Map<String,dynamic> map = (await getAlbumMapByName(name)).first;
+    return Album.fromMaptoAlbum(map);
+  }
+
+  Future<List<Map<String, dynamic>>> getAlbumMapById(String albumId) async {
+    Database db = await databaseHelper.database;
+
+    List<Map<String, dynamic>> result = await db.rawQuery(
+        'SELECT * FROM ${AlbumsTable.tableName} WHERE ${AlbumsTable.colAlbumId} = $albumId');
+    return result;
+  }
+
+  Future<Album> getAlbumById(String albumId) async {
+    Map<String,dynamic> map = (await getAlbumMapById(albumId)).first;
+    return Album.fromMaptoAlbum(map);
   }
 }
