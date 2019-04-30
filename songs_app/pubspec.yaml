@@ -61,7 +61,6 @@ flutter:
     - assets/dog1.jpg
     - assets/dog2.jpg
     - assets/dog4.jpg
-
     - assets/gradient.jpeg
     - assets/gradient.png
     - assets/background.jpg
@@ -75,6 +74,7 @@ flutter:
     - assets/songs/song-bg-1.jpg
     - assets/songs/song-bg-2.jpg
     - assets/songs/song-bg-3.jpg
+
   fonts:
     - family: NotoSans
       fonts:
