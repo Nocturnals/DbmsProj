@@ -265,9 +265,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
                           onPressed: () {
                             currSong.clear();
                             currSong = songs[index];
-                            setState(() {
-                              playerState = PlayerState.PLAYING;
-                            });
                             playlist = PlaylistClass('Random', playlists.length, createSongs()).fromPlaylisttoList();
                             navigateToNowPlaying(context);
                           },
@@ -367,9 +364,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
                             currSong.clear();
                             currSong = song.toList();
                             playlist = playlists[index];
-                            setState(() {
-                              playerState = PlayerState.PLAYING;
-                            });
                             navigateToNowPlaying(context);
                           },
                         ))
@@ -483,9 +477,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
                       currSong.clear();
                       currSong = songs[index].toList();
                       playlist = PlaylistClass('Random', playlists.length, createSongs()).fromPlaylisttoList();
-                      setState(() {
-                        playerState = PlayerState.PLAYING;
-                      });
                       navigateToNowPlaying(context);
                     },
                   ),

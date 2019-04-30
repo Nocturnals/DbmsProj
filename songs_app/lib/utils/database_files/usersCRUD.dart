@@ -98,27 +98,5 @@ class UsersCRUD {
     return User.fromMaptoUser(userDetails.first);
   }
 
-  Future<int> updateFname(String firstname, User user) async {
-    Database db = await databaseHelper.database;
-
-    int result = await db.rawUpdate(
-        'UPDATE $UsersTable SET firstName = \'$firstname\' WHERE id = ${user.userId}');
-    return result;
-  }
-
-  Future<int> updateLname(String lastname, User user) async {
-    Database db = await databaseHelper.database;
-
-    int result = await db.rawUpdate(
-        'UPDATE $UsersTable SET lastName = \'$lastname\' WHERE id = ${user.userId}');
-    return result;
-  }
-
-  Future<int> updateGender(String gender, User user) async {
-    Database db = await databaseHelper.database;
-
-    int result = await db.rawUpdate(
-        'UPDATE $UsersTable SET gender = \'$gender\' WHERE id = ${user.userId}');
-    return result;
-  }
+ 
 }
