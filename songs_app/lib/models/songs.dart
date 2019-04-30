@@ -109,6 +109,6 @@ class Song {
 
   // Function to convert a song object to list
   List fromSongtoList(){
-    return [this._title, this._length,this._location, this._albumId, this._genreId, this._imageId];
+    return [this._songId, this._title, this._length,this._location, this._albumId, this._genreId, this._imageId];
   }
 }

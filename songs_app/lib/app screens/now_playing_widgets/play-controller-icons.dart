@@ -14,6 +14,10 @@ class PlayControllerIcons {
     return Icon(Icons.play_circle_outline, size: size,);
   }
 
+  Icon getPauseIcon() {
+    return Icon(Icons.pause_circle_outline, size: size,);
+  }
+
   Icon getNextIcon() {
     return Icon(Icons.skip_next, size: size,);
   }

@@ -4,35 +4,51 @@ import 'package:songs_app/app screens/playlists_class.dart';
 // import 'package:songs_app/services/authentication.dart';
 
 import 'package:songs_app/app screens/now_playing.dart';
-import 'package:songs_app/app screens/popular_songs.dart';
-import 'package:songs_app/app screens/playlists.dart';
+import 'package:songs_app/app screens/titles.dart';
 
 import 'package:songs_app/app screens/home/widgets.dart';
 import 'package:songs_app/app screens/home/generateSongs.dart';
 
 
-// Populating PlayLists...
-List<List> playlists = populatePlaylists();
-List playlist =List();
+/// Communicates the current state of the audio player.
+enum PlayerState {
+  /// Player is stopped. No file is loaded to the player. Calling [resume] or [pause] will result in exception.
+  STOPPED,
+  /// Currently playing a file. The user can [pause], [resume] or [stop] the playback.
+  PLAYING,
+  /// Paused. The user can [resume] the playback without providing the URL.
+  PAUSED,
+  /// The playback has been completed. This state is the same as [STOPPED]
+  COMPLETED,
+}
 
+/// [Global Variables] ...
+PlayerState playerState;
+TabController tabController;
 
 // Current Playing Song...
 List currSong = List();
+
+// Populating PlayLists...
+List<List> playlists = populatePlaylists();
+List playlist = List();
 
 
 // -------------------------------------------------------- //
 // Home Widget...
 class Home extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return HomeState();
-  }
+  State<StatefulWidget> createState() => HomeState();
 }
 
-TabController tabController;
-// SongData songData;
-
 class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
+
+  List<List> songs = createSongs();
+  Map<String, dynamic> args = Map<String, dynamic>();
+
+  // Colors and theme...
+  MaterialColor color = Colors.teal;
+  bool firstIndex = true, secondIndex, thirdIndex;
 
   @override
   void initState() {
@@ -63,23 +79,55 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
         }
       });
     });
-    // initPlatformState();
 
   }
 
   @override
   void dispose() {
     super.dispose();
-    // songData.audioPlayer.stop();
     tabController.dispose();
   }
 
-  MaterialColor color = Colors.teal;
-  bool firstIndex = true, secondIndex, thirdIndex;
+/// Controlling State of Song...
+  /// [PlayerState] = [PLAYING] ...
+  void setPlayingState() {
+    setState(() {
+      playerState = PlayerState.PLAYING;
+    });
+  }
+
+  /// [PlayerState] = [PAUSED] ...
+  void setPauseState() {
+    setState(() {
+      playerState = PlayerState.PAUSED;
+    });
+  }
+
+  /// [PlayerState] = [COMPLETED] ...
+  void setCompletedState() {
+    setState(() {
+      playerState = PlayerState.COMPLETED;
+    });
+  }
+
+  /// Updating [args] and [currSong] ...
+  void updateArgs() {
+    args.clear();
+    args = {
+      'songName': currSong[1],
+      'albumName': currSong[4].toString(),
+      'artistName': currSong[6].toString(),
+      'artistImage': currSong[3].toString(),
+      'songLength': currSong[2],
+    };
+  }
 
 
+  /// Build Widget...
   @override
   Widget build(BuildContext context) {
+
+    // Return Statement...
     return DefaultTabController(
 
       length: 3,
@@ -104,25 +152,15 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
               controller: tabController,
               children: <Widget>[
 
-                PopularSongsWidget(),
+                popularSongsWidget(),
                 currSong.length == 0
                 ?
                 Center(
                   child: Text('Play any song.', style: TextStyle(color: Colors.white, fontSize: 30, fontFamily: 'Magnificent'),),
                 )
                 :
-                NowPlayingWidget(
-                  tabController: tabController,
-                  fullScreenOn: false,
-                  songName: currSong[0],
-                  artistName: currSong[3].toString(),
-                  albumName: currSong[2].toString(),
-                  artistImage: 'assets/artists/duaLipa.jpg',
-                  songLength: currSong[1],
-                  playlists: playlists,
-                  playlist: playlist,
-                ),
-                PlaylistWidget(),
+                NowPlayingWidget(fullScreenOn: false, args: args,),
+                playlistWidget(),
 
               ],
             
@@ -135,29 +173,80 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
 
     );
   }
-}
 
-// ---------------------------------------------------------------------------------------------------------------
-// ---------------------------------------------------------------------------------------------------------------
-// Widgets...
 
-// Recently Played Songs...
-class RecentlyPlayed extends StatelessWidget {
-  final List<List> songs = createSongs();
+// Widgets-------------------------------------------------------------------------------------------------------------------
+  /// [Popular Songs Widget] ...
+  Widget popularSongsWidget() {
+    return Container(
+      child: ListView(
+        scrollDirection: Axis.vertical,
+        
+        children: <Widget>[
 
-  @override
-  Widget build(BuildContext context) {
+          sortedSongsTitles('Top Releases'),
+          topRelease(),
+
+        ],
+      ),
+
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: Colors.teal[400],
+            width: 3.0,
+            style: BorderStyle.solid
+          )
+        )
+      ),
+    );
+  }
+
+
+  /// [Playlist Widget] ...
+  Widget playlistWidget() {
+    return Container(
+      child: ListView(
+
+        scrollDirection: Axis.vertical,
+        children: <Widget>[
+
+          // Recently Played...
+          sortedSongsTitles('Recently Played'),
+          recentlyPlayed(),
+
+          // Playlists...
+          sortedSongsTitles('Your Playlists'),
+          playlistsWidget(),
+
+        ],
+
+      ),
+      decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.blue, width: 3.0, style: BorderStyle.solid))),
+    );
+  }
+
+
+// Sub Widgets-----------------------------------------------------------------------------------------------------------------------------
+
+  // Recently Played...
+  Widget recentlyPlayed() {
     return Container(
       height: 140,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: songs.length,
         itemBuilder: (BuildContext context, int index) {
-          String songName = '';
-          for (var i = 0; i < 16; i++) {
-            songName += songs[index][0][i];
+          String songName;
+          if ( songs[index][1].toString().length >= 16 ) {
+            songName = '';
+            for (var i = 0; i < 16; i++) {
+              songName += songs[index][1][i];
+            }
+            songName += '...';
+          } else {
+            songName = songs[index][1].toString();
           }
-          songName += '...';
           return Container(
             child: SizedBox(
               width: 140,
@@ -174,9 +263,11 @@ class RecentlyPlayed extends StatelessWidget {
                             color: Colors.orangeAccent,
                           ),
                           onPressed: () {
-                            debugPrint('Cannot Play this playlist!');
                             currSong.clear();
-                            currSong = songs[index].toList();
+                            currSong = songs[index];
+                            setState(() {
+                              playerState = PlayerState.PLAYING;
+                            });
                             playlist = PlaylistClass('Random', playlists.length, createSongs()).fromPlaylisttoList();
                             navigateToNowPlaying(context);
                           },
@@ -209,13 +300,9 @@ class RecentlyPlayed extends StatelessWidget {
       ),
     );
   }
-}
 
-// Playlists...
-class Playlist extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-
+  // Playlists...
+  Widget playlistsWidget() {
     return Container(
       height: 140,
       child: ListView.builder(
@@ -223,11 +310,16 @@ class Playlist extends StatelessWidget {
         itemCount: playlists.length,
         itemBuilder: (BuildContext context, int index) {
           List song = playlists[index][2][0];
-          String songName = '';
-          for (var i = 0; i < 16; i++) {
-            songName += playlists[index][2][0][0][i];
+          String songName;
+          if ( songs[index][1].toString().length >= 16 ) {
+            songName = '';
+            for (var i = 0; i < 16; i++) {
+              songName += songs[index][1][i];
+            }
+            songName += '...';
+          } else {
+            songName = songs[index][1].toString();
           }
-          songName += '...';
           return Container(
             child: SizedBox(
               width: 140,
@@ -275,6 +367,9 @@ class Playlist extends StatelessWidget {
                             currSong.clear();
                             currSong = song.toList();
                             playlist = playlists[index];
+                            setState(() {
+                              playerState = PlayerState.PLAYING;
+                            });
                             navigateToNowPlaying(context);
                           },
                         ))
@@ -287,17 +382,12 @@ class Playlist extends StatelessWidget {
       ),
     );
   }
-}
 
-// Top Release Widget...
-class TopRelease extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final List<List> songs = createSongs();
-      
+  Widget topRelease() {
+
     List<String> playlistNames = List<String>();
-      for (var i = 0; i < playlists.length; i++) {
-        playlistNames.add(playlists[i][0]);
+    for (var i = 0; i < playlists.length; i++) {
+      playlistNames.add(playlists[i][0]);
     }
 
     return Container(
@@ -317,7 +407,7 @@ class TopRelease extends StatelessWidget {
                       color: Colors.amber,
                     ),
                     title: Text(
-                      songs[index][0],
+                      songs[index][1],
                       style: TextStyle(
                           color: Colors.redAccent,
                           fontFamily: 'Gothic',
@@ -327,12 +417,12 @@ class TopRelease extends StatelessWidget {
                     subtitle: Row(
                       children: <Widget>[
                         Text(
-                          'Album: ' + songs[index][2].toString(),
+                          'Album: ' + songs[index][5].toString(),
                           style: TextStyle(fontSize: 12.5),
                         ),
                         Text(
                           '      Duraton: ' +
-                              songs[index][1].toString() +
+                              songs[index][2].toString() +
                               ' mins',
                           style: TextStyle(
                             fontSize: 12.5,
@@ -344,10 +434,10 @@ class TopRelease extends StatelessWidget {
                     trailing: new PopupMenuButton<String>(
                       child: Icon(Icons.playlist_add),
                       itemBuilder: (BuildContext context) {
-                        return playlistNames.map((String playlist) {
+                        return playlistNames.map((String playlistName) {
                           return new PopupMenuItem<String>(
-                            child: Text(playlist),
-                            value: playlist,
+                            child: Text(playlistName),
+                            value: playlistName,
                           );
                         }).toList();
                       },
@@ -393,6 +483,9 @@ class TopRelease extends StatelessWidget {
                       currSong.clear();
                       currSong = songs[index].toList();
                       playlist = PlaylistClass('Random', playlists.length, createSongs()).fromPlaylisttoList();
+                      setState(() {
+                        playerState = PlayerState.PLAYING;
+                      });
                       navigateToNowPlaying(context);
                     },
                   ),
@@ -400,20 +493,14 @@ class TopRelease extends StatelessWidget {
           }),
     );
   }
-}
 
 
-// Navigation to Now Playing...
-void navigateToNowPlaying(BuildContext context) {
-  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => NowPlayingWidget(
-                                                                                tabController: tabController,
-                                                                                songName: currSong[0],
-                                                                                artistName: currSong[3].toString(),
-                                                                                albumName: currSong[2].toString(),
-                                                                                songLength: currSong[1],
-                                                                                playlists: playlists,
-                                                                                playlist: playlist,
-                                                                                // artistImage: 'assets/msc-bg-2.jpg',
-                                                                              )
-  ));
+// Navigators------------------------------------------------------------------------------------------------------------------
+  /// Navigation to [Now Playing] ...
+  void navigateToNowPlaying(BuildContext context) {
+    updateArgs();
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => NowPlayingWidget(args: args,)
+    ));
+  }
+
 }

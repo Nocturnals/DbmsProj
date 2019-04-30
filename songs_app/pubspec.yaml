@@ -100,7 +100,7 @@ flutter:
       fonts:
       - asset: fonts/Velhos Tempos.ttf
         weight: 700
-    - family: Halfomania-Regular
+    - family: Halfomania
       fonts:
       - asset: fonts/Halfomania-Regular.ttf
         weight: 700
