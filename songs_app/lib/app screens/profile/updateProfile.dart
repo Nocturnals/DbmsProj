@@ -9,18 +9,18 @@ import 'package:songs_app/utils/database_files/usersCRUD.dart';
 
 // Profile Widget...
 
-class UserProfile extends StatefulWidget {
+class UpdateUserProfile extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _UserProfilePage();
+    return UpdateUserProfileState();
   }
 }
 
-class _UserProfilePage extends State<UserProfile> {
+class UpdateUserProfileState extends State<UpdateUserProfile> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
-  _UserProfilePage() {
+  UpdateUserProfileState() {
     g2();
   }
 
