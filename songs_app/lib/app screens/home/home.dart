@@ -22,29 +22,29 @@ enum PlayerState {
   COMPLETED,
 }
 
+/// [Global Variables] ...
+PlayerState playerState;
+TabController tabController;
+
+// Current Playing Song...
+List currSong = List();
+
+// Populating PlayLists...
+List<List> playlists = populatePlaylists();
+List playlist = List();
+
 
 // -------------------------------------------------------- //
 // Home Widget...
 class Home extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return HomeState();
-  }
+  State<StatefulWidget> createState() => HomeState();
 }
 
 class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
 
-  PlayerState playerState;
-  TabController tabController;
-
   List<List> songs = createSongs();
-
-  // Populating PlayLists...
-  List<List> playlists = populatePlaylists();
-  List playlist = List();
-
-  // Current Playing Song...
-  List currSong = List();
+  Map<String, dynamic> args = Map<String, dynamic>();
 
   // Colors and theme...
   MaterialColor color = Colors.teal;
@@ -79,14 +79,12 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
         }
       });
     });
-    // initPlatformState();
 
   }
 
   @override
   void dispose() {
     super.dispose();
-    // songData.audioPlayer.stop();
     tabController.dispose();
   }
 
@@ -112,25 +110,24 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
     });
   }
 
+  /// Updating [args] and [currSong] ...
+  void updateArgs() {
+    args.clear();
+    args = {
+      'songName': currSong[1],
+      'albumName': currSong[4].toString(),
+      'artistName': currSong[6].toString(),
+      'artistImage': currSong[3].toString(),
+      'songLength': currSong[2],
+    };
+  }
 
 
+  /// Build Widget...
   @override
   Widget build(BuildContext context) {
 
-    Map<String, dynamic> args = {
-      'tabController': tabController,
-      'songName': currSong[0],
-      'albumName': currSong[3].toString(),
-      'artistName': currSong[2].toString(),
-      'artistImage': currSong[2].toString(),
-      'songLength': currSong[1],
-      'playlists': playlists,
-      'playlist': playlist,
-      'currSong': currSong,
-      'playerState': playerState,
-    };
-
-
+    // Return Statement...
     return DefaultTabController(
 
       length: 3,
@@ -162,10 +159,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
                   child: Text('Play any song.', style: TextStyle(color: Colors.white, fontSize: 30, fontFamily: 'Magnificent'),),
                 )
                 :
-                NowPlayingWidget(
-                  fullScreenOn: false,
-                  
-                ),
+                NowPlayingWidget(fullScreenOn: false, args: args,),
                 playlistWidget(),
 
               ],
@@ -243,11 +237,16 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
         scrollDirection: Axis.horizontal,
         itemCount: songs.length,
         itemBuilder: (BuildContext context, int index) {
-          String songName = '';
-          for (var i = 0; i < 16; i++) {
-            songName += songs[index][0][i];
+          String songName;
+          if ( songs[index][1].toString().length >= 16 ) {
+            songName = '';
+            for (var i = 0; i < 16; i++) {
+              songName += songs[index][1][i];
+            }
+            songName += '...';
+          } else {
+            songName = songs[index][1].toString();
           }
-          songName += '...';
           return Container(
             child: SizedBox(
               width: 140,
@@ -264,9 +263,11 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
                             color: Colors.orangeAccent,
                           ),
                           onPressed: () {
-                            debugPrint('Cannot Play this playlist!');
                             currSong.clear();
-                            currSong = songs[index].toList();
+                            currSong = songs[index];
+                            setState(() {
+                              playerState = PlayerState.PLAYING;
+                            });
                             playlist = PlaylistClass('Random', playlists.length, createSongs()).fromPlaylisttoList();
                             navigateToNowPlaying(context);
                           },
@@ -309,11 +310,16 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
         itemCount: playlists.length,
         itemBuilder: (BuildContext context, int index) {
           List song = playlists[index][2][0];
-          String songName = '';
-          for (var i = 0; i < 16; i++) {
-            songName += playlists[index][2][0][0][i];
+          String songName;
+          if ( songs[index][1].toString().length >= 16 ) {
+            songName = '';
+            for (var i = 0; i < 16; i++) {
+              songName += songs[index][1][i];
+            }
+            songName += '...';
+          } else {
+            songName = songs[index][1].toString();
           }
-          songName += '...';
           return Container(
             child: SizedBox(
               width: 140,
@@ -361,6 +367,9 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
                             currSong.clear();
                             currSong = song.toList();
                             playlist = playlists[index];
+                            setState(() {
+                              playerState = PlayerState.PLAYING;
+                            });
                             navigateToNowPlaying(context);
                           },
                         ))
@@ -377,8 +386,8 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
   Widget topRelease() {
 
     List<String> playlistNames = List<String>();
-      for (var i = 0; i < playlists.length; i++) {
-        playlistNames.add(playlists[i][0]);
+    for (var i = 0; i < playlists.length; i++) {
+      playlistNames.add(playlists[i][0]);
     }
 
     return Container(
@@ -398,7 +407,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
                       color: Colors.amber,
                     ),
                     title: Text(
-                      songs[index][0],
+                      songs[index][1],
                       style: TextStyle(
                           color: Colors.redAccent,
                           fontFamily: 'Gothic',
@@ -408,12 +417,12 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
                     subtitle: Row(
                       children: <Widget>[
                         Text(
-                          'Album: ' + songs[index][2].toString(),
+                          'Album: ' + songs[index][5].toString(),
                           style: TextStyle(fontSize: 12.5),
                         ),
                         Text(
                           '      Duraton: ' +
-                              songs[index][1].toString() +
+                              songs[index][2].toString() +
                               ' mins',
                           style: TextStyle(
                             fontSize: 12.5,
@@ -425,10 +434,10 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
                     trailing: new PopupMenuButton<String>(
                       child: Icon(Icons.playlist_add),
                       itemBuilder: (BuildContext context) {
-                        return playlistNames.map((String playlist) {
+                        return playlistNames.map((String playlistName) {
                           return new PopupMenuItem<String>(
-                            child: Text(playlist),
-                            value: playlist,
+                            child: Text(playlistName),
+                            value: playlistName,
                           );
                         }).toList();
                       },
@@ -489,20 +498,7 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
 // Navigators------------------------------------------------------------------------------------------------------------------
   /// Navigation to [Now Playing] ...
   void navigateToNowPlaying(BuildContext context) {
-
-    Map<String, dynamic> args = {
-      'tabController': tabController,
-      'songName': currSong[0],
-      'albumName': currSong[3].toString(),
-      'artistName': currSong[2].toString(),
-      'artistImage': currSong[2].toString(),
-      'songLength': currSong[1],
-      'playlists': playlists,
-      'playlist': playlist,
-      'currSong': currSong,
-      'playerState': playerState,
-    };
-
+    updateArgs();
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => NowPlayingWidget(args: args,)
     ));
   }

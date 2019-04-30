@@ -7,16 +7,22 @@ import 'package:songs_app/app screens/now_playing_widgets/play-controller-icons.
 import 'package:audioplayers/audioplayers.dart';
 
 
+enum PlayMode {
+  /// Play songs in [REPEAT] mode ...
+  REPEAT, 
+  /// Play songs in [ONE REPEAT] mode ...
+  REPEAT_ONE, 
+  /// Play songs in [NO REPEAT] mode ...
+  NO_REPEAT
+}
+
 // Now Playing Widget
 class NowPlayingWidget extends StatefulWidget {
 
-  NowPlayingWidget({
-    this.fullScreenOn: true,
-    this.args,
-  });
+  NowPlayingWidget({this.fullScreenOn: true,this.args,});
 
-  bool fullScreenOn;
-  Map<String, dynamic> args;
+  final bool fullScreenOn;
+  final Map<String, dynamic> args;
 
   @override
   State<StatefulWidget> createState() => NowPlayingWidgetState();
@@ -26,12 +32,14 @@ class NowPlayingWidget extends StatefulWidget {
 // Now Playing Widget State
 class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
+  PlayMode playMode;
+
   AudioPlayer audioPlayer;
   Duration position;
   Duration duration;
 
-  get isPlaying => widget.args['playerState'] == PlayerState.PLAYING;
-  get isPaused => widget.args['playerState'] == PlayerState.PAUSED;
+  get isPlaying => playerState == PlayerState.PLAYING;
+  get isPaused => playerState == PlayerState.PAUSED;
 
   get durationText =>
       duration != null ? duration.toString().split('.').first : '';
@@ -53,28 +61,31 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
   void initPlayer() async {
     audioPlayer = new AudioPlayer();
     await audioPlayer.setReleaseMode(ReleaseMode.STOP);
-    debugPrint(widget.args['playerState'].toString());
+    // if ( widget.fullScreenOn ) {
+    //   // play('https://api.soundcloud.com/tracks/258735531/stream?secret_token=s-tj3IS&client_id=LBCcHmRB8XSStWL6wKH2HPACspQlXg2P');
+    // }
   }
+
 
 /// Controlling State of Song...
   /// [PlayerState] = [PLAYING] ...
   void setPlayingState() {
     setState(() {
-      widget.args['playerState'] = PlayerState.PLAYING;
+      playerState = PlayerState.PLAYING;
     });
   }
 
   /// [PlayerState] = [PAUSED] ...
   void setPauseState() {
     setState(() {
-      widget.args['playerState'] = PlayerState.PAUSED;
+      playerState = PlayerState.PAUSED;
     });
   }
 
   /// [PlayerState] = [COMPLETED] ...
   void setCompletedState() {
     setState(() {
-      widget.args['playerState'] = PlayerState.COMPLETED;
+      playerState = PlayerState.COMPLETED;
     });
   }
 
@@ -83,32 +94,38 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
   /// [PLAY] ...
   Future<void> play(String url) async {
     await audioPlayer.play(url);
-    setState(() => widget.args['playerState'] = PlayerState.PLAYING);
+    setState(() => playerState = PlayerState.PLAYING);
   }
 
   /// [PAUSE] ...
   Future<void> pause() async {
   await audioPlayer.pause();
-  setState(() => widget.args['playerState'] = PlayerState.PAUSED);
+  setState(() => playerState = PlayerState.PAUSED);
+  }
+
+  /// [STOP] ...
+  Future<void> resume() async {
+    await audioPlayer.resume();
+    setState(() {
+      playerState = PlayerState.PLAYING;
+      position = new Duration();
+    });
   }
 
   /// [STOP] ...
   Future<void> stop() async {
     await audioPlayer.stop();
     setState(() {
-      widget.args['playerState'] = PlayerState.STOPPED;
+      playerState = PlayerState.STOPPED;
       position = new Duration();
     });
   }
 /// End of functions------------------------------------------------------------------------------
   
-  
+
   // Building Widget... 
   @override
   Widget build(BuildContext context) {
-
-    Map<String, dynamic> args = widget.args;
-
 
     // Return Statement...
     return Scaffold(
@@ -117,9 +134,9 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
         child: ListView(
           children: <Widget>[
 
-            widget.fullScreenOn ? exitFullScreen(args['tabController'], context, args['playerState']) : SizedBox(height: 0),
+            widget.fullScreenOn ? exitFullScreen(context) : SizedBox(height: 0),
 
-            currentSongDisplay(args, args['playerState'], audioPlayer),
+            currentSongDisplay(audioPlayer),
 
             SizedBox(height: 65,),
 
@@ -129,8 +146,8 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
             :
             SizedBox(height: 0,),
 
-            displayPlaylistName(args['playlist'], Colors.indigo[100]),
-            displayPlaylistSongs(args['playlists'], args['playlist']),
+            displayPlaylistName(playlist[0], Colors.indigo[100]),
+            displayPlaylistSongs(playlists, playlist),
           
           ],
 
@@ -157,7 +174,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
 // Widgets...
   // Go Back Button...
-  Widget exitFullScreen(TabController tabController, BuildContext context, PlayerState playerState) {
+  Widget exitFullScreen(BuildContext context,) {
     return Container(
       margin: EdgeInsets.only(top: 20),
       child: Center(
@@ -165,7 +182,9 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
           elevation: 6.0,
           child: Text('Exit Full Screen', style: TextStyle(color: Colors.white),),
           onPressed: () {
-            tabController.index = 1;
+            setState(() {
+              tabController.index = 1;
+            });
             Navigator.pushNamed(context, '/homePage');
           },
           shape: BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -177,7 +196,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
 
   // Song Card...
-  Widget songDisplayCard(args) {
+  Widget songDisplayCard() {
     return Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       margin: EdgeInsets.only(top: 50),
@@ -186,7 +205,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
         width: 300,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage(args['artistImage']),
+                image: new AssetImage(currSong[3].toString()),
                 fit: BoxFit.cover)),
       ),
       elevation: 32,
@@ -198,11 +217,11 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
 
   // Song Name...
-  Widget songName(args) {
+  Widget songName() {
     return Padding(
       padding: const EdgeInsets.only(top: 42),
       child: Text(
-        args['songName'],
+        currSong[1],
         style: TextStyle(fontSize: 32,
         fontWeight: FontWeight.bold),
       ),
@@ -211,22 +230,36 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
 
   // Album Name...
-  Widget albumArtistName(String type, String key, args) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+  Widget albumArtistName() {
+    return Column(
       children: <Widget>[
-        Text(type + ':  ', style: TextStyle(color: Colors.black54),),
-        Text(
-          args[key],
-          style: TextStyle(color: Colors.indigo),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('Album:  ', style: TextStyle(color: Colors.black54),),
+            Text(
+              currSong[4],
+              style: TextStyle(color: Colors.indigo),
+            ),
+          ],
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('Artist:  ', style: TextStyle(color: Colors.black54),),
+            Text(
+              currSong[6],
+              style: TextStyle(color: Colors.indigo),
+            ),
+          ],
+        )
       ],
     );
   }
 
 
   // Song Length indicator...
-  Widget songLengthIndicator(args) {
+  Widget songLengthIndicator() {
     return Container(
       height: 4,
       margin: EdgeInsets.only(top: 40, left: 10, right: 10, bottom: 10),
@@ -236,7 +269,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
             child: Text('0.0', style: TextStyle(), textAlign: TextAlign.start,),
           ),
           Expanded(
-            child: Text(args['songLength'], style: TextStyle(), textAlign: TextAlign.end,),
+            child: Text(currSong[2].toString(), style: TextStyle(), textAlign: TextAlign.end,),
           )
         ],
       ),
@@ -260,16 +293,18 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
 
   /// Play/Pause Song..
-  Widget playerStateButton(Icon icon,) {
+  Widget playerStateButton(Icon icon, Future<void> doIt) {
     return Expanded(child: IconButton(
       icon: icon,
       onPressed: () {
-        switch (widget.args['playerState']) {
+        switch (playerState) {
           case PlayerState.PLAYING:
             setPauseState();
+            // doIt;
             break;
           case PlayerState.PAUSED:
             setPlayingState();
+            // doIt;
             break;
           default:
         }
@@ -358,21 +393,18 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
 /// Main Widget...
   /// Currently Playing Part ...
-  Widget currentSongDisplay(Map<String, dynamic> args, PlayerState playerState, AudioPlayer audioPlayer) {
-
-    Map<String, dynamic> args = widget.args;
+  Widget currentSongDisplay(AudioPlayer audioPlayer) {
 
     return Center(
       // heightFactor: 0.8,
       child: Column(
         children: <Widget>[
-          songDisplayCard(args),
-          songName(args),
+          songDisplayCard(),
+          songName(),
 
-          albumArtistName('Album', 'albumName', args),
-          albumArtistName('Artist', 'artistName', args),
+          albumArtistName(),
 
-          songLengthIndicator(args),
+          songLengthIndicator(),
           songSlider(),
           
           Padding(
@@ -386,16 +418,16 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                 changeSongButton(PlayControllerIcons().getPrevIcon()),
                 
                 /// switching between [play] and [pause] ...
-                args['playerState'] == PlayerState.PAUSED
+                playerState == PlayerState.PAUSED
                 ? 
-                playerStateButton(PlayControllerIcons().getPlayIcon(),)
+                playerStateButton(PlayControllerIcons().getPlayIcon(), null)
                 :
                 (
-                  playerState == PlayerState.PLAYING
+                  playerState== PlayerState.PLAYING
                   ? 
-                  playerStateButton(PlayControllerIcons().getPauseIcon(),)
+                  playerStateButton(PlayControllerIcons().getPauseIcon(), null)
                   :
-                  playerStateButton(PlayControllerIcons().getPlayIcon(),)
+                  playerStateButton(PlayControllerIcons().getPlayIcon(), null)
                 ),
 
                 changeSongButton(PlayControllerIcons().getNextIcon()),
@@ -439,7 +471,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                       color: Colors.amber,
                     ),
                     title: Text(
-                      songs[index][0],
+                      songs[index][1],
                       style: TextStyle(
                           color: Colors.redAccent,
                           fontFamily: 'Gothic',
@@ -449,11 +481,11 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                     subtitle: Row(
                       children: <Widget>[
                         Text(
-                          'Album: ' + songs[index][2].toString(),
+                          'Album: ' + songs[index][5].toString(),
                           style: TextStyle(fontSize: 12.5),
                         ),
                         Text(
-                          '      Duraton: ' + songs[index][1].toString() + ' mins',
+                          '      Duraton: ' + songs[index][2].toString() + ' mins',
                           style: TextStyle(
                             fontSize: 12.5,
                           ),
@@ -482,8 +514,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                               content: SingleChildScrollView(
                                 child: ListBody(
                                   children: <Widget>[
-                                    Text(
-                                        'You don\'t want to see this song on your home screen?'),
+                                    Text('You don\'t want to see this song on your home screen?'),
                                   ],
                                 ),
                               ),
@@ -509,8 +540,9 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                       debugPrint('Pressed too long');
                     },
                     onTap: () {
-                      widget.args['currSong'].clear();
-                      widget.args['currSong'] = songs[index].toList();
+                      currSong.clear();
+                      currSong = songs[index].toList();
+                      playerState = PlayerState.PLAYING;
                       navigateToNowPlaying(context,);
                     },
                   ),
@@ -522,7 +554,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 // Navigators------------------------------------------------------------------------------------------------------------------
   /// Navigation to [Now Playing] ...
   void navigateToNowPlaying(BuildContext context,) {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => NowPlayingWidget()));
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => NowPlayingWidget(args: widget.args,)));
   }
 
 }

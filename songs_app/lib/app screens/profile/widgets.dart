@@ -67,7 +67,7 @@ Widget userImgName(BuildContext context, String imageUrl) {
                       userName.toUpperCase(),
                       style: TextStyle(
                         fontSize: (screenSize.width * 1.35) / userName.length,
-                        fontFamily: 'Halfomania-Regular', 
+                        fontFamily: 'Halfomania', 
                         fontWeight: FontWeight.bold, 
                         color: Colors.white
                       ),
