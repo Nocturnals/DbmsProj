@@ -1,10 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:songs_app/app screens/home/home.dart';
+import 'package:songs_app/services/loader.dart';
 
 import 'package:songs_app/app screens/now_playing_widgets/play-controller-icons.dart';
 
 import 'package:audioplayers/audioplayers.dart';
+
+import 'package:songs_app/services/storage.dart';
+import 'package:songs_app/models/songDetails.dart';
+import 'package:songs_app/services/songServieces.dart';
 
 
 enum PlayMode {
@@ -21,10 +28,11 @@ AudioPlayer audioPlayer = new AudioPlayer();
 // Now Playing Widget
 class NowPlayingWidget extends StatefulWidget {
 
-  NowPlayingWidget({this.fullScreenOn: true,this.args,});
+  NowPlayingWidget({this.fullScreenOn: true, this.args, this.allSongs});
 
   final bool fullScreenOn;
   final Map<String, dynamic> args;
+  final List<SongDetails> allSongs;
 
   @override
   State<StatefulWidget> createState() => NowPlayingWidgetState();
@@ -34,10 +42,18 @@ class NowPlayingWidget extends StatefulWidget {
 // Now Playing Widget State
 class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
+  bool _isLoading = true;
+
+  double seekValue = 0.0;
+
   PlayMode playMode;
 
   Duration position;
   Duration duration;
+  String imgLocation;
+
+  List<SongDetails> albumSongs;
+
 
   get isPlaying => playerState == PlayerState.PLAYING;
   get isPaused => playerState == PlayerState.PAUSED;
@@ -51,6 +67,14 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
   initState() {
     super.initState();
     initPlayer();
+    initAlbums();
+    updateImgLoc();
+    audioPlayer.onAudioPositionChanged.listen((p) {
+      setState(() {
+        seekValue = p.inMinutes.toDouble();
+      });
+    });
+    // initAudioPlayer();
   }
 
   @override
@@ -68,10 +92,46 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
           audioPlayer.stop();
         });
       }
-      play('https://firebasestorage.googleapis.com/v0/b/songs-app-cc3a1.appspot.com/o/Songs%2FTowards%20The%20Sun.mp3?alt=media&token=40551882-af13-4af8-9814-a7a3afa854d0');
+      play();
     }
   }
 
+  void initAlbums() async {
+    albumSongs = await SongServies().getAlbumSongs(currSong.album.albumId);
+    setState(() {_isLoading = false;});
+  }
+
+  void initAudioPlayer() {
+    audioPlayer.onAudioPositionChanged.listen((p) {
+      setState(() {
+        seekValue = p.inMinutes.toDouble();
+      });
+    });
+    audioPlayer.onPlayerStateChanged.listen((s) {
+      if (s == AudioPlayerState.STOPPED) {
+        setState(() {
+          playerState = PlayerState.STOPPED;
+        });
+        if (currentIndex < widget.allSongs.length-1) {
+          currentIndex += 1;
+          currSong = widget.allSongs[currentIndex];
+          changeSong();
+        }
+      }
+    }, 
+    onError: (msg) {
+      setState(() {
+        playerState = PlayerState.STOPPED;
+        duration = new Duration(seconds: 0);
+        position = new Duration(seconds: 0);
+      });
+    });
+  }
+
+  Future<void> updateImgLoc() async {
+    imgLocation = await StorageIO().getImageLink(currSong.image.imgLocation);
+    setState(() {});
+  }
 
 /// Controlling State of Song...
   /// [PlayerState] = [PLAYING] ...
@@ -95,36 +155,48 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
     });
   }
 
+  void onComplete() {
+    setState(() => playerState = PlayerState.STOPPED);
+  }
+
 
 /// Controlling Song...
   /// [PLAY] ...
-  Future<void> play(String url) async {
+  Future<void> play() async {
+    await audioPlayer.play(await StorageIO().getLink(currSong.song.location));
     setState(() => playerState = PlayerState.PLAYING);
-    await audioPlayer.play(url);
   }
 
   /// [PAUSE] ...
   Future<void> pause() async {
-    setState(() => playerState = PlayerState.PAUSED);
     await audioPlayer.pause();
+    setState(() => playerState = PlayerState.PAUSED);
   }
 
   /// [STOP] ...
   Future<void> resume() async {
-    setState(() {
-      playerState = PlayerState.PLAYING;
-      position = new Duration();
-    });
     await audioPlayer.resume();
+    setState(() => playerState = PlayerState.PLAYING);
   }
 
   /// [STOP] ...
   Future<void> stop() async {
+    await audioPlayer.stop();
     setState(() {
       playerState = PlayerState.STOPPED;
       position = new Duration();
     });
+  }
+
+  /// [CHANGE] ...
+  Future<void> changeSong() async {
     await audioPlayer.stop();
+    setState(() {
+      playerState = PlayerState.STOPPED;
+      position = new Duration();
+    });
+    updateImgLoc();
+    play();
   }
 /// End of functions------------------------------------------------------------------------------
   
@@ -134,7 +206,8 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
   Widget build(BuildContext context) {
 
     // Return Statement...
-    return Scaffold(
+    return _isLoading ? Loader() : 
+    Scaffold(
       body: Container(
 
         child: ListView(
@@ -152,8 +225,8 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
             :
             SizedBox(height: 0,),
 
-            displayPlaylistName(playlist[0], Colors.indigo[100]),
-            displayPlaylistSongs(playlists, playlist),
+            displayAlbumName(),
+            displayAlbumSongs(),
           
           ],
 
@@ -203,16 +276,27 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
   // Song Card...
   Widget songDisplayCard() {
-    return Card(
+    return imgLocation == null 
+    ?
+    SizedBox(
+      height: 300,
+      width: 300,
+      child: Center(
+        child: SizedBox(
+          height: 50,
+          width: 50,
+          child: CircularProgressIndicator(),
+        ),
+      ),
+    )
+    :
+    Card(
       clipBehavior: Clip.antiAliasWithSaveLayer,
       margin: EdgeInsets.only(top: 50),
       child: Container(
         height: 300,
         width: 300,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: new AssetImage(currSong[3].toString()),
-                fit: BoxFit.cover)),
+        child: Image.network(imgLocation, fit: BoxFit.cover,),
       ),
       elevation: 32,
       shape: RoundedRectangleBorder(
@@ -227,7 +311,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
     return Padding(
       padding: const EdgeInsets.only(top: 42),
       child: Text(
-        currSong[1],
+        currSong.song.title,
         style: TextStyle(fontSize: 32,
         fontWeight: FontWeight.bold),
       ),
@@ -244,7 +328,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
           children: <Widget>[
             Text('Album:  ', style: TextStyle(color: Colors.black54),),
             Text(
-              currSong[4],
+              currSong.album.albumName,
               style: TextStyle(color: Colors.indigo),
             ),
           ],
@@ -254,7 +338,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
           children: <Widget>[
             Text('Artist:  ', style: TextStyle(color: Colors.black54),),
             Text(
-              currSong[6],
+              currSong.artist.name,
               style: TextStyle(color: Colors.indigo),
             ),
           ],
@@ -275,7 +359,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
             child: Text('0.0', style: TextStyle(), textAlign: TextAlign.start,),
           ),
           Expanded(
-            child: Text(currSong[2].toString(), style: TextStyle(), textAlign: TextAlign.end,),
+            child: Text(secToMin(currSong.song.length).toStringAsFixed(2), style: TextStyle(), textAlign: TextAlign.end,),
           )
         ],
       ),
@@ -286,13 +370,13 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
   // Slider...
   Widget songSlider() {
     return Slider(
-      value: 2.0,
+      value: seekValue,
       min: 0.0,
       activeColor: Colors.red[500],
       inactiveColor: Colors.red[100],
       max: 4.47,
       onChangeStart: (value) {},
-      onChanged: (value) {},
+      onChanged: (double value) { setState(() {seekValue = value;}); },
       onChangeEnd: (value) async {},
     );
   }
@@ -300,12 +384,12 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
   /// Play/Pause Song..
   Widget playerStateButton() {
-    return Expanded(child: IconButton(
+    return playerState == PlayerState.PLAYING || playerState == PlayerState.PAUSED 
+    ?
+    Expanded(child: IconButton(
       icon: playerState == PlayerState.PLAYING
       ?
-      PlayControllerIcons().getPauseIcon()
-      :
-      playerState == PlayerState.PAUSED ? PlayControllerIcons().getPlayIcon() : PlayControllerIcons().getLoadingIcon(),
+      PlayControllerIcons().getPauseIcon() : PlayControllerIcons().getPlayIcon(),
       onPressed: () {
         switch (playerState) {
           case PlayerState.PLAYING:
@@ -317,14 +401,34 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
           default:
         }
       },
-    ));
+    ))
+    :
+    CircularProgressIndicator();
   }
 
   /// Change Song...
-  Widget changeSongButton(Icon icon,) {
+  Widget changeSongButton(Icon icon, String changeDirection) {
     return Expanded(child: IconButton(
       icon: icon,
-      onPressed: () {},
+      onPressed: () {
+        switch (changeDirection.toLowerCase()) {
+          case 'left':
+            if (currentIndex != 0) {
+              currentIndex -= 1;
+              currSong = widget.allSongs[currentIndex];
+              changeSong();
+            }
+            break;
+          case 'right':
+            if (currentIndex != widget.allSongs.length-1) {
+              currentIndex += 1;
+              currSong = widget.allSongs[currentIndex];
+              changeSong();
+            }
+            break;
+          default:
+        }
+      },
     ));
   }
 
@@ -349,7 +453,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
       child: Center(
         child: Text(
 
-          'playlist'.toUpperCase(),
+          'album'.toUpperCase(),
           style: TextStyle(
             fontSize: 30,
             fontFamily: 'Magnificent',
@@ -370,7 +474,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
 
   // Display Playlist Name...
-  Widget displayPlaylistName(String playlistName, Color backgroundColor) {
+  Widget displayAlbumName() {
 
     return Container(
       
@@ -382,7 +486,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
         padding: EdgeInsets.only(top: 17, left: 20),
         child: Text(
 
-          playlistName,
+          albumSongs.first.album.albumName,
           style: TextStyle(
             fontSize: 30,
             fontFamily: 'Magnificent',
@@ -393,7 +497,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
         ),
       ),
 
-      color: backgroundColor,
+      color: Colors.indigo[200],
     
     );
   }
@@ -423,7 +527,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                 
                 playerModeButton(PlayModeIcons().getShuffleIcon()),
 
-                changeSongButton(PlayControllerIcons().getPrevIcon()),
+                changeSongButton(PlayControllerIcons().getPrevIcon(), 'left'),
                 
                 /// switching between [play] and [pause] ...
                 playerState == PlayerState.PAUSED
@@ -438,8 +542,8 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                   playerStateButton()
                 ),
 
-                changeSongButton(PlayControllerIcons().getNextIcon()),
-                changeSongButton(PlayControllerIcons().getAddPlaylistIcon()),
+                changeSongButton(PlayControllerIcons().getNextIcon(), 'right'),
+                playerModeButton(PlayModeIcons().getNoRepeat()),
 
               ],
             ),
@@ -453,21 +557,14 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
 
   // Displaying Playlists Songs...
-  Widget displayPlaylistSongs(List<List> playlists, List playlist) {
-
-    List<String> playlistNames = List<String>();
-    for (var i = 0; i < playlists.length; i++) {
-      playlistNames.add(playlists[i][0]);
-    }
-
-    List songs =playlist[2];
+  Widget displayAlbumSongs() {
 
     return Container(
       color: Color.fromRGBO(190, 190, 190, 0.5),
       height: 300.0,
       child: ListView.builder(
           scrollDirection: Axis.vertical,
-          itemCount: songs.length,
+          itemCount: albumSongs.length,
           itemBuilder: (BuildContext context, int index) {
             return Container(
                 width: 160.0,
@@ -479,7 +576,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                       color: Colors.amber,
                     ),
                     title: Text(
-                      songs[index][1],
+                      albumSongs[index].song.title,
                       style: TextStyle(
                           color: Colors.redAccent,
                           fontFamily: 'Gothic',
@@ -489,68 +586,67 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                     subtitle: Row(
                       children: <Widget>[
                         Text(
-                          'Album: ' + songs[index][5].toString(),
+                          'Album: ' + currSong.album.albumName,
                           style: TextStyle(fontSize: 12.5),
                         ),
                         Text(
-                          '      Duraton: ' + songs[index][2].toString() + ' mins',
+                          '      Duraton: ' + secToMin(albumSongs[index].song.length).toStringAsFixed(2) + ' mins',
                           style: TextStyle(
                             fontSize: 12.5,
                           ),
                         ),
                       ],
                     ),
-                    // PopUpMenu...
-                    trailing: new PopupMenuButton<String>(
-                      child: Icon(Icons.playlist_add),
-                      itemBuilder: (BuildContext context) {
-                        return playlistNames.map((String playlistName) {
-                          return new PopupMenuItem<String>(
-                            child: Text(playlistName),
-                            value: playlistName,
-                          );
-                        }).toList();
-                      },
-                    ),
-                    onLongPress: () {
-                      showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Not Interested?'),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  children: <Widget>[
-                                    Text('You don\'t want to see this song on your home screen?'),
-                                  ],
-                                ),
-                              ),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('Remove'),
-                                  onPressed: () {
-                                    debugPrint('Cancelled Operation!');
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                FlatButton(
-                                  child: Text('Cancel'),
-                                  onPressed: () {
-                                    debugPrint('Cancelled Operation!');
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          });
+                    // // PopUpMenu...
+                    // trailing: new PopupMenuButton<String>(
+                    //   child: Icon(Icons.playlist_add),
+                    //   itemBuilder: (BuildContext context) {
+                    //     return playlistNames.map((String playlistName) {
+                    //       return new PopupMenuItem<String>(
+                    //         child: Text(playlistName),
+                    //         value: playlistName,
+                    //       );
+                    //     }).toList();
+                    //   },
+                    // ),
+                    // onLongPress: () {
+                    //   showDialog(
+                    //       context: context,
+                    //       barrierDismissible: false,
+                    //       builder: (BuildContext context) {
+                    //         return AlertDialog(
+                    //           title: Text('Not Interested?'),
+                    //           content: SingleChildScrollView(
+                    //             child: ListBody(
+                    //               children: <Widget>[
+                    //                 Text('You don\'t want to see this song on your home screen?'),
+                    //               ],
+                    //             ),
+                    //           ),
+                    //           actions: <Widget>[
+                    //             FlatButton(
+                    //               child: Text('Remove'),
+                    //               onPressed: () {
+                    //                 debugPrint('Cancelled Operation!');
+                    //                 Navigator.of(context).pop();
+                    //               },
+                    //             ),
+                    //             FlatButton(
+                    //               child: Text('Cancel'),
+                    //               onPressed: () {
+                    //                 debugPrint('Cancelled Operation!');
+                    //                 Navigator.of(context).pop();
+                    //               },
+                    //             ),
+                    //           ],
+                    //         );
+                    //       });
 
-                      debugPrint('Pressed too long');
-                    },
+                    //   debugPrint('Pressed too long');
+                    // },
                     onTap: () {
-                      currSong.clear();
-                      currSong = songs[index].toList();
                       playerState = PlayerState.PLAYING;
+                      currSong = albumSongs[index];
                       navigateToNowPlaying(context,);
                     },
                   ),
@@ -558,6 +654,8 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
           }),
     );
   }
+
+  double secToMin(double secs) => secs/60 ;
 
 // Navigators------------------------------------------------------------------------------------------------------------------
   /// Navigation to [Now Playing] ...

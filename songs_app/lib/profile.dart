@@ -5,8 +5,6 @@ import 'package:songs_app/app screens/profile/widgets.dart';
 import 'package:songs_app/models/users.dart';
 import 'package:songs_app/utils/database_files/usersCRUD.dart';
 
-import 'package:songs_app/services/loader.dart';
-
 // Profile Widget...
 class Profile extends StatefulWidget {
   @override
@@ -17,10 +15,15 @@ class Profile extends StatefulWidget {
 
 // Profile State...
 class ProfileState extends State<Profile> {
-
-  bool _isLoading = true;
-
   User _user;
+  // String _userId;
+  String _firstName;
+  String _lastName;
+  String _email;
+  String _gender;
+  DateTime _dateOfBirth;
+  DateTime _lastLogin;
+  bool _activeStatus;
 
   String _userEmail;
 
@@ -41,21 +44,19 @@ class ProfileState extends State<Profile> {
     return user;
   }
 
-  Future<void> getUser() async {
+  Future<User> getUser() async {
     _user = await getUserFromEmail();
-    setState(() {_isLoading = false;});
   }
 
   @override
   void initState() {
-    super.initState();
     getUser();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading ? Loader() :
-    WillPopScope(
+    return WillPopScope(
       child: Scaffold(
         appBar: appBar(context),
         body: Column(
@@ -64,10 +65,36 @@ class ProfileState extends State<Profile> {
             Stack(
               children: <Widget>[
                 buildCoverPicture(),
-                userImgName(context, 'assets/artists/duaLipa.jpg', _user.firstName, _user.email),
+                userImgName(context, 'assets/artists/duaLipa.jpg'),
               ],
             ),
-            
+            RichText(
+              text: TextSpan(
+                text: 'First Name:'+_user.firstName,
+                style:TextStyle(fontSize: 30,color:Colors.blue),
+              ),
+            ),
+            Container(height: 10),
+            RichText(
+              text: TextSpan(
+                text: 'Last Name:'+_user.lastName,
+                style:TextStyle(fontSize: 30,color:Colors.blue),
+              ),
+            ),
+            Container(height: 10),
+            RichText(
+              text: TextSpan(
+                text: 'Email:'+_user.email,
+                style:TextStyle(fontSize: 20,color:Colors.blue),
+              ),
+            ),
+            Container(height: 10),
+            RichText(
+              text: TextSpan(
+                text: 'Gender'+_user.gender,
+                style:TextStyle(fontSize: 30,color:Colors.blue),
+              ),
+            ),
           ],
         ),
         backgroundColor: Colors.black,

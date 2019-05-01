@@ -29,9 +29,6 @@ class _UserProfilePage extends State<UserProfile> {
   String _lastName;
   String _email;
   String _gender;
-  DateTime _dateOfBirth;
-  DateTime _lastLogin;
-  bool _activeStatus;
 
   String _userEmail;
 
@@ -66,8 +63,6 @@ class _UserProfilePage extends State<UserProfile> {
       _firstName = _user.firstName;
       _lastName = _user.lastName;
       _gender = _user.gender;
-      _dateOfBirth = _user.dateOfBirth;
-      _lastLogin = _user.lastLogin;
       print(_user);
     });
     print(_email);
@@ -80,7 +75,7 @@ class _UserProfilePage extends State<UserProfile> {
     await UsersCRUD().updateUser(user);
   }
 
-  List<String> MaptoList(Map<String, dynamic> map) {
+  List<String> maptoList(Map<String, dynamic> map) {
     var _list = map.values.toList();
     return _list;
   }

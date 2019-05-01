@@ -92,7 +92,7 @@ class AlbumCRUD {
     Database db = await databaseHelper.database;
 
     List<Map<String, dynamic>> result = await db.rawQuery(
-        'SELECT * FROM ${AlbumsTable.tableName} WHERE ${AlbumsTable.colAlbumId} = $albumId');
+        'SELECT * FROM ${AlbumsTable.tableName} WHERE ${AlbumsTable.colAlbumId} = \'$albumId\'');
     return result;
   }
 
