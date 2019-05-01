@@ -54,8 +54,6 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
 
   List<SongDetails> albumSongs;
 
-  StreamSubscription _positionSubscription;
-  StreamSubscription _audioPlayerStateSubscription;
 
   get isPlaying => playerState == PlayerState.PLAYING;
   get isPaused => playerState == PlayerState.PAUSED;
@@ -415,18 +413,14 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
       onPressed: () {
         switch (changeDirection.toLowerCase()) {
           case 'left':
-            if (currentIndex == 0) {
-              null;
-            } else{
+            if (currentIndex != 0) {
               currentIndex -= 1;
               currSong = widget.allSongs[currentIndex];
               changeSong();
             }
             break;
           case 'right':
-            if (currentIndex == widget.allSongs.length-1) {
-              null;
-            } else{
+            if (currentIndex != widget.allSongs.length-1) {
               currentIndex += 1;
               currSong = widget.allSongs[currentIndex];
               changeSong();

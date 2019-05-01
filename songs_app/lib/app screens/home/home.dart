@@ -321,7 +321,6 @@ class HomeState extends State<Home> with SingleTickerProviderStateMixin<Home>{
         scrollDirection: Axis.horizontal,
         itemCount: playlists.length,
         itemBuilder: (BuildContext context, int index) {
-          List song = playlists[index][2][0];
           String songName;
           if ( songDetailsList[index].song.title.toString().length >= 16 ) {
             songName = limitText(songDetailsList[index].song.title.toString(), 16);

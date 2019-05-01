@@ -41,7 +41,7 @@ class ProfileState extends State<Profile> {
     return user;
   }
 
-  Future<User> getUser() async {
+  Future<void> getUser() async {
     _user = await getUserFromEmail();
     setState(() {_isLoading = false;});
   }
