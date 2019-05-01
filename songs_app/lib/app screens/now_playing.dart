@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:songs_app/app screens/home/home.dart';
@@ -5,6 +7,9 @@ import 'package:songs_app/app screens/home/home.dart';
 import 'package:songs_app/app screens/now_playing_widgets/play-controller-icons.dart';
 
 import 'package:audioplayers/audioplayers.dart';
+
+import 'package:songs_app/services/storage.dart';
+import 'package:songs_app/models/songDetails.dart';
 
 
 enum PlayMode {
@@ -21,10 +26,11 @@ AudioPlayer audioPlayer = new AudioPlayer();
 // Now Playing Widget
 class NowPlayingWidget extends StatefulWidget {
 
-  NowPlayingWidget({this.fullScreenOn: true,this.args,});
+  NowPlayingWidget({this.fullScreenOn: true, this.args, this.allSongs});
 
   final bool fullScreenOn;
   final Map<String, dynamic> args;
+  final List<SongDetails> allSongs;
 
   @override
   State<StatefulWidget> createState() => NowPlayingWidgetState();
@@ -39,6 +45,9 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
   Duration position;
   Duration duration;
 
+  StreamSubscription _positionSubscription;
+  StreamSubscription _audioPlayerStateSubscription;
+
   get isPlaying => playerState == PlayerState.PLAYING;
   get isPaused => playerState == PlayerState.PAUSED;
 
@@ -51,6 +60,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
   initState() {
     super.initState();
     initPlayer();
+    // initAudioPlayer();
   }
 
   @override
@@ -68,8 +78,30 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
           audioPlayer.stop();
         });
       }
-      play('https://firebasestorage.googleapis.com/v0/b/songs-app-cc3a1.appspot.com/o/Songs%2FTowards%20The%20Sun.mp3?alt=media&token=40551882-af13-4af8-9814-a7a3afa854d0');
+      play();
     }
+  }
+
+  void initAudioPlayer() {
+    audioPlayer.onPlayerStateChanged.listen((s) {
+      if (s == AudioPlayerState.STOPPED) {
+        setState(() {
+          playerState = PlayerState.STOPPED;
+        });
+        if (currentIndex < widget.allSongs.length-1) {
+          currentIndex += 1;
+          currSong = widget.allSongs[currentIndex];
+          changeSong();
+        }
+      }
+    }, 
+    onError: (msg) {
+      setState(() {
+        playerState = PlayerState.STOPPED;
+        duration = new Duration(seconds: 0);
+        position = new Duration(seconds: 0);
+      });
+    });
   }
 
 
@@ -95,36 +127,47 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
     });
   }
 
+  void onComplete() {
+    setState(() => playerState = PlayerState.STOPPED);
+  }
+
 
 /// Controlling Song...
   /// [PLAY] ...
-  Future<void> play(String url) async {
+  Future<void> play() async {
+    await audioPlayer.play(await StorageIO().getLink(currSong.song.location));
     setState(() => playerState = PlayerState.PLAYING);
-    await audioPlayer.play(url);
   }
 
   /// [PAUSE] ...
   Future<void> pause() async {
-    setState(() => playerState = PlayerState.PAUSED);
     await audioPlayer.pause();
+    setState(() => playerState = PlayerState.PAUSED);
   }
 
   /// [STOP] ...
   Future<void> resume() async {
-    setState(() {
-      playerState = PlayerState.PLAYING;
-      position = new Duration();
-    });
     await audioPlayer.resume();
+    setState(() => playerState = PlayerState.PLAYING);
   }
 
   /// [STOP] ...
   Future<void> stop() async {
+    await audioPlayer.stop();
     setState(() {
       playerState = PlayerState.STOPPED;
       position = new Duration();
     });
+  }
+
+  /// [CHANGE] ...
+  Future<void> changeSong() async {
     await audioPlayer.stop();
+    setState(() {
+      playerState = PlayerState.STOPPED;
+      position = new Duration();
+    });
+    play();
   }
 /// End of functions------------------------------------------------------------------------------
   
@@ -211,7 +254,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
         width: 300,
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: new AssetImage(currSong[3].toString()),
+                image: new AssetImage('assets/songs/song-bg-1.jpg'),
                 fit: BoxFit.cover)),
       ),
       elevation: 32,
@@ -227,7 +270,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
     return Padding(
       padding: const EdgeInsets.only(top: 42),
       child: Text(
-        currSong[1],
+        currSong.song.title,
         style: TextStyle(fontSize: 32,
         fontWeight: FontWeight.bold),
       ),
@@ -244,7 +287,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
           children: <Widget>[
             Text('Album:  ', style: TextStyle(color: Colors.black54),),
             Text(
-              currSong[4],
+              currSong.album.albumName,
               style: TextStyle(color: Colors.indigo),
             ),
           ],
@@ -254,7 +297,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
           children: <Widget>[
             Text('Artist:  ', style: TextStyle(color: Colors.black54),),
             Text(
-              currSong[6],
+              currSong.artist.name,
               style: TextStyle(color: Colors.indigo),
             ),
           ],
@@ -275,7 +318,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
             child: Text('0.0', style: TextStyle(), textAlign: TextAlign.start,),
           ),
           Expanded(
-            child: Text(currSong[2].toString(), style: TextStyle(), textAlign: TextAlign.end,),
+            child: Text(secToMin(currSong.song.length).toStringAsFixed(2), style: TextStyle(), textAlign: TextAlign.end,),
           )
         ],
       ),
@@ -321,10 +364,32 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
   }
 
   /// Change Song...
-  Widget changeSongButton(Icon icon,) {
+  Widget changeSongButton(Icon icon, String changeDirection) {
     return Expanded(child: IconButton(
       icon: icon,
-      onPressed: () {},
+      onPressed: () {
+        switch (changeDirection.toLowerCase()) {
+          case 'left':
+            if (currentIndex == 0) {
+              null;
+            } else{
+              currentIndex -= 1;
+              currSong = widget.allSongs[currentIndex];
+              changeSong();
+            }
+            break;
+          case 'right':
+            if (currentIndex == widget.allSongs.length-1) {
+              null;
+            } else{
+              currentIndex += 1;
+              currSong = widget.allSongs[currentIndex];
+              changeSong();
+            }
+            break;
+          default:
+        }
+      },
     ));
   }
 
@@ -423,7 +488,7 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                 
                 playerModeButton(PlayModeIcons().getShuffleIcon()),
 
-                changeSongButton(PlayControllerIcons().getPrevIcon()),
+                changeSongButton(PlayControllerIcons().getPrevIcon(), 'left'),
                 
                 /// switching between [play] and [pause] ...
                 playerState == PlayerState.PAUSED
@@ -438,8 +503,8 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                   playerStateButton()
                 ),
 
-                changeSongButton(PlayControllerIcons().getNextIcon()),
-                changeSongButton(PlayControllerIcons().getAddPlaylistIcon()),
+                changeSongButton(PlayControllerIcons().getNextIcon(), 'right'),
+                playerModeButton(PlayModeIcons().getNoRepeat()),
 
               ],
             ),
@@ -548,8 +613,6 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
                       debugPrint('Pressed too long');
                     },
                     onTap: () {
-                      currSong.clear();
-                      currSong = songs[index].toList();
                       playerState = PlayerState.PLAYING;
                       navigateToNowPlaying(context,);
                     },
@@ -558,6 +621,8 @@ class NowPlayingWidgetState extends State<NowPlayingWidget> {
           }),
     );
   }
+
+  double secToMin(double secs) => secs/60 ;
 
 // Navigators------------------------------------------------------------------------------------------------------------------
   /// Navigation to [Now Playing] ...
