@@ -39,19 +39,19 @@ class PlayModeIcons {
   double size = 30;
 
   Icon getShuffleIcon() {
-    return Icon(Icons.shuffle, size: size,);
+    return Icon(Icons.shuffle, size: size, color: Colors.brown[500]);
   }
 
   Icon getRepeatIcon() {
-    return Icon(Icons.repeat, size: size,);
+    return Icon(Icons.repeat, size: size, color: Colors.brown[500]);
   }
 
   Icon getRepeatOneIcon() {
-    return Icon(Icons.repeat_one, size: size,);
+    return Icon(Icons.repeat_one, size: size, color: Colors.brown[500]);
   }
 
   Icon getNoRepeat() {
-    return Icon(Icons.not_interested, size: size,);
+    return Icon(Icons.not_interested, size: size, color: Colors.brown[500]);
   }
 
 }

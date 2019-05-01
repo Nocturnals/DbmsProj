@@ -49,11 +49,9 @@ Widget appBar(BuildContext context) {
 }
 
 
-Widget userImgName(BuildContext context, String imageUrl) {
+Widget userImgName(BuildContext context, String imageUrl, String userName, String email) {
 
   Size screenSize = MediaQuery.of(context).size;
-  String userName = 'Dua Lipa';
-  String email = 'dualipa@gmail.com';
 
   return SafeArea(
     child: SingleChildScrollView(
@@ -82,7 +80,7 @@ Widget userImgName(BuildContext context, String imageUrl) {
                       email,
                       style: TextStyle(
                         fontFamily: 'Magnificent',
-                        fontSize: (screenSize.width * 0.65) / email.length,
+                        fontSize: (screenSize.width * 0.85) / email.length,
                         color: Colors.white
                       ),
                     )
