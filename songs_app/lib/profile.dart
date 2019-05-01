@@ -65,7 +65,7 @@ class ProfileState extends State<Profile> {
             Stack(
               children: <Widget>[
                 buildCoverPicture(),
-                userImgName(context, 'assets/artists/duaLipa.jpg'),
+                userImgName(context, 'assets/artists/duaLipa.jpg', _user.firstName, _user.lastName),
               ],
             ),
             RichText(
