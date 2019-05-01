@@ -81,5 +81,11 @@ class StorageIO {
     final StorageReference ref = FirebaseStorage.instance.ref().child('Songs/$location');
     String link = await ref.getDownloadURL();
     return link;
+  }
+
+  Future<String> getImageLink(String location) async {
+    final StorageReference ref = FirebaseStorage.instance.ref().child('Images/$location');
+    String link = await ref.getDownloadURL();
+    return link;
   } 
 }
