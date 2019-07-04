@@ -24,5 +24,4 @@ A flutter app to store songs and play customizable playlist
 You can see the demonstration of our App on [Youtube](https://youtu.be/9Aft8eISIW4)
 
 Codacy: [![Codacy Badge](https://api.codacy.com/project/badge/Grade/70d20f91442443b897dd4d2c6571962f)](https://app.codacy.com/app/Hemanth759/DbmsProj?utm_source=github.com&utm_medium=referral&utm_content=Nocturnals/DbmsProj&utm_campaign=Badge_Grade_Dashboard)
-Travis CL: [![Build Status](https://travis-ci.org/Nocturnals/DbmsProj.svg?branch=master)](https://travis-ci.org/Nocturnals/DbmsProj)
-
+Travis CL: Not yet configured
